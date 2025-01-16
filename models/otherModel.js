@@ -4,9 +4,10 @@ let collection = client.db('fleecebagDB').collection('itemOther');
 
 async function getOtherItemData(userData) {
     console.log("lM")
-    let m = await collection.findOne();
+    const query = { };
+    let m = collection.find(query).toArray();
     console.log(m)
-    return await collection.findOne();
+    return await collection.find(query).toArray();
 }
 
 async function getOtherItemData1(userData) {
