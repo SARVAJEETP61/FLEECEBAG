@@ -7,11 +7,11 @@ app.use(express.urlencoded({ extended: false }));
 
 
 let router = require('./routers/router');
-
+const http = require('http').Server(app);
 var port = 8080;
 require('./dbConnection');
 // const { dbConnection } = require('./dbConnection');
-app.use('/admin', router);
+app.use(router);
 
 
 http.listen(port, () => {
