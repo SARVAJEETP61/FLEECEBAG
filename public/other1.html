@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FleeceBag</title>
+    <link rel="stylesheet" href="css/otherPage.css">
+</head>
+
+<body>
+    <!-- Header Section -->
+    <header>
+        <div class="container">
+            <h1>FleeceBag</h1>
+            <nav>
+                <ul>
+                    <li><a class="navf" href="#home">Home</a></li>
+                    <li><a class="navf" href="#men">Men</a></li>
+                    <li><a class="navf" href="#women">Women</a></li>
+                    <li><a class="navf" href="#other">Other</a></li>
+                    <li><a class="navf" href="#cart">Cart (0)</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content Section -->
+    <main>
+        <section id="shop" class="product-listings">
+            <div class="container">
+                <h2>School Bags</h2>
+                <table>
+                    <tr id="school-bags">
+                    </tr>
+                </table>
+            </div>
+            <div class="container">
+                <h2>Tote Bags</h2>
+                <table>
+                    <tr id="tote-bags">
+                    </tr>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer Section -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 All Rights Reserved by FleeceBag.Pvt.ltd.</p>
+            <ul>
+                <li><a href="#privacy">Privacy Policy</a></li>
+                <li><a href="#terms">Terms & Conditions</a></li>
+            </ul>
+        </div>
+    </footer>
+
+    <script>
+        const api_baseURL = 'http://localhost:8080';
+        // Function to fetch data from the API
+        async function fetchProductData() {
+            try {
+                // Make the API request
+                const response = await fetch(`${api_baseURL}/otheritem/get`);
+                const data = await response.json();
+
+                // Check if data exists and is valid
+                if (data.statusCode === 200 && data.data) {
+                    renderProducts(data.data);  // Call the render function
+                } else {
+                    console.error("Failed to load data");
+                }
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        }
+
+        // Function to render the products dynamically
+        function renderProducts(products) {
+            const schoolBagsTable = document.getElementById('school-bags');
+            const toteBagsTable = document.getElementById('tote-bags');
+
+            // Clear existing content in tables
+            schoolBagsTable.innerHTML = ``;
+            toteBagsTable.innerHTML = ``;
+
+            products.forEach(product => {
+                const productHTML = `
+                    <td class="product-column">
+                        <div class="product">
+                                <img src="${product.image}" alt="${product.name}">
+                                <h3>${product.name}</h3>
+                                <p>$${product.discountedPrice || product.price}</p>
+                                <button>Add to Cart</button>
+                        </div>
+                    </td>
+                `;
+
+                // If the product type is 'schoolBag', append it to the school bags table
+                if (product.type === 'schoolBag') {
+                    schoolBagsTable.innerHTML += productHTML;
+                }
+                // If the product type is 'toteBag', append it to the tote bags table
+                else if (product.type === 'toteBag') {
+                    toteBagsTable.innerHTML += productHTML;
+                }
+            });
+        }
+
+        // Fetch product data when the page loads
+        window.onload = fetchProductData;
+    </script>
+</body>
+
+</html>

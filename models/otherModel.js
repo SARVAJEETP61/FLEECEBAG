@@ -10,10 +10,5 @@ async function getOtherItemData(userData) {
     return await collection.find(query).toArray();
 }
 
-async function getOtherItemData1(userData) {
-    return await collection.findOne();
-}
 
-
-
-module.exports = { getOtherItemData , getOtherItemData1 };
+module.exports = { getOtherItemData};
