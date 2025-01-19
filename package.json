@@ -1,9 +1,0 @@
-{
-  "dependencies": {
-    "express": "^4.21.2",
-    "json-2-csv": "^5.5.7",
-    "mongodb": "^6.11.0",
-    "save": "^2.9.0",
-    "socket.io": "^4.8.1"
-  }
-}
