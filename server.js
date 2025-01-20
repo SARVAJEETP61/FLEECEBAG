@@ -6,7 +6,7 @@ app.use(express.urlencoded({ extended: false }));
 
 
 
-let router = require('./routers/router');
+let router = require('./routers/otherPageRouter');
 const http = require('http').Server(app);
 var port = 8080;
 require('./dbConnection');
