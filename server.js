@@ -9,6 +9,8 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 app.use(express.static(path.join(__dirname, 'public')));
+app.use('/controllers', express.static(path.join(__dirname, 'controllers')));
+app.use(express.static(path.join(__dirname, 'images')));
 
 // app.use('/images', express.static('E:/Important Documents/Deakin university/Assignments/FLEECEBAG-main/images'));
 
