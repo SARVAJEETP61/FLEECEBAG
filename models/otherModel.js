@@ -2,18 +2,30 @@ let client = require('../dbConnection');
 
 let collection = client.db('fleecebagDB').collection('itemOther');
 
-async function getOtherItemData(userData) {
-    console.log("lM")
-    const query = { };
-    let m = collection.find(query).toArray();
-    console.log(m)
+async function getNewOtherItemList(userData) {
+    const query = { isNew :true };
     return await collection.find(query).toArray();
 }
 
-async function getOtherItemData1(userData) {
-    return await collection.findOne();
+async function getBestSellOtherItemList(userData) {
+    const query = { isItBestDeal :true };
+    return await collection.find(query).toArray();
+}
+
+async function getschoolBagList(userData) {
+    const query = {type : "schoolBag"};
+    return await collection.find(query).toArray();
+}
+
+async function getToteBagList(userData) {
+    const query = {type : "toteBag"};
+    return await collection.find(query).toArray();
+}
+
+async function getTeavelBagList(userData) {
+    const query = {type : "travelBag"};
+    return await collection.find(query).toArray();
 }
 
 
-
-module.exports = { getOtherItemData , getOtherItemData1 };
+module.exports = { getNewOtherItemList, getBestSellOtherItemList, getschoolBagList, getToteBagList, getTeavelBagList};
