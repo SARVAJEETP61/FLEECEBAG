@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+        <title>Fleecebag</title>
+        <link rel="icon" href="assets/img/purse.png">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+        <link rel="stylesheet" href="assets/css/style.css">
+        <link rel="stylesheet" href="assets/css/login.css">
+        <script src="https://www.gstatic.com/firebasejs/9.17.2/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.17.2/firebase-auth.js"></script>
+
+    </head>
+
+    <body style="background: linear-gradient(to left, #0f2027, #203a43, #2c5364);">
+        <nav class="navbar navbar-expand-md py-3">
+            <div class="container"><a href="index.html"><img src="assets/img/purse.png" height="25px"
+                        style="padding-right: 10px;"></a><a class="navbar-brand d-flex align-items-center text-light"
+                    href="index.html"><span>Fleecebag</span></a><button class="navbar-toggler" type="button"
+                    data-bs-toggle="collapse" data-bs-target="#navcol-3" aria-controls="navcol-3" aria-expanded="false"
+                    aria-label="Toggle navigation"><span class="navbar-toggler-icon"><i class="fas fa-bars"
+                            style="color:#fff; font-size:28px;"></i></span>
+                </button>
+                <div id="navcol-3" class="collapse navbar-collapse">
+                    <ul class="navbar-nav mx-auto">
+                        <li class="nav-item"><a class="nav-link" href="men.html">Men</a></li>
+                        <li class="nav-item"><a class="nav-link" href="women.html">Women</a></li>
+                        <li class="nav-item"><a class="nav-link" href="other.html">Other</a></li>
+                        <li class="nav-item"><a class="nav-link" href="offers.html">Offers</a></li>
+                        <li class="nav-item"><a class="nav-link" href="index.html#about">About Us</a></li>
+                    </ul>
+                    <span>
+                        <ul class="navbar-nav mx-auto">
+                            <li class="nav-item nav-link"><a href="cart.html"><i
+                                        class="fa-solid fa-bag-shopping"></i></a></li>
+                            <li class="nav-item"><a class="nav-link" href="login.html">Login</a></li>
+                            <li class="nav-item nav-link text-white" id="tick">|</li>
+                            <li class="nav-item"><a class="nav-link active" href="signup.html">Sign Up</a></li>
+                        </ul>
+                    </span>
+                </div>
+            </div>
+        </nav>
+
+        <div class="container container-login100">
+            <div class="body d-md-flex align-items-center justify-content-between"
+                style="background-color: #f2f2f2;border: 1px solid #dddd;">
+                <div class="box-1 mt-md-0 mt-5">
+                    <img src="assets/img/signup.png" class="img-fluid">
+                </div>
+                <div class=" box-2 d-flex flex-column h-100 text-center">
+                    <div class="mt-5">
+                        <p class="mb-1 h-1">Sign Up</p>
+                        <p class="text-muted mb-4">Sign Up to start shopping.</p>
+                        <div class="d-flex flex-column mt-5">
+                            <p class="text-muted mb-1">Continue with...</p>
+                            <div class="d-flex align-items-center mx-auto social mt-2">
+                                <!-- <a href="login.html" class="box">
+                                    <span class="far fa-envelope mb-2"></span>
+                                    <p class="mb-0">Email</p>
+                                </a> -->
+                                <!-- <a href="#" class="box">
+                                    <span class="fab fa-google mb-2"></span>
+                                    <p class="mb-0">Google</p>
+                                </a>
+                                <a href="#" class="box">
+                                    <span class="fab fa-facebook-f mb-2"></span>
+                                    <p class="mb-0">Facebook</p>
+                                </a> -->
+                                <a href="#" class="box" id="google-login">
+                                    <span class="fab fa-google mb-2"></span>
+                                    <p class="mb-0">Google</p>
+                                </a>
+                                <a href="#" class="box" id="facebook-login">
+                                    <span class="fab fa-facebook-f mb-2"></span>
+                                    <p class="mb-0">Facebook</p>
+                                </a>
+                                <a href="#" class="box" id="email-login">
+                                    <span class="far fa-envelope mb-2"></span>
+                                    <p class="mb-0">Email</p>
+                                </a>
+                            </div>
+                            <div class="mt-5">
+                                <p class="mb-0 text-muted">Already have an account?</p>
+                                <a href="login.html">
+                                    <div class="btn btn-l">Login<span class="fas fa-chevron-right ms-1"></span>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-5">
+                        <p class="footer text-muted mb-0 mt-md-0 mt-4">By sigining in you agree with our
+                            <span class="p-color me-1">terms and conditions</span>and
+                            <span class="p-color ms-1">privacy policy</span>
+                        </p>
+                    </div>
+                </div>
+                <span class="fas fa-times"></span>
+            </div>
+        </div>
+
+        <div class="newsletter container-fluid">
+            <div class="container">
+                <div class="intro">
+                    <h2 class="text-center">Subscribe to our Newsletter</h2>
+                </div>
+                <div>
+                    <span class="d-flex justify-content-center" style="margin-right: -4px;">
+                        <input class="form-control" type="email" placeholder="Enter your email address">
+                        <button type="button" id="subscribe" class="btn-primary">Subscribe </button>
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <div class="container py-4 pt-5">
+                <div class="row justify-content-center">
+                    <div class="col-sm-4 col-md-3 text-center text-lg-start d-flex flex-column item">
+                        <h3 class="fs-6">About</h3>
+                        <ul class="list-unstyled">
+                            <li><a href="#">Terms & Conditions</a></li>
+                            <li><a href="#">FAQs</a></li>
+                        </ul>
+                        <h3 class="fs-6">Contact Us</h3>
+                        <ul class="list-unstyled">
+                            <li><a style="color: #E5989B;" href="#">support@fleecebag.in</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-sm-4 col-md-3 text-center text-lg-start d-flex flex-column item">
+                        <h3 class="fs-6">Customer Service</h3>
+                        <ul class="list-unstyled">
+                            <li><a href="#" style="color:#2c5364; font-weight: 600;">Track Order</a></li>
+                            <li><a href="#">Return Policy</a></li>
+                            <li><a href="#">Privacy Policy</a></li>
+                            <li><a href="#">Shipping Information</a></li>
+                        </ul>
+                    </div>
+                    <div
+                        class="col-lg-3 text-center text-lg-start d-flex flex-column align-items-center order-first align-items-lg-start order-lg-last item social">
+                        <div class="fw-bold d-flex align-items-center mb-2"><img src="assets/img/purse.png"
+                                height="25px" style="padding-right: 10px;"></span><span>Fleecebag</span></div>
+                        <p class="text-muted copyright">Think Once, Think Twice, Think Bags</p>
+                        <h3 class="fs-6 mt-3">Follow Us</h3>
+                        <ul class="social mb-0 list-inline">
+                            <li class="list-inline-item"><a class="social-link"><i
+                                        class="fa-brands fa-facebook-f"></i></a></li>
+                            <li class="list-inline-item"><a class="social-link"><i
+                                        class="fa-brands fa-instagram"></i></a></li>
+                            <li class="list-inline-item"><a class="social-link"><i class="fa-brands fa-twitter"></i></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <hr>
+                <div class="d-flex justify-content-around align-items-center pt-3">
+                    <p class="text-muted text-uppercase mb-0">Copyright © 2022 All Rights Reserved</p>
+                </div>
+            </div>
+        </footer>
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/egjs-agent/2.4.3/agent.min.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/9.17.2/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.17.2/firebase-auth.js"></script>
+
+<!-- <script>
+    // Firebase configuration
+    const firebaseConfig = {
+        apiKey: "AIzaSyDAzaQRPRKxe1o8tZKevYplxiBMrfgQM1E",
+        authDomain: "fleecebag-19124.firebaseapp.com",
+        projectId: "fleecebag-19124",
+        storageBucket: "fleecebag-19124.appspot.com",
+        messagingSenderId: "241920874154",
+        appId: "1:241920874154:web:4b2c1e83824d821aed22d3",
+    };
+
+    // Initialize Firebase
+    const app = firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    
+
+    // Google Login
+    document.getElementById('google-login').addEventListener('click', () => {
+        const provider = new firebase.auth.GoogleAuthProvider();
+        auth.signInWithPopup(provider)
+            .then((result) => {
+                console.log('User signed in with Google:', result.user);
+            })
+            .catch((error) => {
+                console.error('Error during Google login:', error);
+            });
+    });
+
+    // Facebook Login
+    document.getElementById('facebook-login').addEventListener('click', () => {
+        const provider = new firebase.auth.FacebookAuthProvider();
+        auth.signInWithPopup(provider)
+            .then((result) => {
+                console.log('User signed in with Facebook:', result.user);
+            })
+            .catch((error) => {
+                console.error('Error during Facebook login:', error);
+            });
+    });
+
+    // Email Login
+    document.getElementById('email-login').addEventListener('click', () => {
+        const email = prompt('Enter your email:');
+        const password = prompt('Enter your password:');
+        auth.signInWithEmailAndPassword(email, password)
+            .then((result) => {
+                console.log('User signed in with Email:', result.user);
+            })
+            .catch((error) => {
+                console.error('Error during Email login:', error);
+            });
+    });
+
+auth.createUserWithEmailAndPassword(email, password)
+    .then((result) => {
+        console.log('User signed up:', result.user);
+    })
+    .catch((error) => {
+        console.error('Error during sign-up:', error);
+    });
+</script> -->
+<script>
+    // Firebase configuration
+    const firebaseConfig = {
+        apiKey: "AIzaSyDAzaQRPRKxe1o8tZKevYplxiBMrfgQM1E",
+        authDomain: "fleecebag-19124.firebaseapp.com",
+        projectId: "fleecebag-19124",
+        storageBucket: "fleecebag-19124.appspot.com",
+        messagingSenderId: "241920874154",
+        appId: "1:241920874154:web:4b2c1e83824d821aed22d3",
+    };
+
+    // Initialize Firebase
+    const app = firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+
+    // Google Login
+    document.getElementById('google-login').addEventListener('click', () => {
+        const provider = new firebase.auth.GoogleAuthProvider();
+        auth.signInWithPopup(provider)
+            .then((result) => {
+                console.log('User signed in with Google:', result.user);
+                alert(`Welcome, ${result.user.displayName}`);
+            })
+            .catch((error) => {
+                console.error('Error during Google login:', error);
+                alert(error.message);
+            });
+    });
+
+    // Facebook Login
+    document.getElementById('facebook-login').addEventListener('click', () => {
+        const provider = new firebase.auth.FacebookAuthProvider();
+        auth.signInWithPopup(provider)
+            .then((result) => {
+                console.log('User signed in with Facebook:', result.user);
+                alert(`Welcome, ${result.user.displayName}`);
+            })
+            .catch((error) => {
+                console.error('Error during Facebook login:', error);
+                alert(error.message);
+            });
+    });
+
+    // Email Login
+    document.getElementById('email-login').addEventListener('click', () => {
+        const email = prompt('Enter your email:');
+        const password = prompt('Enter your password:');
+        auth.signInWithEmailAndPassword(email, password)
+            .then((result) => {
+                console.log('User signed in with Email:', result.user);
+                alert(`Welcome, ${result.user.email}`);
+            })
+            .catch((error) => {
+                console.error('Error during Email login:', error);
+                alert(error.message);
+            });
+    });
+
+    // Sign-Up Example
+    document.getElementById('email-signup').addEventListener('click', () => {
+        const email = prompt('Enter your email:');
+        const password = prompt('Enter your password:');
+        auth.createUserWithEmailAndPassword(email, password)
+            .then((result) => {
+                console.log('User signed up:', result.user);
+                alert(`Welcome to Fleecebag, ${result.user.email}`);
+            })
+            .catch((error) => {
+                console.error('Error during sign-up:', error);
+                alert(error.message);
+            });
+    });
+</script>
+
+    </body>
+
+</html>
