@@ -1,0 +1,430 @@
+@media (max-width: 991px) {
+    #tick {
+        display: none;
+    }
+
+    #home-carousel-controls {
+        display: none;
+    }
+
+    .dropdown {
+        display: none;
+    }
+}
+
+@media (max-width: 576px) {
+    #custom-cards .row .col {
+        height: 25vh !important;
+    }
+}
+
+@media (min-width: 1500px) {
+
+    .container#custom-cards,
+    .container.owl-1-style {
+        max-width: 90vw;
+    }
+}
+
+.navbar-brand span {
+    font-size: 1.2em;
+}
+
+.navbar-light .navbar-nav .nav-link:hover {
+    text-decoration: overline;
+}
+
+#tick:hover {
+    text-decoration: none;
+}
+
+.fa-bag-shopping {
+    color: #777;
+    padding-right: 1em;
+}
+
+.text-muted span a {
+    padding: 0 0.6vw;
+    color: #000;
+}
+
+.btn-login {
+    background-color: inherit;
+    color: #6d6875;
+    border-color: #6d6875;
+}
+
+.btn-login:hover {
+    background-color: #b5838d;
+    border-color: #b5838d;
+}
+
+.fa-bag-shopping:hover {
+    color: rgb(0, 0, 0) !important;
+}
+
+.social-link {
+    width: 30px;
+    height: 30px;
+    border: 1px solid #ddd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    color: #666;
+    border-radius: 50%;
+    transition: all 0.3s;
+    font-size: 0.9rem;
+}
+
+.social-link:hover,
+.social-link:focus {
+    background: #ddd;
+    color: #555;
+}
+
+.nav-link.active {
+    color: #b5838d !important;
+    font-weight: bold;
+}
+
+footer {
+    background-color: #f2f2f2;
+}
+
+footer .social-link {
+    color: #e5989b;
+    border-color: #b5838d;
+}
+
+footer .social-link:hover,
+.social-link:focus {
+    background: #6d6875;
+    color: #ffb4a2;
+}
+
+footer .list-unstyled a {
+    color: #6d6875;
+    text-decoration: none;
+}
+
+.featuredprod img {
+    margin-bottom: 20px;
+}
+
+.featuredprod h3 {
+    font-size: 1em;
+    font-weight: 900 !important;
+}
+
+.featuredprod h3 a {
+    color: #b5838d;
+}
+
+.owl-1-style .owl-nav {
+    display: none;
+}
+
+.owl-1-style .owl-dots {
+    text-align: center;
+    position: relative;
+    bottom: -30px;
+}
+
+.owl-1-style .owl-dots .owl-dot {
+    display: inline-block;
+}
+
+.owl-1-style .owl-dots .owl-dot span {
+    display: inline-block;
+    width: 15px;
+    height: 3px;
+    border-radius: 0px;
+    background: #cccccc;
+    -webkit-transition: 0.3s all cubic-bezier(0.32, 0.71, 0.53, 0.53);
+    -o-transition: 0.3s all cubic-bezier(0.32, 0.71, 0.53, 0.53);
+    transition: 0.3s all cubic-bezier(0.32, 0.71, 0.53, 0.53);
+    margin: 3px;
+}
+
+.owl-1-style .owl-dots .owl-dot.active span {
+    background: #007bff;
+}
+
+.owl-1-style .owl-dots .owl-dot:active,
+.owl-1-style .owl-dots .owl-dot:focus {
+    outline: none;
+}
+
+.newsletter {
+    background-color: #f8edeb;
+    padding: 55px 74px;
+}
+
+.newsletter input {
+    width: 400px;
+    display: inline-block;
+    border-radius: 0%;
+    border: 2px solid #e5989b;
+}
+
+.newsletter .btn-primary {
+    background-color: #e5989b !important;
+    border: whitesmoke;
+    color: #fff;
+    outline: none !important;
+    border-radius: 0%;
+}
+
+.newsletter h2 {
+    color: #b5838d;
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 25px;
+    line-height: 1.5;
+    padding-top: 0;
+    margin-top: 0;
+}
+
+.category .card {
+    height: 130px;
+    overflow: hidden;
+    border: none;
+    border-radius: 15px;
+}
+
+.imagename {
+    font-size: 14px;
+    font-weight: 500;
+    padding: 1em;
+}
+
+.home-discount sup {
+    margin: 0 0.3em;
+    vertical-align: text-top;
+    font-size: 50%;
+}
+
+.home-discount sub {
+    margin: 0 0.3em;
+    vertical-align: text-bottom;
+    font-size: 50%;
+}
+
+#topbar div {
+    font-size: 12px;
+    line-height: 1.3em;
+}
+
+.categories {
+    background-color: #f6f6f6;
+}
+
+.categories a {
+    color: #6d6875;
+}
+
+.categories a:hover,
+.categories a:focus {
+    color: #e5989b;
+    font-size: 1.02em;
+}
+
+a.dropdown-item.active {
+    background-color: #b5838d;
+}
+
+a.dropdown-item.active:hover {
+    background-color: #ce96a2;
+}
+
+a.dropdown-item:hover {
+    background-color: #edf2f4;
+}
+
+#custom-cards a {
+    text-decoration: none;
+}
+
+/* Featured Products Section */
+.owl-carousel {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin-top: 30px;
+}
+
+.featuredprod {
+    text-align: center;
+    padding: 15px;
+    flex: 1 1 22%;
+    box-sizing: border-box;
+    margin: 10px;
+}
+
+.featuredprod img {
+    width: 100%;
+    height: auto;
+    max-width: 250px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+    margin: 0 auto;
+}
+
+.featuredprod h3 {
+    font-size: 1.2rem;
+    margin-top: 10px;
+    font-weight: 500;
+}
+
+.featuredprod a {
+    color: #6D6875;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.featuredprod a:hover {
+    color: #F1A7C9;
+}
+
+@media (max-width: 991px) {
+    .owl-carousel {
+        justify-content: center;
+    }
+
+    .featuredprod {
+        flex: 1 1 45%;
+    }
+}
+
+@media (max-width: 576px) {
+    .owl-carousel {
+        justify-content: center;
+    }
+
+    .featuredprod {
+        flex: 1 1 100%;
+    }
+}
+
+@media (min-width: 1500px) {
+    .owl-carousel {
+        max-width: 90vw;
+    }
+}
+
+/* CSS for Owned by Section */
+#owned-by {
+    animation: fadeIn 1.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+#owned-by {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+#owned-by h2 {
+    color: #333;
+    font-size: 28px;
+    margin-bottom: 15px;
+}
+
+#owned-by p {
+    color: #777;
+    font-size: 18px;
+}
+
+#owned-by img {
+    border-radius: 50%;
+    width: 150px;
+    height: 150px;
+    margin-top: 20px;
+    border: 5px solid #fff;
+}
+
+/* CSS for Social Icons Bounce Animation */
+.social-link {
+    font-size: 24px;
+    color: #333;
+    transition: transform 0.2s ease-in-out;
+}
+
+.social-link:hover {
+    animation: bounce 0.5s ease infinite;
+}
+
+@keyframes bounce {
+
+    0%,
+    20%,
+    50%,
+    80%,
+    100% {
+        transform: translateY(0);
+    }
+
+    40% {
+        transform: translateY(-10px);
+    }
+
+    60% {
+        transform: translateY(-5px);
+    }
+}
+
+/* CSS for Owner Image Hover Animation */
+#owner-image {
+    transition: transform 0.3s ease-in-out;
+}
+
+#owner-image:hover {
+    transform: scale(1.1);
+}
+
+/* CSS for Owner Name Rotation Animation */
+#owner-name {
+    animation: rotateText 4s linear infinite;
+}
+
+@keyframes rotateText {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* Dark Mode Styles */
+.dark-mode {
+    background-color: #000;
+    color: #fff;
+}
+
+/* Light Mode Styles */
+.light-mode {
+    background-color: #fff;
+    color: #000;
+}
+
+.darkMode {
+    background-color: black;
+    color: white;
+}
