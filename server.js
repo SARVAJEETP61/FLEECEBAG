@@ -42,10 +42,20 @@ app.get('/:page.html', (req, res) => {
     res.sendFile(filePath);
 });
 
+let router = require('./routers/otherPageRouter');
+let menRouter = require('./routers/menPageRouter');
+let womenRouter = require('./routers/womenPageRouter');
 
-// Start the server
-server.listen(port, () => {
-    console.log(`Server is running on http://localhost:${port}`);
+const http = require('http').Server(app);
+var port = 8080;
+require('./dbConnection');
+//const { dbConnection } = require('./dbConnection');
+app.use(router);
+app.use(menRouter);
+app.use(womenRouter);
+
+
+http.listen(port, () => {
+    console.log('Express server started on port :' + port);
+    //dbConnection();
 });
-
-
