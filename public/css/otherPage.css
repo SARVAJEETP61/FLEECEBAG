@@ -178,3 +178,157 @@ footer ul {
 footer ul li {
     margin: 0 15px;
 }
+/* Ensure the table takes up the full width */
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+/* General Styles for Product Listing */
+.product-listings {
+    margin-top: 30px;
+}
+
+/* Container for the product list */
+.product-list {
+    display: flex;
+    flex-wrap: wrap;  /* Allow products to wrap onto the next line */
+    gap: 20px;        /* Space between the products */
+    justify-content: flex-start;
+}
+
+/* Each product item styling */
+.product-column {
+    flex: 1 1 200px;  /* Flexible product width */
+    max-width: 250px; /* Maximum width for each product */
+    padding: 10px;
+    box-sizing: border-box;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease;
+}
+
+/* Hover effect for each product */
+.product-column:hover {
+    transform: scale(1.05);  /* Slight zoom effect on hover */
+}
+
+/* Product image styling */
+.product img {
+    width: 100%;        /* Image takes full width of its container */
+    height: auto;
+    max-width: 150px;    /* Set max width for image */
+    margin: 0 auto;      /* Center image */
+    display: block;
+}
+
+/* Product title */
+.product h3 {
+    font-size: 18px;
+    margin: 10px 0;
+    text-align: center;
+}
+
+/* Product price */
+.product p {
+    font-size: 16px;
+    color: #555;
+    text-align: center;
+}
+
+/* Add to Cart Button */
+button {
+    padding: 10px 20px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 14px;
+    display: block;
+    margin: 10px auto 0;
+}
+
+/* Button Hover Effect */
+button:hover {
+    background-color: #0056b3;
+}
+
+button:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.5); /* Add a blue focus ring */
+}
+
+/* General layout */
+.container {
+    width: 90%;
+    margin: 0 auto;
+}
+
+header, footer {
+    background-color: #702e2e;
+    color: white;
+    padding: 20px 0;
+    text-align: center;
+}
+
+header nav ul {
+    display: flex;
+    justify-content: center;
+    padding: 0;
+}
+
+header nav ul li {
+    display: inline;
+    margin: 0 15px;
+}
+
+header nav ul li a {
+    color: white;
+    text-decoration: none;
+}
+
+footer {
+    padding: 20px 0;
+    background-color: #333;
+}
+
+footer ul {
+    display: flex;
+    justify-content: center;
+    padding: 0;
+    text-align: center;
+}
+
+footer ul li {
+    display: inline;
+    margin: 0 10px;
+}
+
+footer ul li a {
+    color: white;
+    text-decoration: none;
+}
+
+/* Responsive layout for product listings */
+@media screen and (max-width: 768px) {
+    .product-column {
+        width: 50%;
+    }
+
+    table {
+        font-size: 14px;  /* Adjust font size on smaller screens */
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .product-column {
+        width: 100%; /* Full width for product columns on very small screens */
+        display: block;
+    }
+
+    table {
+        font-size: 12px;  /* Smaller text on very small screens */
+    }
+}
