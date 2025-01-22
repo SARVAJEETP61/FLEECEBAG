@@ -55,42 +55,30 @@
                     <div class="mt-5">
                         <p class="mb-1 h-1">Sign Up</p>
                         <p class="text-muted mb-4">Sign Up to start shopping.</p>
-                        <div class="d-flex flex-column mt-5">
-                            <p class="text-muted mb-1">Continue with...</p>
-                            <div class="d-flex align-items-center mx-auto social mt-2">
-                                <!-- <a href="login.html" class="box">
-                                    <span class="far fa-envelope mb-2"></span>
-                                    <p class="mb-0">Email</p>
-                                </a> -->
-                                <!-- <a href="#" class="box">
-                                    <span class="fab fa-google mb-2"></span>
-                                    <p class="mb-0">Google</p>
-                                </a>
-                                <a href="#" class="box">
-                                    <span class="fab fa-facebook-f mb-2"></span>
-                                    <p class="mb-0">Facebook</p>
-                                </a> -->
-                                <a href="#" class="box" id="google-login">
-                                    <span class="fab fa-google mb-2"></span>
-                                    <p class="mb-0">Google</p>
-                                </a>
-                                <a href="#" class="box" id="facebook-login">
-                                    <span class="fab fa-facebook-f mb-2"></span>
-                                    <p class="mb-0">Facebook</p>
-                                </a>
-                                <a href="#" class="box" id="email-login">
-                                    <span class="far fa-envelope mb-2"></span>
-                                    <p class="mb-0">Email</p>
-                                </a>
+                        <!-- Email Signup Form -->
+                        <form action="/admin/signup" method="POST">
+                            <div class="form-group">
+                                <input type="email" name="email" placeholder="Enter your email" required />
                             </div>
-                            <div class="mt-5">
-                                <p class="mb-0 text-muted">Already have an account?</p>
-                                <a href="login.html">
-                                    <div class="btn btn-l">Login<span class="fas fa-chevron-right ms-1"></span>
-                                    </div>
-                                </a>
+                            <div class="form-group">
+                                <input type="password" name="password" placeholder="Enter your password" required />
                             </div>
+                            <button type="submit" class="btn btn-primary">Sign Up</button>
+                        </form>
+                        <!-- Social Login Options -->
+                    <div class="d-flex flex-column mt-5">
+                        <p class="text-muted mb-1">Or continue with...</p>
+                        <div class="d-flex align-items-center mx-auto social mt-2">
+                            <a href="/auth/google" class="box">
+                                <span class="fab fa-google mb-2"></span>
+                                <p class="mb-0">Google</p>
+                            </a>
+                            <a href="/auth/facebook" class="box">
+                                <span class="fab fa-facebook-f mb-2"></span>
+                                <p class="mb-0">Facebook</p>
+                            </a>
                         </div>
+                    </div>
                     </div>
                     <div class="mt-5">
                         <p class="footer text-muted mb-0 mt-md-0 mt-4">By sigining in you agree with our

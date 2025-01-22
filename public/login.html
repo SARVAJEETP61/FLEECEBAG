@@ -50,9 +50,9 @@
                 </div>
                 <div class="box-2 d-flex flex-column h-100">
                     <div class="mx-auto my-auto">
-                        <form class="login100-form validate-form" action="index.html" redirect="./index.html">
+                        <form class="login100-form validate-form" action="/admin/login" method="POST">
                             <span class="login100-form-title text-center pb-3">Login</span>
-
+                        
                             <div class="mb-3 validate-input">
                                 <input class="input100" type="text" name="email" placeholder="Email" required>
                                 <span class="focus-input100"></span>
@@ -60,14 +60,15 @@
                                     <i class="fa fa-envelope" aria-hidden="true"></i>
                                 </span>
                             </div>
-
+                        
                             <div class="validate-input">
-                                <input class="input100" type="password" name="pass" placeholder="Password" required>
+                                <input class="input100" type="password" name="password" placeholder="Password" required>
                                 <span class="focus-input100"></span>
                                 <span class="symbol-input100">
                                     <i class="fa fa-lock" aria-hidden="true"></i>
                                 </span>
                             </div>
+                        
                             <div class="d-flex flex-column mt-4 text-center">
                                 <p class="text-muted mb-1">or continue with...</p>
                                 <div class="d-flex align-items-center mx-auto social mt-2">
@@ -79,25 +80,20 @@
                                         <span class="fab fa-facebook-f mb-2"></span>
                                         <p class="mb-0">Facebook</p>
                                     </a>
-                                    <a href="#" class="box">
-                                        <span class="far fa-envelope mb-2"></span>
-                                        <p class="mb-0">Email</p>
-                                    </a>
                                 </div>
                             </div>
                             <div class="container-login100-form-btn">
-                                <button class="login100-form-btn">
+                                <button class="login100-form-btn" type="submit">
                                     Login
                                 </button>
                             </div>
-
+                        
                             <div class="text-center p-t-12">
                                 <a class="txt1" href="signup.html">
                                     Forgot Username / Password?
                                 </a>
-                                </a>
                             </div>
-
+                        
                             <div class="text-center p-t-136">
                                 <a class="txt2" href="signup.html">
                                     Create your Account
@@ -105,6 +101,7 @@
                                 </a>
                             </div>
                         </form>
+                        
                     </div>
                 </div>
             </div>

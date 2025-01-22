@@ -1,20 +1,24 @@
-var express = require("express")
-var app = express()
-app.use(express.static(__dirname + '/public'))
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+const express = require("express");
+const http = require("http");
+const path = require("path");
+const router = require("./routers/router");
+require("./dbConnection"); // Ensure the database connection is initialized
 
+// Initialize the Express application
+const app = express();
+const port = 8080;
 
+// Middleware
+app.use(express.static(path.join(__dirname, "public"))); // Serve static files from the 'public' directory
+app.use(express.json()); // Parse incoming JSON requests
+app.use(express.urlencoded({ extended: false })); // Parse URL-encoded data
 
-let router = require('./routers/router');
+// Routes
+app.use("/admin", router); // Route all '/admin' requests to the admin router
 
-var port = 8080;
-require('./dbConnection');
-// const { dbConnection } = require('./dbConnection');
-app.use('/admin', router);
-
-
-http.listen(port, () => {
-    console.log('Express server started on port :' + port);
-    // dbConnection();
+// Create and start the HTTP server
+const server = http.createServer(app);
+server.listen(port, () => {
+    console.log(`Server running on http://localhost:${port}`);
 });
+
