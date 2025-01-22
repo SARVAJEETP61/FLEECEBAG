@@ -56,14 +56,20 @@
                         <p class="mb-1 h-1">Sign Up</p>
                         <p class="text-muted mb-4">Sign Up to start shopping.</p>
                         <!-- Email Signup Form -->
-                        <form action="/admin/signup" method="POST">
-                            <div class="form-group">
-                                <input type="email" name="email" placeholder="Enter your email" required />
+                        <form id="signupForm" action="/admin/signup" method="POST">
+                            <div class="form-group" style="margin-bottom: 15px;">
+                                <div class="email"><input type="email" id="signupEmail" class="email" name="email" placeholder="Enter your email" required /></div>
+                                <small class="text-danger" id="emailSignupError" style="display: none;">Please enter a valid email address.</small>
                             </div>
                             <div class="form-group">
-                                <input type="password" name="password" placeholder="Enter your password" required />
+                                <div class="password"><input type="password" id="signupPassword"  name="password" placeholder="Enter a strong password" required /></div>
+                                <small class="text-danger" id="passwordSignupError" style="display: none;">Password must be strong.</small>
+                                <div id="passwordGuidelines" class="text-muted" style="display: block;font-size: xx-small">
+                                    Password must be at least 8 characters long and include uppercase letters, lowercase letters, numbers, and special characters.
+                                </div>
                             </div>
-                            <button type="submit" class="btn btn-primary">Sign Up</button>
+                            <div id="signupServerError" style="display: none; color: red; margin-bottom: 10px;"></div>
+                            <button type="submit" id="signupButton" class="btn btn-primary" style="margin-top:20px">Sign Up</button>
                         </form>
                         <!-- Social Login Options -->
                     <div class="d-flex flex-column mt-5">
@@ -153,144 +159,80 @@
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/egjs-agent/2.4.3/agent.min.js"></script>
-        <script src="https://www.gstatic.com/firebasejs/9.17.2/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.17.2/firebase-auth.js"></script>
-
-<!-- <script>
-    // Firebase configuration
-    const firebaseConfig = {
-        apiKey: "AIzaSyDAzaQRPRKxe1o8tZKevYplxiBMrfgQM1E",
-        authDomain: "fleecebag-19124.firebaseapp.com",
-        projectId: "fleecebag-19124",
-        storageBucket: "fleecebag-19124.appspot.com",
-        messagingSenderId: "241920874154",
-        appId: "1:241920874154:web:4b2c1e83824d821aed22d3",
-    };
-
-    // Initialize Firebase
-    const app = firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
-    
-
-    // Google Login
-    document.getElementById('google-login').addEventListener('click', () => {
-        const provider = new firebase.auth.GoogleAuthProvider();
-        auth.signInWithPopup(provider)
-            .then((result) => {
-                console.log('User signed in with Google:', result.user);
-            })
-            .catch((error) => {
-                console.error('Error during Google login:', error);
+        <script>
+            document.getElementById('signupForm').addEventListener('submit', async function (e) {
+                e.preventDefault(); // Prevent default form submission
+        
+                const emailInput = document.getElementById('signupEmail');
+                const passwordInput = document.getElementById('signupPassword');
+                const emailError = document.getElementById('emailSignupError');
+                const passwordError = document.getElementById('passwordSignupError');
+                const serverError = document.getElementById('signupServerError');
+                const submitButton = document.getElementById('signupButton');
+        
+                // Clear previous errors
+                emailError.style.display = 'none';
+                passwordError.style.display = 'none';
+                serverError.style.display = 'none';
+        
+                let isValid = true;
+        
+                // Validate email
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test(emailInput.value)) {
+                    emailError.style.display = 'block';
+                    emailError.textContent = 'Please enter a valid email address.';
+                    isValid = false;
+                }
+        
+                // Validate strong password
+                const strongPasswordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+                if (!strongPasswordRegex.test(passwordInput.value)) {
+                    passwordError.style.display = 'block';
+                    passwordError.textContent = 'Password must meet the required strength criteria.';
+                    isValid = false;
+                }
+        
+                if (!isValid) {
+                    return; // Stop if validation fails
+                }
+        
+                // Show submitting state
+                submitButton.disabled = true;
+                submitButton.textContent = 'Submitting...';
+        
+                try {
+                    const response = await fetch('/admin/signup', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            email: emailInput.value,
+                            password: passwordInput.value,
+                        }),
+                    });
+        
+                    if (!response.ok) {
+                        const errorMessage = await response.text();
+                        serverError.textContent = errorMessage;
+                        serverError.style.display = 'block';
+                        submitButton.disabled = false;
+                        submitButton.textContent = 'Sign Up';
+                        return;
+                    }
+        
+                    // Redirect to homepage on success
+                    window.location.href = '/index.html';
+                } catch (error) {
+                    console.error('Error during signup:', error);
+                    serverError.textContent = 'An unexpected error occurred. Please try again later.';
+                    serverError.style.display = 'block';
+                    submitButton.disabled = false;
+                    submitButton.textContent = 'Sign Up';
+                }
             });
-    });
-
-    // Facebook Login
-    document.getElementById('facebook-login').addEventListener('click', () => {
-        const provider = new firebase.auth.FacebookAuthProvider();
-        auth.signInWithPopup(provider)
-            .then((result) => {
-                console.log('User signed in with Facebook:', result.user);
-            })
-            .catch((error) => {
-                console.error('Error during Facebook login:', error);
-            });
-    });
-
-    // Email Login
-    document.getElementById('email-login').addEventListener('click', () => {
-        const email = prompt('Enter your email:');
-        const password = prompt('Enter your password:');
-        auth.signInWithEmailAndPassword(email, password)
-            .then((result) => {
-                console.log('User signed in with Email:', result.user);
-            })
-            .catch((error) => {
-                console.error('Error during Email login:', error);
-            });
-    });
-
-auth.createUserWithEmailAndPassword(email, password)
-    .then((result) => {
-        console.log('User signed up:', result.user);
-    })
-    .catch((error) => {
-        console.error('Error during sign-up:', error);
-    });
-</script> -->
-<script>
-    // Firebase configuration
-    const firebaseConfig = {
-        apiKey: "AIzaSyDAzaQRPRKxe1o8tZKevYplxiBMrfgQM1E",
-        authDomain: "fleecebag-19124.firebaseapp.com",
-        projectId: "fleecebag-19124",
-        storageBucket: "fleecebag-19124.appspot.com",
-        messagingSenderId: "241920874154",
-        appId: "1:241920874154:web:4b2c1e83824d821aed22d3",
-    };
-
-    // Initialize Firebase
-    const app = firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
-
-    // Google Login
-    document.getElementById('google-login').addEventListener('click', () => {
-        const provider = new firebase.auth.GoogleAuthProvider();
-        auth.signInWithPopup(provider)
-            .then((result) => {
-                console.log('User signed in with Google:', result.user);
-                alert(`Welcome, ${result.user.displayName}`);
-            })
-            .catch((error) => {
-                console.error('Error during Google login:', error);
-                alert(error.message);
-            });
-    });
-
-    // Facebook Login
-    document.getElementById('facebook-login').addEventListener('click', () => {
-        const provider = new firebase.auth.FacebookAuthProvider();
-        auth.signInWithPopup(provider)
-            .then((result) => {
-                console.log('User signed in with Facebook:', result.user);
-                alert(`Welcome, ${result.user.displayName}`);
-            })
-            .catch((error) => {
-                console.error('Error during Facebook login:', error);
-                alert(error.message);
-            });
-    });
-
-    // Email Login
-    document.getElementById('email-login').addEventListener('click', () => {
-        const email = prompt('Enter your email:');
-        const password = prompt('Enter your password:');
-        auth.signInWithEmailAndPassword(email, password)
-            .then((result) => {
-                console.log('User signed in with Email:', result.user);
-                alert(`Welcome, ${result.user.email}`);
-            })
-            .catch((error) => {
-                console.error('Error during Email login:', error);
-                alert(error.message);
-            });
-    });
-
-    // Sign-Up Example
-    document.getElementById('email-signup').addEventListener('click', () => {
-        const email = prompt('Enter your email:');
-        const password = prompt('Enter your password:');
-        auth.createUserWithEmailAndPassword(email, password)
-            .then((result) => {
-                console.log('User signed up:', result.user);
-                alert(`Welcome to Fleecebag, ${result.user.email}`);
-            })
-            .catch((error) => {
-                console.error('Error during sign-up:', error);
-                alert(error.message);
-            });
-    });
-</script>
-
+        </script>
     </body>
 
 </html>

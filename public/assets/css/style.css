@@ -347,3 +347,12 @@ a.dropdown-item:hover {
   background-color: black;
   color: white;
 }
+.email {
+  background-color: #fff;
+}
+.password {
+  background-color: #fff;
+}
+.form-group {
+  background-color: #fff;
+}
