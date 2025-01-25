@@ -8,14 +8,38 @@
   <link rel="icon" href="../images/purse.png">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
-  <link rel="stylesheet" href="/otherPage.css">
-  <script src="/controllers/script.js" defer></script> <!-- Reference to script.js -->
+  <link rel="stylesheet" href="css/otherPage.css">
 
 </head>
 
 <body>
-  <div id="header-container"></div>
-
+  <nav class="navbar navbar-expand-md navbar-light py-3">
+    <div class="container">
+      <a href="index.html"><img src="../images/purse.png" height="25px" style="padding-right: 10px;"></a><a
+        class="navbar-brand d-flex align-items-center" href="index.html"><span>Fleecebag</span></a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navcol-3"
+        aria-controls="navcol-3" aria-expanded="false" aria-label="Toggle navigation"><span
+          class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navcol-3">
+        <ul class="navbar-nav mx-auto">
+          <li class="nav-item"><a class="nav-link" href="men.html">Men</a></li>
+          <li class="nav-item"><a class="nav-link" href="women.html">Women</a></li>
+          <li class="nav-item"><a class="nav-link active" href="other.html">Other</a></li>
+          <li class="nav-item"><a class="nav-link" href="offers.html">Offers</a></li>
+          <li class="nav-item"><a class="nav-link" href="index.html#about">About Us</a></li>
+        </ul>
+        <span>
+          <ul class="navbar-nav mx-auto">
+            <li class="nav-item nav-link"><a href="cart.html"><i class="fa-solid fa-bag-shopping"></i></a></li>
+            <li class="nav-item"><a class="nav-link" href="login.html">Login</a></li>
+            <li class="nav-item nav-link" id="tick">|</li>
+            <li class="nav-item"><a class="nav-link" href="signup.html">Sign Up</a></li>
+          </ul>
+        </span>
+      </div>
+    </div>
+  </nav>
 
   <div class="container-fluid pb-1">
     <div class="row text-center py-2 categories">
@@ -24,7 +48,7 @@
       <div class="col-6 col-sm-4"><a class="text-decoration-none" href="../subpages/other/schoolbags.html">School
           Bags</a></div>
       <div class="col-12 col-sm-4 pt-2 pt-sm-0"><a class="text-decoration-none"
-          href="subpages/other/travellingbags.html">Travelling Bags</a></div>
+          href="../subpages/other/travellingbags.html">Travelling Bags</a></div>
     </div>
   </div>
 
@@ -60,7 +84,7 @@
 
     async function getNewProducts() {
       try {
-        // Make a request to the API
+        
         const response = await fetch(`${api_baseURL}/otheritem/new`);
 
         if (response.ok) {
@@ -82,7 +106,7 @@
 
     async function getBestProducts() {
       try {
-        // Make a request to the API
+        
         const response = await fetch(`${api_baseURL}/otheritem/bestdeal`);
 
         if (response.ok) {
@@ -102,17 +126,17 @@
       }
     }
 
-    // Function to display the new products in HTML
+    
     function displayNewProducts(products) {
       const productsListElement = document.getElementById('new-products-list');
-      productsListElement.innerHTML = ''; // Clear any previous content
+      productsListElement.innerHTML = ''; 
 
-      // Iterate through the products array and create HTML for each product
+      
       products.forEach(product => {
         const productCard = document.createElement('div');
         productCard.classList.add('col', 'mb-5');
 
-        // Create product card content
+        
         productCard.innerHTML = `
                 <div class="col mb-5">
                     <div class="card h-100">
@@ -139,22 +163,22 @@
                 </div>
                 `;
 
-        // Append the product card to the product container
+        
         productsListElement.appendChild(productCard);
       });
     }
 
-    // Function to display the best products in HTML
+    
     function displayBestProducts(products) {
       const bestproductsListElement = document.getElementById('best-products-list');
-      bestproductsListElement.innerHTML = ''; // Clear any previous content
+      bestproductsListElement.innerHTML = ''; 
 
-      // Iterate through the products array and create HTML for each product
+      
       products.forEach(product => {
         const productCard = document.createElement('div');
         productCard.classList.add('col', 'mb-5');
 
-        // Create product card content
+       
         productCard.innerHTML = `
                 <div class="col mb-5">
                     <div class="card h-100">
@@ -183,12 +207,12 @@
                 </div>
                 `;
 
-        // Append the product card to the product container
+        
         bestproductsListElement.appendChild(productCard);
       });
     }
 
-    // Call the function to fetch new products and display them
+    
     getNewProducts();
     getBestProducts();
   </script>

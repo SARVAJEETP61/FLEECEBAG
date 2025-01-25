@@ -1,28 +1,22 @@
-import express from 'express';
-import path from 'path';
-import { fileURLToPath } from 'url';
-import router from './routers/otherPageRouter.js';
-import http from 'http';
-import './dbConnection.js';
-
+const express = require('express');
+const path = require('path');
+const http = require('http');
+const cartPageRouter = require('./routers/cartPageRouter');
+const { collection } = require('./models/cartModel');
 const app = express();
 const port = 8080;
 
+require('./dbConnection');
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+app.use(express.json());
 
-// Serve static files
 app.use(express.static(path.join(__dirname, 'public')));
+
 app.use('/controllers', express.static(path.join(__dirname, 'controllers')));
-const imagePath = path.join('E:/Important Documents/Deakin university/Assignments/FLEECEBAG-main/images');
-app.use('/images', express.static(imagePath));
 app.use('/partials', express.static(path.join(__dirname, 'partials')));
 app.use('/subpages', express.static(path.join(__dirname, 'subpages')));
-
-
-
-app.use(router);
+app.use(cartPageRouter);
+app.use('/images', express.static(path.join(__dirname, 'images')));
 
 const server = http.createServer(app);
 server.listen(port, () => {
