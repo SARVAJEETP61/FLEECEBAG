@@ -32,6 +32,7 @@
         <span>
           <ul class="navbar-nav mx-auto">
             <li class="nav-item nav-link"><a href="cart.html"><i class="fa-solid fa-bag-shopping"></i></a></li>
+            <li><a href="orderlist.html" class="btn waves-effect waves-light">Order List</a></li>
             <li class="nav-item"><a class="nav-link" href="login.html">Login</a></li>
             <li class="nav-item nav-link" id="tick">|</li>
             <li class="nav-item"><a class="nav-link" href="signup.html">Sign Up</a></li>
@@ -84,7 +85,7 @@
 
     async function getNewProducts() {
       try {
-        
+
         const response = await fetch(`${api_baseURL}/otheritem/new`);
 
         if (response.ok) {
@@ -106,7 +107,7 @@
 
     async function getBestProducts() {
       try {
-        
+
         const response = await fetch(`${api_baseURL}/otheritem/bestdeal`);
 
         if (response.ok) {
@@ -126,17 +127,17 @@
       }
     }
 
-    
+
     function displayNewProducts(products) {
       const productsListElement = document.getElementById('new-products-list');
-      productsListElement.innerHTML = ''; 
+      productsListElement.innerHTML = '';
 
-      
+
       products.forEach(product => {
         const productCard = document.createElement('div');
         productCard.classList.add('col', 'mb-5');
 
-        
+
         productCard.innerHTML = `
                 <div class="col mb-5">
                     <div class="card h-100">
@@ -163,22 +164,22 @@
                 </div>
                 `;
 
-        
+
         productsListElement.appendChild(productCard);
       });
     }
 
-    
+
     function displayBestProducts(products) {
       const bestproductsListElement = document.getElementById('best-products-list');
-      bestproductsListElement.innerHTML = ''; 
+      bestproductsListElement.innerHTML = '';
 
-      
+
       products.forEach(product => {
         const productCard = document.createElement('div');
         productCard.classList.add('col', 'mb-5');
 
-       
+
         productCard.innerHTML = `
                 <div class="col mb-5">
                     <div class="card h-100">
@@ -207,12 +208,12 @@
                 </div>
                 `;
 
-        
+
         bestproductsListElement.appendChild(productCard);
       });
     }
 
-    
+
     getNewProducts();
     getBestProducts();
   </script>
