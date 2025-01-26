@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+        <title>Fleecebag</title>
+        <link rel="icon" href="img/purse.png">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css">
+        <link rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+        <link rel="stylesheet" href="assets/css/style.css">
+    </head>
+
+    <body class="bg-light">
+
+        <nav class="navbar navbar-light navbar-expand-lg py-3">
+            <div class="container">
+                <a href="#"><img src="img/purse.png" height="25px" style="padding-right: 10px;"></a>
+                <a class="navbar-brand d-flex align-items-center" href="#"><span id="navbar-brand-text">Fleecebag</span></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navcol-3"
+                aria-controls="navcol-3" aria-expanded="false" aria-label="Toggle navigation"><span
+                    class="navbar-toggler-icon"></span></button>
+            <div id="navcol-3" class="collapse navbar-collapse">
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item"><a class="nav-link pe-1" href="men.html">Men</a></li>
+                    <!-- ... Men Dropdown ... -->
+                    <li class="nav-item"><a class="nav-link pe-1" href="women.html">Women</a></li>
+                    <!-- ... Women Dropdown ... -->
+                    <li class="nav-item"><a class="nav-link pe-1" href="other.html">Other</a></li>
+                    <!-- ... Other Dropdown ... -->
+                    <li class="nav-item"><a class="nav-link" href="offers.html">Offers</a></li>
+                    <li class="nav-item"><a class="nav-link" href="aboutus.html">About Us</a></li>
+                </ul>
+                
+               <!-- Language Dropdown -->
+               <!-- <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="languageDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                    Select Language
+                </button> -->
+                <!-- <ul class="dropdown-menu" aria-labelledby="languageDropdown">
+                    <li><a class="dropdown-item" href="#" onclick="changeLanguage('english')">English</a></li>
+                    <li><a class="dropdown-item" href="#" onclick="changeLanguage('hindi')">Hindi</a></li>
+                </ul> -->
+                <div id="google_translate_element"></div>
+            </div>
+    
+                <!-- Cart, Login, Sign Up Links -->
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item nav-link"><a href="cart.html"><i class="fa-solid fa-bag-shopping"></i></a></li>
+                    <li class="nav-item"><a class="nav-link" href="login.html">Login</a></li>
+                    <li class="nav-item nav-link" id="tick">|</li>
+                    <li class="nav-item"><a class="nav-link" href="signup.html">Sign Up</a></li>
+                </ul>
+                <div class="darkMode">
+                    <button id="dark-mode-toggle">Dark mode</button>
+                  </div>
+            </div>
+        </div>
+    </nav>
+
+        <div class="mt-5 pt-2 pb-5" id="about">
+            <div class="container pb-5">
+                <h2 class="border-bottom pb-1 mb-3" style="color:#6D6875">About Our Company</h2>
+
+                <div class="row bg-white rounded shadow-sm py-5 px-5">
+                    <div class="col-sm-6 col-md-4 my-3">
+
+                        <h3 class="mb-4">Fleecebag</h3><span class="small text-smallcase text-muted">Think Once, Think
+                            Twice, Think Bags.</span>
+                        <ul class="social mb-0 list-inline mt-5">
+                            <li class="list-inline-item"><a href="https://www.facebook.com/profile.php?id=100077299447661&mibextid=ZbWKwL" class="social-link"><i
+                                        class="fa-brands fa-facebook-f"></i></a></li>
+                            <li class="list-inline-item"><a href="https://instagram.com/janvikalra_23?igshid=MzRlODBiNWFlZA==" class="social-link"><i
+                                        class="fa-brands fa-instagram"></i></a></li>
+                            <li class="list-inline-item"><a href="https://x.com/JanviKalra9?t=MRedK5xv_j3fsaR5UrTOCA&s=09" class="social-link"><i
+                                        class="fa-brands fa-twitter"></i></a></li>
+                            <li class="list-inline-item"><a href="https://www.linkedin.com/in/janvikalra23" class="social-link"><i
+                                        class="fa-brands fa-linkedin"></i></a></li>
+                        </ul>
+                    </div>
+                    <div class="col-sm-6 col-md-4 my-3">
+                        <h3>Contact Us</h3>
+                        <ul class="list-group-flush px-0">
+                            <li class="list-group-item d-table"><span class="d-table-cell" style="width: 30px;"><i
+                                        class="fa-solid fa-location-dot"></i></span><span
+                                    class="text-muted d-table-cell">Fleecebag <br>Ambala, Haryana</span></li>
+                        </ul>
+                        <ul class="list-group-flush px-0">
+                            <li class="list-group-item d-table"><span class="d-table-cell" style="width: 30px;"><i
+                                        class="fa-solid fa-paper-plane"></i></i></span><span
+                                    class="text-muted d-table-cell">support@fleecebag.in</span></li>
+                        </ul>
+                    </div>
+                    <div class="col-sm-6 col-md-4 my-3 text-center mx-auto">
+                        <img src="img/logo.png" alt="" width="200vw"
+                            class="img-fluid  mb-3 img-thumbnail shadow-sm">
+                    </div>
+                </div>
+            </div>
+            <div class="container pb-5" id="owned-by">
+                <h2 class="border-bottom pb-1 mb-3" style="color:#6D6875">Owned by </h2>
+                <div class="row text-center">
+                    <div class="col-xl-9 col-sm-9 mb-5 mx-auto">
+                        <div class="bg-white rounded shadow-sm py-5 px-4">
+                            <h5 class="mb-0">group</h5><span
+                                class="small text-smallcase text-muted">fleecebag05@gmail.com<br>+61 326 987 554</span>
+                            <ul class="social mb-0 list-inline mt-3">
+                                <li class="list-inline-item"><a href="https://x.com/JanviKalra9?t=MRedK5xv_j3fsaR5UrTOCA&s=09"
+                                        class="social-link"><i class="fa-brands fa-twitter"></i></a></li>
+                                <li class="list-inline-item"><a href="https://instagram.com/janvikalra_23?igshid=MzRlODBiNWFlZA=="
+                                        class="social-link"><i class="fa-brands fa-instagram"></i></a></li>
+                                <li class="list-inline-item"><a href="https://www.linkedin.com/in/janvikalra23/"
+                                        class="social-link"><i class="fa-brands fa-linkedin"></i></a></li>
+                                <li class="list-inline-item"><a href="https://github.com/janvikalra2309"
+                                        class="social-link"><i class="fa-brands fa-github"></i></a></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Newsletter Section -->
+        <div class="newsletter container-fluid">
+            <div class="container">
+                <div class="intro">
+                    <h2 class="text-center">Subscribe to our Newsletter</h2>
+                </div>
+                <div>
+                    <span class="d-flex justify-content-center" style="margin-right: -4px;">
+                        <input class="form-control" type="email" placeholder="Enter your email address">
+                        <button type="button" id="subscribe" class="btn btn-primary">Subscribe </button>
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <div class="container py-4 pt-5">
+                <div class="row justify-content-center">
+                    <div class="col-sm-4 col-md-3 text-center text-lg-start d-flex flex-column item">
+                        <h3 class="fs-6">About</h3>
+                        <ul class="list-unstyled">
+                            <li><a class="link-secondary" href="terms&condition.html">Terms & Conditions</a></li>
+                            <li><a class="link-secondary" href="#about">Contact us</a></li>
+                        </ul>
+                        <h3 class="fs-6 mt-3">Follow Us</h3>
+                        <ul class="social mb-0 list-inline">
+                            <li class="list-inline-item"><a class="social-link"><i
+                                        class="fa-brands fa-facebook-f"></i></a></li>
+                            <li class="list-inline-item"><a class="social-link"><i
+                                        class="fa-brands fa-instagram"></i></a></li>
+                            <li class="list-inline-item"><a class="social-link"><i class="fa-brands fa-twitter"></i></a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-sm-4 col-md-3 text-center text-lg-start d-flex flex-column item">
+                        <h3 class="fs-6">Customer Service</h3>
+                        <ul class="list-unstyled">
+                            <li><a class="link-secondary" href="#">Return Policy</a></li>
+                            <li><a class="link-secondary" href="privacy.html">Privacy Policy</a></li>
+                            <li><a class="link-secondary" href="https://www.shiprocket.in/blog/ecommerce-shipping-policy/">Shipping Information</a></li>
+                            <li><a class="link-secondary" href="#">FAQs</a></li>
+                        </ul>
+                    </div>
+                    <div
+                        class="col-lg-3 text-center text-lg-start d-flex flex-column align-items-center order-first align-items-lg-start order-lg-last item social">
+                        <div class="fw-bold d-flex align-items-center mb-2"><img src="img/purse.png"
+                                height="25px" style="padding-right: 10px;"></span><span>Fleecebag</span></div>
+                        <p class="text-muted copyright">Think Once, Think Twice, Think Bags</p>
+                        <h3 class="fs-6 mt-4 mb-2 text-uppercase">Payment Options</h3>
+                        <span>
+                            <img class="me-2" width="45px" src="img/extra/upi.png" alt="UPI" />
+                            <img class="me-2" width="45px" src="img/extra/visa.png" alt="Visa" />
+                            <img class="me-2" width="45px" src="img/extra/mastercard.png" alt="Mastercard" />
+                            <img class="me-2" width="45px" src="img/extra/rupay.png" alt="Rupay" />
+                            <img class="me-2" width="45px" src="img/extra/cod.png" alt="Cash on Delivery" />
+                        </span>
+                    </div>
+                </div>
+                <hr>
+                <div class="d-flex justify-content-around align-items-center pt-3">
+                    <p class="text-muted text-uppercase mb-0">Copyright © 2023 All Rights Reserved</p>
+                </div>
+            </div>
+        </footer>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/egjs-agent/2.4.3/agent.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+        <script src="assets/script.js"></script>
+    </body>
+</html>

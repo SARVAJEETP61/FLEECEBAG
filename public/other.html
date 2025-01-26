@@ -2,14 +2,14 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>FleeceBag</title>
-    <link rel="icon" href="../images/purse.png">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
-    <link rel="stylesheet" href="css/otherPage.css">
-    
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+  <title>FleeceBag</title>
+  <link rel="icon" href="../images/purse.png">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+  <link rel="stylesheet" href="css/otherPage.css">
+
 </head>
 
 <body>
@@ -26,12 +26,13 @@
             <li class="nav-item"><a class="nav-link" href="men.html">Men</a></li>
             <li class="nav-item"><a class="nav-link" href="women.html">Women</a></li>
             <li class="nav-item"><a class="nav-link active" href="other.html">Other</a></li>
-            <li class="nav-item"><a class="nav-link" href="public/offers.html">Offers</a></li>
+            <li class="nav-item"><a class="nav-link" href="offers.html">Offers</a></li>
             <li class="nav-item"><a class="nav-link" href="index.html#about">About Us</a></li>
           </ul>
           <span>
             <ul class="navbar-nav mx-auto">
               <li class="nav-item nav-link"><a href="cart.html"><i class="fa-solid fa-bag-shopping"></i></a></li>
+              <li ><a href="orderlist.html" class="btn waves-effect waves-light">Order List</a></li>
               <li class="nav-item"><a class="nav-link" href="login.html">Login</a></li>
               <li class="nav-item nav-link" id="tick">|</li>
               <li class="nav-item"><a class="nav-link" href="signup.html">Sign Up</a></li>
@@ -41,100 +42,103 @@
       </div>
     </nav>
 
-    <div class="container-fluid pb-1">
-      <div class="row text-center py-2 categories">
-        <div class="col-6 col-sm-4"><a class="text-decoration-none" href="../subpages/other/totebags.html">Tote Bags</a>
-        </div>
-        <div class="col-6 col-sm-4"><a class="text-decoration-none" href="../subpages/other/schoolbags.html">School
-            Bags</a></div>
-        <div class="col-12 col-sm-4 pt-2 pt-sm-0"><a class="text-decoration-none"
-            href="../subpages/other/travellingbags.html">Travelling Bags</a></div>
+  <div class="container-fluid pb-1">
+    <div class="row text-center py-2 categories">
+      <div class="col-6 col-sm-4"><a class="text-decoration-none" href="../subpages/other/totebags.html">Tote Bags</a>
+      </div>
+      <div class="col-6 col-sm-4"><a class="text-decoration-none" href="../subpages/other/schoolbags.html">School
+          Bags</a></div>
+      <div class="col-12 col-sm-4 pt-2 pt-sm-0"><a class="text-decoration-none"
+          href="../subpages/other/travellingbags.html">Travelling Bags</a></div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="rounded-3">
+      <div class="container-fluid pt-4 pb-3">
+        <h1 class="display-6 fw-bold text-capitalize">Carry your essentials</h1>
+        <img src="../images/other/img1.jpg" class="img-fluid mt-4">
+        <button class="btn btn-secondary mt-3 mt-md-5" type="button" onclick="window.location='#products'">Start
+          Shopping</button>
+      </div>
+    </div>
+  </div>
+
+  <section class="pt-3 pb-5" id="products">
+    <div class="container px-4 px-lg-4 mt-4">
+      <h4 class="border-bottom pb-1 mb-3" style="color:#6D6875">New Products</h4>
+      <div id="new-products-list"
+        class="row gx-4 gx-lg-5 row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
       </div>
     </div>
 
-    <div class="container">
-      <div class="rounded-3">
-        <div class="container-fluid pt-4 pb-3">
-          <h1 class="display-6 fw-bold text-capitalize">Carry your essentials</h1>
-          <img src="../images/other/img1.jpg" class="img-fluid mt-4">
-          <button class="btn btn-secondary mt-3 mt-md-5" type="button" onclick="window.location='#products'">Start Shopping</button>
-        </div>
+    <div class="container px-4 px-lg-4 mt-5">
+      <h4 class="border-bottom pb-1 mb-3" style="color:#6D6875">Best Selling Products</h4>
+      <div id="best-products-list"
+        class="row gx-4 gx-lg-5 row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
       </div>
     </div>
+  </section>
 
-    <section class="pt-3 pb-5" id="products">
-      <div class="container px-4 px-lg-4 mt-4">
-        <h4 class="border-bottom pb-1 mb-3" style="color:#6D6875">New Products</h4>
-        <div id="new-products-list" class="row gx-4 gx-lg-5 row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
-        </div>
-      </div>
+  <script>
+    const api_baseURL = 'http://localhost:8080';
 
-      <div class="container px-4 px-lg-4 mt-5">
-        <h4 class="border-bottom pb-1 mb-3" style="color:#6D6875">Best Selling Products</h4>
-        <div id="best-products-list" class="row gx-4 gx-lg-5 row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
-        </div>
-      </div>
-    </section>
+    async function getNewProducts() {
+      try {
+        
+        const response = await fetch(`${api_baseURL}/otheritem/new`);
 
-    <script>
-        const api_baseURL = 'http://localhost:8080';
+        if (response.ok) {
+          const data = await response.json();
 
-        async function getNewProducts() {
-            try {
-                // Make a request to the API
-                const response = await fetch(`${api_baseURL}/otheritem/new`);
-
-                if (response.ok) {
-                    const data = await response.json();
-
-                    if (data.statusCode === 200) {
-                        const newProducts = data.data;
-                        displayNewProducts(newProducts);
-                    } else {
-                        console.error('Failed to load new products:', data.message);
-                    }
-                } else {
-                    console.error('Failed to fetch from API:', response.statusText);
-                }
-            } catch (error) {
-                console.error('Error fetching new products:', error);
-            }
+          if (data.statusCode === 200) {
+            const newProducts = data.data;
+            displayNewProducts(newProducts);
+          } else {
+            console.error('Failed to load new products:', data.message);
+          }
+        } else {
+          console.error('Failed to fetch from API:', response.statusText);
         }
+      } catch (error) {
+        console.error('Error fetching new products:', error);
+      }
+    }
 
-        async function getBestProducts() {
-            try {
-                // Make a request to the API
-                const response = await fetch(`${api_baseURL}/otheritem/bestdeal`);
+    async function getBestProducts() {
+      try {
+        
+        const response = await fetch(`${api_baseURL}/otheritem/bestdeal`);
 
-                if (response.ok) {
-                    const data = await response.json();
+        if (response.ok) {
+          const data = await response.json();
 
-                    if (data.statusCode === 200) {
-                        const newProducts = data.data;
-                        displayBestProducts(newProducts);
-                    } else {
-                        console.error('Failed to load new products:', data.message);
-                    }
-                } else {
-                    console.error('Failed to fetch from API:', response.statusText);
-                }
-            } catch (error) {
-                console.error('Error fetching new products:', error);
-            }
-        }        
+          if (data.statusCode === 200) {
+            const newProducts = data.data;
+            displayBestProducts(newProducts);
+          } else {
+            console.error('Failed to load new products:', data.message);
+          }
+        } else {
+          console.error('Failed to fetch from API:', response.statusText);
+        }
+      } catch (error) {
+        console.error('Error fetching new products:', error);
+      }
+    }
 
-        // Function to display the new products in HTML
-        function displayNewProducts(products) {
-            const productsListElement = document.getElementById('new-products-list');
-            productsListElement.innerHTML = ''; // Clear any previous content
+    
+    function displayNewProducts(products) {
+      const productsListElement = document.getElementById('new-products-list');
+      productsListElement.innerHTML = ''; 
 
-            // Iterate through the products array and create HTML for each product
-            products.forEach(product => {
-                const productCard = document.createElement('div');
-                productCard.classList.add('col', 'mb-5');
+      
+      products.forEach(product => {
+        const productCard = document.createElement('div');
+        productCard.classList.add('col', 'mb-5');
 
-                // Create product card content
-                productCard.innerHTML = `
+        
+        productCard.innerHTML = `
                 <div class="col mb-5">
                     <div class="card h-100">
                     <!-- New badge-->
@@ -160,23 +164,23 @@
                 </div>
                 `;
 
-                // Append the product card to the product container
-                productsListElement.appendChild(productCard);
-            });
-        }
+        
+        productsListElement.appendChild(productCard);
+      });
+    }
 
-        // Function to display the best products in HTML
-        function displayBestProducts(products) {
-            const bestproductsListElement = document.getElementById('best-products-list');
-            bestproductsListElement.innerHTML = ''; // Clear any previous content
+    
+    function displayBestProducts(products) {
+      const bestproductsListElement = document.getElementById('best-products-list');
+      bestproductsListElement.innerHTML = ''; 
 
-            // Iterate through the products array and create HTML for each product
-            products.forEach(product => {
-                const productCard = document.createElement('div');
-                productCard.classList.add('col', 'mb-5');
+      
+      products.forEach(product => {
+        const productCard = document.createElement('div');
+        productCard.classList.add('col', 'mb-5');
 
-                // Create product card content
-                productCard.innerHTML = `
+       
+        productCard.innerHTML = `
                 <div class="col mb-5">
                     <div class="card h-100">
                     <!-- New badge-->
@@ -204,63 +208,64 @@
                 </div>
                 `;
 
-                // Append the product card to the product container
-                bestproductsListElement.appendChild(productCard);
-            });
-        }
+        
+        bestproductsListElement.appendChild(productCard);
+      });
+    }
 
-        // Call the function to fetch new products and display them
-        getNewProducts();
-        getBestProducts();
-    </script>
+    
+    getNewProducts();
+    getBestProducts();
+  </script>
 
-    <footer>
-      <div class="container py-4 pt-5">
-        <div class="row justify-content-center">
-          <div class="col-sm-4 col-md-3 text-center text-lg-start d-flex flex-column item">
-            <h3 class="fs-6">About</h3>
-            <ul class="list-unstyled">
-              <li><a href="#">Terms & Conditions</a></li>
-              <li><a href="#">FAQs</a></li>
-            </ul>
-            <h3 class="fs-6">Contact Us</h3>
-            <ul class="list-unstyled">
-              <li><a style="color: #E5989B;" href="#">support@fleecebag.in</a></li>
-            </ul>
-          </div>
-          <div class="col-sm-4 col-md-3 text-center text-lg-start d-flex flex-column item">
-            <h3 class="fs-6">Customer Service</h3>
-            <ul class="list-unstyled">
-              <li><a href="#" style="color:#2c5364; font-weight: 600;">Track Order</a></li>
-              <li><a href="#">Return Policy</a></li>
-              <li><a href="#">Privacy Policy</a></li>
-              <li><a href="#">Shipping Information</a></li>
-            </ul>
-          </div>
-          <div class="col-lg-3 text-center text-lg-start d-flex flex-column align-items-center order-first align-items-lg-start order-lg-last item social">
-            <div class="fw-bold d-flex align-items-center mb-2"><img src="../images/purse.png" height="25px"
-                style="padding-right: 10px;"></span><span>Fleecebag</span></div>
-            <p class="text-muted copyright">Think Once, Think Twice, Think Bags</p>
-            <h3 class="fs-6 mt-3">Follow Us</h3>
-            <ul class="social mb-0 list-inline">
-              <li class="list-inline-item"><a class="social-link"><i class="fa-brands fa-facebook-f"></i></a></li>
-              <li class="list-inline-item"><a class="social-link"><i class="fa-brands fa-instagram"></i></a></li>
-              <li class="list-inline-item"><a class="social-link"><i class="fa-brands fa-twitter"></i></a>
-              </li>
-            </ul>
-          </div>
+  <footer>
+    <div class="container py-4 pt-5">
+      <div class="row justify-content-center">
+        <div class="col-sm-4 col-md-3 text-center text-lg-start d-flex flex-column item">
+          <h3 class="fs-6">About</h3>
+          <ul class="list-unstyled">
+            <li><a href="#">Terms & Conditions</a></li>
+            <li><a href="#">FAQs</a></li>
+          </ul>
+          <h3 class="fs-6">Contact Us</h3>
+          <ul class="list-unstyled">
+            <li><a style="color: #E5989B;" href="#">support@fleecebag.in</a></li>
+          </ul>
         </div>
-        <hr>
-        <div class="d-flex justify-content-around align-items-center pt-3">
-          <p class="text-muted text-uppercase mb-0">Copyright © 2022 All Rights Reserved</p>
+        <div class="col-sm-4 col-md-3 text-center text-lg-start d-flex flex-column item">
+          <h3 class="fs-6">Customer Service</h3>
+          <ul class="list-unstyled">
+            <li><a href="#" style="color:#2c5364; font-weight: 600;">Track Order</a></li>
+            <li><a href="#">Return Policy</a></li>
+            <li><a href="#">Privacy Policy</a></li>
+            <li><a href="#">Shipping Information</a></li>
+          </ul>
+        </div>
+        <div
+          class="col-lg-3 text-center text-lg-start d-flex flex-column align-items-center order-first align-items-lg-start order-lg-last item social">
+          <div class="fw-bold d-flex align-items-center mb-2"><img src="../images/purse.png" height="25px"
+              style="padding-right: 10px;"></span><span>Fleecebag</span></div>
+          <p class="text-muted copyright">Think Once, Think Twice, Think Bags</p>
+          <h3 class="fs-6 mt-3">Follow Us</h3>
+          <ul class="social mb-0 list-inline">
+            <li class="list-inline-item"><a class="social-link"><i class="fa-brands fa-facebook-f"></i></a></li>
+            <li class="list-inline-item"><a class="social-link"><i class="fa-brands fa-instagram"></i></a></li>
+            <li class="list-inline-item"><a class="social-link"><i class="fa-brands fa-twitter"></i></a>
+            </li>
+          </ul>
         </div>
       </div>
-    </footer>
+      <hr>
+      <div class="d-flex justify-content-around align-items-center pt-3">
+        <p class="text-muted text-uppercase mb-0">Copyright © 2022 All Rights Reserved</p>
+      </div>
+    </div>
+  </footer>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/egjs-agent/2.4.3/agent.min.js"></script>
-    <script src="assets/script.js"></script>
-  </body>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/egjs-agent/2.4.3/agent.min.js"></script>
+  <script src="assets/script.js"></script>
+</body>
 
 </html>
