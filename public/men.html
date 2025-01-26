@@ -54,28 +54,6 @@
         </span>
     </div>
 
-    <!-- <div class="container-fluid pb-1">
-        <div class="row text-center py-2 categories">
-            <div class="col-6 col-sm-4"><a class="text-decoration-none" href="./subpages/men/wallet.html">Wallets</a>
-            </div>
-            <div class="col-6 col-sm-4"><a class="text-decoration-none" href="../subpages/men/laptopBag.html">Laptop
-                    Bags</a></div>
-            <div class="col-12 col-sm-4 pt-2 pt-sm-0"><a class="text-decoration-none"
-                    href="../subpages/men/slingBag.html">Sling Bags</a></div>
-        </div>
-    </div> 
-
-    <div class="container">
-        <div class="rounded-3">
-            <div class="container-fluid pt-4 pb-3">
-                <h1 class="display-6 fw-bold text-capitalize">Carry your essentials</h1>
-                <img src="./images/men/baner-right-image-04.jpg" class="img-fluid mt-4">
-                <button class="btn btn-secondary mt-3 mt-md-5" type="button" onclick="window.location='#products'">Start
-                    Shopping</button>
-            </div>
-        </div>
-    </div> -->
-
     <div class="main-banner" id="top">
         <div class="container-fluid">
             <div class="row">
@@ -256,65 +234,40 @@
                 const productCard = document.createElement('div');
                 productCard.classList.add('col', 'mb-5');
 
-                productCard.innerHTML = `
-                <div class="col mb-4">
-    <div class="card h-100">
-        <!-- Product Image -->
-        <img class="card-img-top" src="${product.image}" alt="${product.name}" style="height: 200px; object-fit: cover;">
-<!-- New Badge -->
-                <span class="badge bg-info text-white mb-1">New</span>
-        <!-- Product Details -->
-        <div class="card-body p-3">
-            
-            <div class="text-center">
-                
-                <!-- Product Name -->
-                <h5 class="card-title fw-bold mb-2">${product.name}</h5>
-                <!-- Product Price -->
-                <p class="price text-success fw-semibold">$${product.discountedPrice}</p>
-            </div>
-        </div>
-
-        <!-- Product Actions -->
-        <div class="card-footer p-3 bg-light border-top d-flex">
-            <a class="btn btn-outline-dark btn-sm" href="#">Add to Cart</a>
-            <a class="btn btn-dark btn-sm" href="#">Buy Now</a>
-        </div>
-    </div>
-</div>
-                `
-
                 // Create product card content
-                /*productCard.innerHTML = `
-                <div class="col mb-5">
-                    <div class="card h-100">
-                    <!-- New badge-->
-                    <div class="badge bg-info text-white position-absolute" style="top: 0.5rem; right: 0.5rem">New</div>
-                    <!-- Product image-->
-                    <img class="card-img-top" src="${product.image}" alt="${product.name}">
-                    <!-- Product details-->
-                    <div class="card-body p-4">
-                        <div class="text-center">
-                            <!-- Product name-->
-                            <h5 class="fw-bolder">${product.name}</h5>
-                            <!-- Product price-->
-                            <p class="price">₹${product.discountedPrice}</p>
-                        </div>
-                    </div>
-                    <!-- Product actions-->
-                    <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                        <div class="text-center">
-                            <a class="btn btn-outline-dark mt-auto" href="#">Add to cart</a>
-                        </div>
+                productCard.innerHTML = `
+                    <div class="col mb-4">
+                        <div class="card h-100">
+                        
+                        <!-- Product Image -->
+                        <img class="card-img-top" src="${product.image}" alt="${product.name}" style="height: 200px; object-fit: cover;">
+
+                        <!-- New Badge -->
+                        <span class="badge bg-info text-white mb-1">New</span>
+        
+                        <!-- Product Details -->
+                        <div class="card-body p-3">
+            
                             <div class="text-center">
-                            <a class="btn btn-outline-dark mt-auto" href="#">Buy Now</a>
+                
+                            <!-- Product Name -->
+                            <h5 class="card-title fw-bold mb-2">${product.name}</h5>
+                
+                            <!-- Product Price -->
+                            <p class="price text-success fw-semibold">$${product.discountedPrice}</p>
+                            
+                            </div>
+                        </div>
+
+                        <!-- Product Actions -->
+                        <div class="card-footer p-3 bg-light border-top d-flex">
+                            <a class="btn btn-outline-dark btn-sm" href="#">Add to Cart</a>
+                            <a class="btn btn-dark btn-sm" href="#">Buy Now</a>
+                        </div>
+                        
                         </div>
                     </div>
-                </div>
-                </div>
-                `; */
-
-
+                `
 
                 // Append the product card to the product container
                 productsListElement.appendChild(productCard);
@@ -331,64 +284,40 @@
                 const productCard = document.createElement('div');
                 productCard.classList.add('col', 'mb-5');
 
-                productCard.innerHTML = `
-                <div class="col mb-5">
-    <div class="card h-100">
-        <!-- Product Image -->
-        <img class="card-img-top" src="${product.image}" alt="${product.name}" style="height: 200px; object-fit: cover;">
-<!-- Sale Badge -->
-                <span class="badge bg-warning text-dark mb-0">Sale</span>
-        <!-- Product Details -->
-        <div class="card-body p-1 h-100">
-            <div class="text-center">
-                
-                <!-- Product Name -->
-                <h5 class="card-title fw-bold mb-1">${product.name}</h5>
-                <!-- Product Prices -->
-                <span class="text-muted text-decoration-line-through">$${product.discountedPrice}</span>
-                <p class="price text-danger fw-semibold mb-0">$${product.price}</p>
-            </div>
-        </div>
-
-        <!-- Product Actions -->
-        <div class="card-footer p-3 bg-light border-top d-flex">
-            <a class="btn btn-outline-dark btn-sm" href="#">Add to Cart</a>
-            <a class="btn btn-dark btn-sm" href="#">Buy Now</a>
-        </div>
-    </div>
-</div>
-                `
-
                 // Create product card content
-                /* productCard.innerHTML = `
-                 <div class="col mb-5">
-                     <div class="card h-100">
-                     <!-- New badge-->
-                     <div class="badge bg-warning text-dark position-absolute" style="top: 0.5rem; right: 0.5rem">Sale</div>
-                     <!-- Product image-->
-                     <img class="card-img-top" src="${product.image}" alt="${product.name}">
-                     <!-- Product details-->
-                     <div class="card-body p-4">
-                         <div class="text-center">
-                             <!-- Product name-->
-                             <h5 class="fw-bolder">${product.name}</h5>
-                             <!-- Product price-->
-                             <span class="text-muted text-decoration-line-through">₹${product.discountedPrice}</span>
-                             <!-- Product price-->
-                             <p class="price">₹${product.price}</p>
-                         </div>
-                     </div>
-                     <!-- Product actions-->
-                     <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                         <div class="text-center">
-                             <a class="btn btn-outline-dark mt-auto" href="#">Add to cart</a>
-                         </div>
-                     </div>
-                 </div>
-                 </div>
-                 `;
- */
+                productCard.innerHTML = `
+                    <div class="col mb-5">
+                        <div class="card h-100">
+        
+                            <!-- Product Image -->
+                            <img class="card-img-top" src="${product.image}" alt="${product.name}" style="height: 200px; object-fit: cover;">
 
+                            <!-- Sale Badge -->
+                            <span class="badge bg-warning text-dark mb-0">Sale</span>
+        
+                            <!-- Product Details -->
+                            <div class="card-body p-1 h-100">
+            
+                                <div class="text-center">
+                
+                                <!-- Product Name -->
+                                <h5 class="card-title fw-bold mb-1">${product.name}</h5>
+                
+                                <!-- Product Prices -->
+                                <span class="text-muted text-decoration-line-through">$${product.discountedPrice}</span>
+                                <p class="price text-danger fw-semibold mb-0">$${product.price}</p>
+                                
+                                </div>
+                            </div>
+
+                            <!-- Product Actions -->
+                            <div class="card-footer p-3 bg-light border-top d-flex">
+                                <a class="btn btn-outline-dark btn-sm" href="#">Add to Cart</a>
+                                <a class="btn btn-dark btn-sm" href="#">Buy Now</a>
+                            </div>
+                        </div>
+                    </div>
+                `
 
                 // Append the product card to the product container
                 bestproductsListElement.appendChild(productCard);

@@ -1,20 +1,18 @@
 let express =  require('express');
-let http = require ('http');
+//let http = require ('http');
 let { Server } = require ('socket.io');
 let path = require ('path');
 let { fileURLToPath } = require ('url');
-let router = require ('./routers/router.js');
+//let router = require ('./routers/router.js');
 let otherPageRouter = require ('./routers/otherPageRouter.js'); // Ensure your router file uses ES modules
 let client = require('./dbConnection.js');
 let Offer = require ('./controllers/offersController.js');
 
 
 const app = express();
-const server = http.createServer(app); // Create an HTTP server
-const io = new Server(server); // Attach socket.io to the HTTP server
+//const server = http.createServer(app); // Create an HTTP server
+//const io = new Server(server); // Attach socket.io to the HTTP server
 
-
-const port = 8080;
 
 // Serve static files from the "public" folder
 app.use(express.static(path.join(__dirname, 'public')));
@@ -25,8 +23,6 @@ app.use(express.urlencoded({ extended: false }));
 app.use('/img', express.static(path.join(__dirname, 'img')));
 
 // Use the router for '/admin' routes
-app.use('/', router);
-app.use('/', otherPageRouter);
 
 // Dynamic route to serve HTML files in the subpages folder
 app.get('/subpages/:folder/:file.html', (req, res) => {
