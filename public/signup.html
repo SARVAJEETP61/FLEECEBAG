@@ -56,21 +56,52 @@
                         <p class="mb-1 h-1">Sign Up</p>
                         <p class="text-muted mb-4">Sign Up to start shopping.</p>
                         <!-- Email Signup Form -->
-                        <form id="signupForm" action="/admin/signup" method="POST">
+                        <form id="signupForm" action="/admin/signup" method="POST" style="max-width: 400px; margin: auto;">
+                            <h2 style="text-align: center; margin-bottom: 20px;">Create Your Account</h2>
                             <div class="form-group" style="margin-bottom: 15px;">
-                                <div class="email"><input type="email" id="signupEmail" class="email" name="email" placeholder="Enter your email" required /></div>
-                                <small class="text-danger" id="emailSignupError" style="display: none;">Please enter a valid email address.</small>
+                                <label for="signupEmail" style="font-weight: bold;">Email Address</label>
+                                <input 
+                                    type="email" 
+                                    id="signupEmail" 
+                                    class="form-control" 
+                                    name="email" 
+                                    placeholder="Enter your email" 
+                                    required 
+                                    style="margin-top: 5px;"
+                                />
+                                <small class="text-danger" id="emailSignupError" style="display: none;">
+                                    Please enter a valid email address.
+                                </small>
                             </div>
-                            <div class="form-group">
-                                <div class="password"><input type="password" id="signupPassword"  name="password" placeholder="Enter a strong password" required /></div>
-                                <small class="text-danger" id="passwordSignupError" style="display: none;">Password must be strong.</small>
-                                <div id="passwordGuidelines" class="text-muted" style="display: block;font-size: xx-small">
+                            <div class="form-group" style="margin-bottom: 15px;">
+                                <label for="signupPassword" style="font-weight: bold;">Password</label>
+                                <input 
+                                    type="password" 
+                                    id="signupPassword" 
+                                    class="form-control" 
+                                    name="password" 
+                                    placeholder="Enter a strong password" 
+                                    required 
+                                    style="margin-top: 5px;"
+                                />
+                                <small class="text-danger" id="passwordSignupError" style="display: none;">
+                                    Password must be strong.
+                                </small>
+                                <div id="passwordGuidelines" class="text-muted" style="font-size: xx-small; margin-top: 5px;">
                                     Password must be at least 8 characters long and include uppercase letters, lowercase letters, numbers, and special characters.
                                 </div>
                             </div>
                             <div id="signupServerError" style="display: none; color: red; margin-bottom: 10px;"></div>
-                            <button type="submit" id="signupButton" class="btn btn-primary" style="margin-top:20px">Sign Up</button>
+                            <button 
+                                type="submit" 
+                                id="signupButton" 
+                                class="btn btn-primary btn-block" 
+                                style="margin-top: 20px; width: 100%;"
+                            >
+                                Sign Up
+                            </button>
                         </form>
+                        
                         <!-- Social Login Options -->
                     <div class="d-flex flex-column mt-5">
                         <p class="text-muted mb-1">Or continue with...</p>
@@ -186,11 +217,11 @@
                 }
         
                 // Validate strong password
-                const strongPasswordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+                const strongPasswordRegex = /^(?=.[a-z])(?=.[A-Z])(?=.\d)(?=.[@$!%?&])[A-Za-z\d@$!%?&]{8,}$/;
                 if (!strongPasswordRegex.test(passwordInput.value)) {
                     passwordError.style.display = 'block';
                     passwordError.textContent = 'Password must meet the required strength criteria.';
-                    isValid = false;
+                    //isValid = false;
                 }
         
                 if (!isValid) {
@@ -223,7 +254,9 @@
                     }
         
                     // Redirect to homepage on success
-                    window.location.href = '/index.html';
+                    window.location.href = '/login.html';
+                    submitButton.disabled = false;
+                    submitButton.textContent = 'Submit';
                 } catch (error) {
                     console.error('Error during signup:', error);
                     serverError.textContent = 'An unexpected error occurred. Please try again later.';

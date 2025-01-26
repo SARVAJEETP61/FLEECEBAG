@@ -19,5 +19,8 @@ router.get('/auth/google', authController.googleLogin);
 // Route for Facebook login
 router.get('/auth/facebook', authController.facebookLogin);
 
+// Route to fetch all users
+router.get('/users', authController.getAllUsers);
+
 // Export the router to be used in app.js
-module.exports = router;
+module.exports = router;

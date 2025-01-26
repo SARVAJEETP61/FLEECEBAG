@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart</title>
+</head>
+<body>
+    <div id="cart-container">
+        <h1>Your Cart</h1>
+        <p id="cart-id">Loading cart ID...</p> <!-- Placeholder for cart ID -->
+    </div>
+
+    <script>
+        // Parse cartId from the query string
+        const params = new URLSearchParams(window.location.search);
+        const cartId = params.get('cartId');
+
+        // Select the element to display the cart ID
+        const cartIdElement = document.getElementById('cart-id');
+
+        if (cartId) {
+            console.log('Cart ID:', cartId);
+            // Display the cart ID on the page
+            cartIdElement.textContent = `Cart ID: ${cartId}`;
+        } else {
+            console.error('Cart ID not found');
+            cartIdElement.textContent = 'Cart ID not found. Please log in again.';
+        }
+    </script>
+</body>
+</html>

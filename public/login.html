@@ -50,37 +50,28 @@
                 </div>
                 <div class="box-2 d-flex flex-column h-100">
                     <div class="mx-auto my-auto">
-                        <form class="login100-form validate-form" action="/admin/login" method="POST">
+                        <form class="login100-form validate-form" action="/admin/login" method="POST" id="loginForm">
                             <span class="login100-form-title text-center pb-3">Login</span>
                         
                             <div class="mb-3 validate-input">
-                                <input class="input100" type="text" name="email" placeholder="Email" required>
+                                <input class="input100" type="email" name="email" id="email" placeholder="Email" required>
                                 <span class="focus-input100"></span>
                                 <span class="symbol-input100">
                                     <i class="fa fa-envelope" aria-hidden="true"></i>
                                 </span>
+                                <small class="text-danger" id="emailError" style="display: none;">Please enter a valid email address.</small>
                             </div>
                         
                             <div class="validate-input">
-                                <input class="input100" type="password" name="password" placeholder="Password" required>
+                                <input class="input100" type="password" name="password" id="password" placeholder="Password" required minlength="6">
                                 <span class="focus-input100"></span>
                                 <span class="symbol-input100">
                                     <i class="fa fa-lock" aria-hidden="true"></i>
                                 </span>
+                                <small class="text-danger" id="passwordError" style="display: none;">Password must be at least 6 characters long.</small>
                             </div>
-                        
-                            <div class="d-flex flex-column mt-4 text-center">
-                                <p class="text-muted mb-1">or continue with...</p>
-                                <div class="d-flex align-items-center mx-auto social mt-2">
-                                    <a href="#" class="box">
-                                        <span class="fab fa-google mb-2"></span>
-                                        <p class="mb-0">Google</p>
-                                    </a>
-                                    <a href="#" class="box">
-                                        <span class="fab fa-facebook-f mb-2"></span>
-                                        <p class="mb-0">Facebook</p>
-                                    </a>
-                                </div>
+                            <div class="error-message" id="serverError" style="margin-top: 10px; display: none; color: red; text-align: center; margin-bottom: 10px;">
+                                <!-- Server error messages will appear here -->
                             </div>
                             <div class="container-login100-form-btn">
                                 <button class="login100-form-btn" type="submit">
@@ -101,7 +92,6 @@
                                 </a>
                             </div>
                         </form>
-                        
                     </div>
                 </div>
             </div>
@@ -168,7 +158,75 @@
         </footer>
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/egjs-agent/2.4.3/agent.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/egjs-agent/2.4.3/agent.min.js"></script>        
+        <script>
+            document.getElementById('loginForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+        
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+        
+            let isValid = true;
+            const emailError = document.getElementById('emailError');
+            const passwordError = document.getElementById('passwordError');
+            const serverError = document.getElementById('serverError');
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        
+            if (!emailRegex.test(email)) {
+                emailError.style.display = 'block';
+                isValid = false;
+            } else {
+                emailError.style.display = 'none';
+            }
+        
+            if (password.length < 6) {
+                passwordError.style.display = 'block';
+                isValid = false;
+            } else {
+                passwordError.style.display = 'none';
+            }
+        
+            if (!isValid) {
+                return;
+            }
+        
+            const submitButton = document.querySelector('.login100-form-btn');
+            submitButton.disabled = true;
+            submitButton.textContent = 'Submitting...';
+        
+            serverError.style.display = 'none';
+        
+            try {
+                const response = await fetch('/admin/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ email, password }),
+                });
+        
+                const data = await response.json();
+        
+                if (!response.ok) {
+                    serverError.textContent = data.error || 'An unexpected error occurred.';
+                    serverError.style.display = 'block';
+                    submitButton.disabled = false;
+                    submitButton.textContent = 'Login';
+                    return;
+                }
+        
+                // Redirect to cart page with cartId
+                const { cartId } = data;
+                window.location.href = `/cart.html?cartId=${cartId}`;
+            } catch (error) {
+                console.error('Error submitting login form:', error);
+                serverError.textContent = 'An unexpected error occurred. Please try again later.';
+                serverError.style.display = 'block';
+                submitButton.disabled = false;
+                submitButton.textContent = 'Login';
+            }
+        });
+        </script>      
     </body>
 
 </html>
