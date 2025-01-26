@@ -2,7 +2,6 @@ const express = require('express');
 const path = require('path');
 const http = require('http');
 const cartPageRouter = require('./routers/cartPageRouter');
-const { collection } = require('./models/cartModel');
 const app = express();
 const port = 8080;
 

@@ -5,7 +5,6 @@ async function getCartItems(userData) {
     const query = { userId: userData.userId };
     return await collection.find(query).toArray();
 }
-
 async function removeCartItem(userId, itemName) {
     const cart = await collection.findOne({ userId });
 
