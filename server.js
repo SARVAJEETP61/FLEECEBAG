@@ -45,6 +45,7 @@ app.get('/:page.html', (req, res) => {
 
 let menRouter = require('./routers/menPageRouter');
 let womenRouter = require('./routers/womenPageRouter');
+let cartPageRouter = require('./routers/cartPageRouter');
 
 
 const http = require('http').Server(app);
@@ -58,7 +59,6 @@ app.use('/partials', express.static(path.join(__dirname, 'partials')));
 app.use('/subpages', express.static(path.join(__dirname, 'subpages')));
 app.use(cartPageRouter);
 app.use('/images', express.static(path.join(__dirname, 'images')));
-const cartPageRouter = require('./routers/cartPageRouter');
 
 http.listen(port, () => {
     console.log('Express server started on port :' + port);
