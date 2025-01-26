@@ -1,5 +1,5 @@
 let express =  require('express');
-let http = require ('http');
+// let http = require ('http');
 let { Server } = require ('socket.io');
 let path = require ('path');
 let { fileURLToPath } = require ('url');
@@ -10,8 +10,8 @@ let Offer = require ('./controllers/offersController.js');
 
 
 const app = express();
-const server = http.createServer(app); // Create an HTTP server
-const io = new Server(server); // Attach socket.io to the HTTP server
+// const server = http.createServer(app); // Create an HTTP server
+// const io = new Server(server); // Attach socket.io to the HTTP server
 
 
 const port = 8080;
@@ -42,15 +42,14 @@ app.get('/:page.html', (req, res) => {
     res.sendFile(filePath);
 });
 
-let router = require('./routers/otherPageRouter');
+
 let menRouter = require('./routers/menPageRouter');
 let womenRouter = require('./routers/womenPageRouter');
 
 const http = require('http').Server(app);
-var port = 8080;
+// var port = 8080;
 require('./dbConnection');
-//const { dbConnection } = require('./dbConnection');
-app.use(router);
+
 app.use(menRouter);
 app.use(womenRouter);
 
