@@ -3,12 +3,12 @@ let client = require('../dbConnection');
 let collection = client.db('fleecebagDB').collection('womenProducts');
 
 async function getNewWomenList() {
-    const query = { isNew: true };
+    const query = { isNew: "true" };
     return await collection.find(query).toArray();
 }
 
 async function getBestSellWomenList() {
-    const query = { isItBestDeal: true };
+    const query = { isItBestDeal: "true" };
     return await collection.find(query).toArray();
 }
 

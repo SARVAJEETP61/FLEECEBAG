@@ -1,18 +1,6 @@
-let express =  require('express');
-//let http = require ('http');
-let { Server } = require ('socket.io');
-let path = require ('path');
-let { fileURLToPath } = require ('url');
-//let router = require ('./routers/router.js');
-let otherPageRouter = require ('./routers/otherPageRouter.js'); // Ensure your router file uses ES modules
-let client = require('./dbConnection.js');
-let Offer = require ('./controllers/offersController.js');
-
-
+let express = require('express');
+let path = require('path');
 const app = express();
-//const server = http.createServer(app); // Create an HTTP server
-//const io = new Server(server); // Attach socket.io to the HTTP server
-
 
 // Serve static files from the "public" folder
 app.use(express.static(path.join(__dirname, 'public')));
@@ -44,8 +32,8 @@ let womenRouter = require('./routers/womenPageRouter');
 
 const http = require('http').Server(app);
 var port = 8080;
-require('./dbConnection');
-//const { dbConnection } = require('./dbConnection');
+//require('./dbConnection');
+
 app.use(router);
 app.use(menRouter);
 app.use(womenRouter);
@@ -54,4 +42,5 @@ app.use(womenRouter);
 http.listen(port, () => {
     console.log('Express server started on port :' + port);
     //dbConnection();
+    //console.log('DB connection successful!');
 });
