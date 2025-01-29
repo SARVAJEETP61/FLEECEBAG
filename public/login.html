@@ -52,7 +52,7 @@
                     <div class="mx-auto my-auto">
                         <form class="login100-form validate-form" action="/admin/login" method="POST" id="loginForm">
                             <span class="login100-form-title text-center pb-3">Login</span>
-                        
+                    
                             <div class="mb-3 validate-input">
                                 <input class="input100" type="email" name="email" id="email" placeholder="Email" required>
                                 <span class="focus-input100"></span>
@@ -61,7 +61,7 @@
                                 </span>
                                 <small class="text-danger" id="emailError" style="display: none;">Please enter a valid email address.</small>
                             </div>
-                        
+                    
                             <div class="validate-input">
                                 <input class="input100" type="password" name="password" id="password" placeholder="Password" required minlength="6">
                                 <span class="focus-input100"></span>
@@ -78,13 +78,13 @@
                                     Login
                                 </button>
                             </div>
-                        
+                    
                             <div class="text-center p-t-12">
-                                <a class="txt1" href="signup.html">
+                                <a class="txt1" href="javascript:void(0);" id="forgotPasswordLink">
                                     Forgot Username / Password?
                                 </a>
                             </div>
-                        
+                    
                             <div class="text-center p-t-136">
                                 <a class="txt2" href="signup.html">
                                     Create your Account
@@ -92,6 +92,34 @@
                                 </a>
                             </div>
                         </form>
+                    
+                        <div id="forgotPasswordDiv" style="display: none;">
+                            <h3 class="text-center">Forgot Password</h3>
+                            <div class="mb-3">
+                                <input class="input100" type="email" id="forgotEmail" placeholder="Enter your email" required>
+                                <span class="focus-input100"></span>
+                                <span class="symbol-input100">
+                                    <i class="fa fa-envelope" aria-hidden="true"></i>
+                                </span>
+                                <small class="text-danger" id="forgotEmailError" style="display: none;">Please enter a valid email address.</small>
+                            </div>
+                            <div class="text-center">
+                                <button class="btn btn-primary" id="sendResetEmail">Send Reset Email</button>
+                                <button class="btn btn-secondary" id="backToLogin">Back to Login</button>
+                            </div>
+                            <div class="text-success" id="resetEmailSuccess" style="display: none; margin-top: 10px;">Reset email sent successfully.</div>
+                            <div class="text-danger" id="resetEmailError" style="display: none; margin-top: 10px;">An error occurred. Please try again.</div>
+                        </div>
+                        <div id="resetPasswordForm" style="display: none;">
+                            <h3>Reset Your Password</h3>
+                            <form id="resetPassword">
+                                <input type="password" id="newPassword" placeholder="New Password" required />
+                                <button type="submit">Reset Password</button>
+                            </form>
+                            <div id="resetPasswordError" style="display: none; color: red;"></div>
+                            <div id="resetPasswordSuccess" style="display: none; color: green;">Password has been reset successfully!</div>
+                        </div>
+                        
                     </div>
                 </div>
             </div>
@@ -152,7 +180,7 @@
                 </div>
                 <hr>
                 <div class="d-flex justify-content-around align-items-center pt-3">
-                    <p class="text-muted text-uppercase mb-0">Copyright © 2022 All Rights Reserved</p>
+                    <p class="text-muted text-uppercase mb-0">Copyright © 2025 All Rights Reserved</p>
                 </div>
             </div>
         </footer>
@@ -161,72 +189,175 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/egjs-agent/2.4.3/agent.min.js"></script>        
         <script>
             document.getElementById('loginForm').addEventListener('submit', async function (e) {
-            e.preventDefault();
+                e.preventDefault();
         
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
+                const email = document.getElementById('email').value;
+                const password = document.getElementById('password').value;
         
-            let isValid = true;
-            const emailError = document.getElementById('emailError');
-            const passwordError = document.getElementById('passwordError');
-            const serverError = document.getElementById('serverError');
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                let isValid = true;
+                const emailError = document.getElementById('emailError');
+                const passwordError = document.getElementById('passwordError');
+                const serverError = document.getElementById('serverError');
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         
-            if (!emailRegex.test(email)) {
-                emailError.style.display = 'block';
-                isValid = false;
-            } else {
-                emailError.style.display = 'none';
-            }
+                if (!emailRegex.test(email)) {
+                    emailError.style.display = 'block';
+                    isValid = false;
+                } else {
+                    emailError.style.display = 'none';
+                }
         
-            if (password.length < 6) {
-                passwordError.style.display = 'block';
-                isValid = false;
-            } else {
-                passwordError.style.display = 'none';
-            }
+                if (password.length < 6) {
+                    passwordError.style.display = 'block';
+                    isValid = false;
+                } else {
+                    passwordError.style.display = 'none';
+                }
         
-            if (!isValid) {
-                return;
-            }
-        
-            const submitButton = document.querySelector('.login100-form-btn');
-            submitButton.disabled = true;
-            submitButton.textContent = 'Submitting...';
-        
-            serverError.style.display = 'none';
-        
-            try {
-                const response = await fetch('/admin/login', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ email, password }),
-                });
-        
-                const data = await response.json();
-        
-                if (!response.ok) {
-                    serverError.textContent = data.error || 'An unexpected error occurred.';
-                    serverError.style.display = 'block';
-                    submitButton.disabled = false;
-                    submitButton.textContent = 'Login';
+                if (!isValid) {
                     return;
                 }
         
-                // Redirect to cart page with cartId
-                const { cartId } = data;
-                window.location.href = `/cart.html?cartId=${cartId}`;
-            } catch (error) {
-                console.error('Error submitting login form:', error);
-                serverError.textContent = 'An unexpected error occurred. Please try again later.';
-                serverError.style.display = 'block';
-                submitButton.disabled = false;
-                submitButton.textContent = 'Login';
-            }
+                const submitButton = document.querySelector('.login100-form-btn');
+                submitButton.disabled = true;
+                submitButton.textContent = 'Submitting...';
+        
+                serverError.style.display = 'none';
+        
+                try {
+                    const response = await fetch('/admin/login', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ email, password }),
+                    });
+        
+                    const data = await response.json();
+        
+                    if (!response.ok) {
+                        serverError.textContent = data.error || 'An unexpected error occurred.';
+                        serverError.style.display = 'block';
+                        submitButton.disabled = false;
+                        submitButton.textContent = 'Login';
+                        return;
+                    }
+        
+                    // Redirect to cart page with cartId
+                    const { cartId } = data;
+                    window.location.href = `/cart.html?cartId=${cartId}`;
+                } catch (error) {
+                    console.error('Error submitting login form:', error);
+                    serverError.textContent = 'An unexpected error occurred. Please try again later.';
+                    serverError.style.display = 'block';
+                    submitButton.disabled = false;
+                    submitButton.textContent = 'Login';
+                }
+            });
+        
+            // Toggle between login and forgot password form
+            const forgotPasswordLink = document.getElementById('forgotPasswordLink');
+            const forgotPasswordDiv = document.getElementById('forgotPasswordDiv');
+            const loginForm = document.getElementById('loginForm');
+            const backToLoginButton = document.getElementById('backToLogin');
+        
+            // Show the forgot password form
+            forgotPasswordLink.addEventListener('click', () => {
+                loginForm.style.display = 'none';
+                forgotPasswordDiv.style.display = 'block';
+            });
+        
+            // Back to login form
+            backToLoginButton.addEventListener('click', () => {
+                forgotPasswordDiv.style.display = 'none';
+                loginForm.style.display = 'block';
+            });
+        
+            // Handle sending the reset email
+            document.getElementById('sendResetEmail').addEventListener('click', async () => {
+                const forgotEmail = document.getElementById('forgotEmail').value;
+                const forgotEmailError = document.getElementById('forgotEmailError');
+                const resetEmailSuccess = document.getElementById('resetEmailSuccess');
+                const resetEmailError = document.getElementById('resetEmailError');
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        
+                // Reset UI state
+                forgotEmailError.style.display = 'none';
+                resetEmailSuccess.style.display = 'none';
+                resetEmailError.style.display = 'none';
+        
+                // Validate email
+                if (!emailRegex.test(forgotEmail)) {
+                    forgotEmailError.style.display = 'block';
+                    return;
+                }
+        
+                try {
+                    const response = await fetch('/admin/forgot-password', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ email: forgotEmail }),
+                    });
+        
+                    const data = await response.json();
+        
+                    if (response.ok) {
+                        resetEmailSuccess.style.display = 'block';
+                    } else {
+                        resetEmailError.textContent = data.error || 'Failed to send reset email.';
+                        resetEmailError.style.display = 'block';
+                    }
+                } catch (error) {
+                    console.error('Error sending reset email:', error);
+                    resetEmailError.textContent = 'An unexpected error occurred. Please try again.';
+                    resetEmailError.style.display = 'block';
+                }
+            });
+        </script>
+        <script>
+            // Extract the token from the URL
+const urlParams = new URLSearchParams(window.location.search);
+const token = urlParams.get('token');
+
+if (!token) {
+    document.getElementById('resetPasswordError').textContent = 'Invalid or expired token.';
+    document.getElementById('resetPasswordError').style.display = 'block';
+}
+
+// Handle the form submission to reset the password
+document.getElementById('resetPassword').addEventListener('submit', async function (e) {
+    e.preventDefault();
+
+    const newPassword = document.getElementById('newPassword').value;
+    const resetPasswordError = document.getElementById('resetPasswordError');
+    const resetPasswordSuccess = document.getElementById('resetPasswordSuccess');
+
+    // Clear previous messages
+    resetPasswordError.style.display = 'none';
+    resetPasswordSuccess.style.display = 'none';
+
+    try {
+        const response = await fetch('/reset-password', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ token, newPassword }),
         });
-        </script>      
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            resetPasswordError.textContent = data.error || 'Failed to reset password.';
+            resetPasswordError.style.display = 'block';
+        } else {
+            resetPasswordSuccess.style.display = 'block';
+        }
+    } catch (error) {
+        resetPasswordError.textContent = 'An unexpected error occurred. Please try again.';
+        resetPasswordError.style.display = 'block';
+    }
+});
+
+        </script>
     </body>
 
 </html>
