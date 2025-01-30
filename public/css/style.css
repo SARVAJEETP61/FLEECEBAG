@@ -2,22 +2,26 @@
   #tick {
     display: none;
   }
+
   #home-carousel-controls {
     display: none;
   }
+
   .dropdown {
     display: none;
   }
 }
 
-@media (max-width: 576px){
-  #custom-cards .row .col{
+@media (max-width: 576px) {
+  #custom-cards .row .col {
     height: 25vh !important;
   }
 }
 
-@media (min-width:1500px){
-  .container#custom-cards, .container.owl-1-style{
+@media (min-width:1500px) {
+
+  .container#custom-cards,
+  .container.owl-1-style {
     max-width: 90vw;
   }
 }
@@ -238,29 +242,26 @@ a.dropdown-item:hover {
   background-color: #edf2f4;
 }
 
-#custom-cards a{
+#custom-cards a {
   text-decoration: none;
 }
 
-
-
-
-/* CSS for Owned by Section */
 #owned-by {
   animation: fadeIn 1.5s ease-in-out;
 }
 
 @keyframes fadeIn {
   0% {
-      opacity: 0;
-      transform: translateY(20px);
+    opacity: 0;
+    transform: translateY(20px);
   }
+
   100% {
-      opacity: 1;
-      transform: translateY(0);
+    opacity: 1;
+    transform: translateY(0);
   }
 }
-/* CSS for Owned by Section */
+
 #owned-by {
   background-color: #f9f9f9;
   padding: 20px;
@@ -288,7 +289,6 @@ a.dropdown-item:hover {
   border: 5px solid #fff;
 }
 
-/* CSS for Social Icons Bounce Animation */
 .social-link {
   font-size: 24px;
   color: #333;
@@ -300,18 +300,24 @@ a.dropdown-item:hover {
 }
 
 @keyframes bounce {
-  0%, 20%, 50%, 80%, 100% {
-      transform: translateY(0);
+
+  0%,
+  20%,
+  50%,
+  80%,
+  100% {
+    transform: translateY(0);
   }
+
   40% {
-      transform: translateY(-10px);
+    transform: translateY(-10px);
   }
+
   60% {
-      transform: translateY(-5px);
+    transform: translateY(-5px);
   }
 }
 
-/* CSS for Owner Image Hover Animation */
 #owner-image {
   transition: transform 0.3s ease-in-out;
 }
@@ -319,30 +325,31 @@ a.dropdown-item:hover {
 #owner-image:hover {
   transform: scale(1.1);
 }
-/* CSS for Owner Name Rotation Animation */
+
 #owner-name {
   animation: rotateText 4s linear infinite;
 }
 
 @keyframes rotateText {
   0% {
-      transform: rotate(0deg);
+    transform: rotate(0deg);
   }
+
   100% {
-      transform: rotate(360deg);
+    transform: rotate(360deg);
   }
 }
-/* Dark Mode Styles */
+
 .dark-mode {
   background-color: #000;
   color: #fff;
 }
 
-/* Light Mode Styles */
 .light-mode {
   background-color: #fff;
   color: #000;
 }
+
 .darkMode {
   background-color: black;
   color: white;

@@ -8,46 +8,20 @@
     <link rel="icon" href="../images/purse.png">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
-    <link rel="stylesheet" href="css/men.css">
+    <script src="/controllers/script.js" defer></script>
+    <link rel="stylesheet" href="css/otherPage.css">
 
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-md navbar-light py-3">
-        <div class="container">
-            <a href="index.html"><img src="../images/purse.png" height="25px" style="padding-right: 10px;"></a><a
-                class="navbar-brand d-flex align-items-center" href="index.html"><span>Fleecebag</span></a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navcol-3"
-                aria-controls="navcol-3" aria-expanded="false" aria-label="Toggle navigation"><span
-                    class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navcol-3">
-                <ul class="navbar-nav mx-auto">
-                    <li class="nav-item"><a class="nav-link" href="men.html">Men</a></li>
-                    <li class="nav-item"><a class="nav-link" href="women.html">Women</a></li>
-                    <li class="nav-item"><a class="nav-link active" href="other.html">Other</a></li>
-                    <li class="nav-item"><a class="nav-link" href="public/offers.html">Offers</a></li>
-                    <li class="nav-item"><a class="nav-link" href="index.html#about">About Us</a></li>
-                </ul>
-                <span>
-                    <ul class="navbar-nav mx-auto">
-                        <li class="nav-item nav-link"><a href="cart.html"><i class="fa-solid fa-bag-shopping"></i></a>
-                        </li>
-                        <li class="nav-item"><a class="nav-link" href="login.html">Login</a></li>
-                        <li class="nav-item nav-link" id="tick">|</li>
-                        <li class="nav-item"><a class="nav-link" href="signup.html">Sign Up</a></li>
-                    </ul>
-                </span>
-            </div>
-        </div>
-    </nav>
+    <div id="header-container"></div> <!-- Header will be injected here -->
 
     <div class="container-fluid pb-1">
         <div class="row text-center py-2 categories">
-            <div class="col-6 col-sm-4"><a class="text-decoration-none"
-                    href="./subpages/men/wallet.html">Handbags </a>
+            <div class="col-6 col-sm-4"><a class="text-decoration-none" href="./subpages/men/wallet.html">Handbags </a>
             </div>
-            <div class="col-6 col-sm-4"><a class="text-decoration-none" href="../subpages/men/laptopBag.html">Clutches</a></div>
+            <div class="col-6 col-sm-4"><a class="text-decoration-none"
+                    href="../subpages/men/laptopBag.html">Clutches</a></div>
             <div class="col-12 col-sm-4 pt-2 pt-sm-0"><a class="text-decoration-none"
                     href="../subpages/men/slingBag.html">Messenger</a></div>
         </div>
@@ -87,10 +61,10 @@
             try {
                 // Make a request to the API
                 const response = await fetch(`${api_baseURL}/women/newProducts`);
-    
+
                 if (response.ok) {
                     const data = await response.json();
-    
+
                     if (data.statusCode === 200) {
                         const newProducts = data.data;
                         displayNewProducts(newProducts);

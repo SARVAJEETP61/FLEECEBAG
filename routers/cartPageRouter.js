@@ -22,5 +22,11 @@ router.delete('/cart/removeAll/:userId', setCORSHeaders, (req, res) => {
 router.post('/cart/create/:userId', setCORSHeaders, (req, res) => {
     cartController.createCart(req, res);
 });
+router.put('/cart/update', setCORSHeaders, (req, res) => {
+    // This route will update the quantity of the item
+    const { userId, itemName, quantity } = req.body;
+    cartController.updateCartItemApi(req, res, userId, itemName, quantity);
+});
+
 
 module.exports = router;

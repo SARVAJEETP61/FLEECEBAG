@@ -63,4 +63,14 @@ async function createCart(req, res) {
     }
 }
 
-module.exports = { getCartItemsApi, deleteCartItemApi, removeAllCartItems, createCart };
+const updateCartItemApi = async (req, res, userId, itemName, quantity) => {
+    try {
+        await cartModel.updateCartItemQuantity(userId, itemName, quantity);
+        res.status(200).json({ success: true, message: 'Item quantity updated successfully' });
+    } catch (error) {
+        res.status(500).json({ success: false, message: 'Error updating item quantity' });
+    }
+};
+
+
+module.exports = { getCartItemsApi, deleteCartItemApi, removeAllCartItems, createCart, updateCartItemApi };
