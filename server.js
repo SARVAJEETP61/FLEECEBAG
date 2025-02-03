@@ -52,7 +52,7 @@ app.use('/', router);
 app.use(menRouter);
 app.use(womenRouter);
 app.use('/', otherPageRouter);
-app.use(orderPageRouter);
+app.use('/',orderPageRouter);
 app.use('/controllers', express.static(path.join(__dirname, 'controllers')));
 app.use('/partials', express.static(path.join(__dirname, 'partials')));
 app.use('/subpages', express.static(path.join(__dirname, 'subpages')));

@@ -8,12 +8,13 @@ async function addOrder(orderData) {
 }
 
 async function getOrderList(userData) {
+    console.log(userData.userId);
     const query = { userId : userData.userId };
     return await collection.find(query).toArray();
 }
 
 async function getOrder(orderData) {
-    const query = { orderId : orderData.orderId };
+    const query = { orderId : orderData.orderId , userId : orderData.userId };
     return await collection.findOne(query);
 }
 
