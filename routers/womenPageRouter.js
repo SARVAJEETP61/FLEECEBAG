@@ -1,6 +1,6 @@
 let express = require('express');
 let router = express.Router();
-let controller = require('../controllers/menProducts');
+let controller = require('../controllers/womenController');
 
 router.get('/women/newProducts', function (req, res) {
     res.setHeader('Access-Control-Allow-Origin', '*');  // '*' allows all origins
