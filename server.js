@@ -1,14 +1,21 @@
 let express = require('express');
+
+
+
 let { Server } = require('socket.io');
 let path = require('path');
 let { fileURLToPath } = require('url');
 let client = require('./dbConnection.js');
 let userrouter = require('./routers/userrouter');
 let Offer = require('./controllers/offersController.js');
+const Cart = require('./models/cart'); // Adjust the path if necessary
 
 const { collection } = require('./models/cartModel');
 const app = express();
+const cors = require('cors');
 
+// Middleware
+app.use(cors());
 
 
 const port = 8080;
@@ -47,6 +54,9 @@ const http = require('http').Server(app);
 require('./dbConnection');
 
 app.use('/', router);
+
+
+
 app.use(menRouter);
 app.use(userrouter);
 app.use(womenRouter);
@@ -59,6 +69,69 @@ app.use(cartPageRouter);
 app.use('/images', express.static(path.join(__dirname, 'images')));
 
 
+// app.get('/itemOther', async (req, res) => {
+//     try {
+//         const items = await ItemOther.find(); // Fetch all items from MongoDB
+
+//         // If no items are found, handle it gracefully
+//         if (!items || items.length === 0) {
+//             return res.status(404).json({ statusCode: 404, message: 'No items found' });
+//         }
+
+//         res.json({
+//             statusCode: 200,
+//             data: items
+//         });
+//     } catch (error) {
+//         // Log the error for debugging
+//         console.error('Error fetching items:', error);
+
+//         // Respond with an error message
+//         res.status(500).json({
+//             statusCode: 500,
+//             message: 'Internal Server Error: ' + error.message
+//         });
+//     }
+// });
+// API endpoint to add to cart
+app.post('/api/cart', async (req, res) => {
+    const { userId, item_id, name, type, discount, price, discountedPrice, isNew, isInOffer, isItBestDeal, image } = req.body;
+
+    try {
+        await client.connect();  // Connect to MongoDB
+        const collection = client.db('fleecebagDB').collection('Cart'); // Access collection
+
+        // Product data to be added to cart
+        const product = {
+            item_id,
+            name,
+            type,
+            discount,
+            price,
+            discountedPrice,
+            isNew,
+            isInOffer,
+            isItBestDeal,
+            image
+        };
+
+        // Add product to cart with $addToSet
+        const result = await collection.updateOne(
+            { userId: userId }, // Find the user's cart
+            { $addToSet: { item: product } }, // Add product to items array
+            { upsert: true } // Create cart if not found
+        );
+
+        console.log('Product added to cart:', result);
+        res.status(200).json({ message: 'Product added to cart successfully!', result });
+
+    } catch (error) {
+        console.error('Error adding product to cart:', error.message);
+        res.status(400).json({ error: 'Failed to add to cart', details: error.message });
+    } finally {
+        await client.close();  // Close connection after operation
+    }
+});
 
 http.listen(port, () => {
     console.log('Express server started on port :' + port);

@@ -19,15 +19,18 @@
             </div>
             <span>
                 <ul class="navbar-nav mx-auto">
-                    <li class="nav-item nav-link"><a href="/cart.html"><i class="fa-solid fa-bag-shopping"></i></a></li>
+                    <!-- Protect the cart link -->
+                    <li class="nav-item nav-link"><a class="protected-page" href="/cart.html"><i
+                                class="fa-solid fa-bag-shopping"></i></a></li>
                     <li class="nav-item" id="login-link"><a class="nav-link" href="login.html">Login</a></li>
                     <li class="nav-item nav-link" id="tick">|</li>
                     <li class="nav-item" id="signup-link"><a class="nav-link" href="#">Sign Up</a></li>
                     <li class="nav-item" id="logout-link" style="display: none;">
-                        <a class="nav-link" href="#">Logout</a>
+                        <a class="nav-link" href="#" onclick="logout()">Logout</a>
                     </li>
                 </ul>
             </span>
         </div>
     </nav>
 </header>
+

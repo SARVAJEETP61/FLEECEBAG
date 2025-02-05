@@ -246,9 +246,7 @@ a.dropdown-item:hover {
   text-decoration: none;
 }
 
-#owned-by {
-  animation: fadeIn 1.5s ease-in-out;
-}
+
 
 @keyframes fadeIn {
   0% {
@@ -262,32 +260,7 @@ a.dropdown-item:hover {
   }
 }
 
-#owned-by {
-  background-color: #f9f9f9;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-  text-align: center;
-}
 
-#owned-by h2 {
-  color: #333;
-  font-size: 28px;
-  margin-bottom: 15px;
-}
-
-#owned-by p {
-  color: #777;
-  font-size: 18px;
-}
-
-#owned-by img {
-  border-radius: 50%;
-  width: 150px;
-  height: 150px;
-  margin-top: 20px;
-  border: 5px solid #fff;
-}
 
 .social-link {
   font-size: 24px;
