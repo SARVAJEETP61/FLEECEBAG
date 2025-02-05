@@ -81,72 +81,78 @@
     <!-- Page Content -->
     <div class="container my-5">
         <h2 class="text-center mb-4">Your Orders</h2>
-        <div class="order-list">
-            <!-- Repeat Order Items -->
-            <div class="order-item">
-                <img src="https://cdn.tagbox.io/assets/678888f7a490830011136b10/c2ac6d18-db26-456b-961b-551bfe0b3b1a---img4.jpg" alt="Product Image">
-                <div class="order-details">
-                    <h5>Order #12346</h5>
-                    <p><strong>Product:</strong> School Bag</p>
-                    <p><strong>Price:</strong> ₹850</p>
-                    <p class="order-status text-center text-warning"><strong>Status:</strong> In Transit</p>
-                </div>
-                <div class="order-actions">
-                    <a href="orderDetails.html?orderId=12345" class="btn btn-secondary btn-sm">View Details</a>
-                </div>
-            </div>
-            <!-- Order Item -->
-            <div class="order-item">
-                <img src="https://cdn.tagbox.io/assets/678888f7a490830011136b10/c2ac6d18-db26-456b-961b-551bfe0b3b1a---img4.jpg" alt="Product Image">
-                <div class="order-details">
-                    <h5>Order #12345</h5>
-                    <p><strong>Product:</strong> Stylish Tote Bag</p>
-                    <p><strong>Price:</strong> ₹1200</p>
-                    <p class="order-status text-center text-success"><strong>Status:</strong> Delivered</p>
-                </div>
-                <div class="order-actions">
-                    <a href="#" class="btn btn-secondary btn-sm">View Details</a>
-                </div>
-            </div>
-            <div class="order-item">
-                <img src="https://cdn.tagbox.io/assets/678888f7a490830011136b10/c2ac6d18-db26-456b-961b-551bfe0b3b1a---img4.jpg" alt="Product Image">
-                <div class="order-details">
-                    <h5>Order #12345</h5>
-                    <p><strong>Product:</strong> Stylish Tote Bag</p>
-                    <p><strong>Price:</strong> ₹1200</p>
-                    <p class="order-status text-center text-success"><strong>Status:</strong> Delivered</p>
-                </div>
-                <div class="order-actions">
-                    <a href="#" class="btn btn-secondary btn-sm">View Details</a>
-                </div>
-            </div>
-            <div class="order-item">
-                <img src="https://cdn.tagbox.io/assets/678888f7a490830011136b10/c2ac6d18-db26-456b-961b-551bfe0b3b1a---img4.jpg" alt="Product Image">
-                <div class="order-details">
-                    <h5>Order #12345</h5>
-                    <p><strong>Product:</strong> Stylish Tote Bag</p>
-                    <p><strong>Price:</strong> ₹1200</p>
-                    <p class="order-status text-center text-success"><strong>Status:</strong> Delivered</p>
-                </div>
-                <div class="order-actions">
-                    <a href="#" class="btn btn-secondary btn-sm">View Details</a>
-                </div>
-            </div>
-            <div class="order-item">
-                <img src="https://cdn.tagbox.io/assets/678888f7a490830011136b10/c2ac6d18-db26-456b-961b-551bfe0b3b1a---img4.jpg" alt="Product Image">
-                <div class="order-details">
-                    <h5>Order #12345</h5>
-                    <p><strong>Product:</strong> Stylish Tote Bag</p>
-                    <p><strong>Price:</strong> ₹1200</p>
-                    <p class="order-status text-center text-success"><strong>Status:</strong> Delivered</p>
-                </div>
-                <div class="order-actions">
-                    <a href="offers.html" class="btn btn-secondary btn-sm">View Details</a>
-                </div>
-            </div>
+        <div id="order-list" class="order-list">
             
         </div>
     </div>
+
+
+    <script>
+        const api_baseURL = 'http://localhost:8080';
+  
+        async function getOrderList() {
+            try {
+                const API_data = {
+                        method: 'POST',
+                        headers: {
+                            Accept: 'application/json',
+                                    'Content-Type': 'application/json',
+                            },
+                        body:JSON.stringify({"userId" :"679721a86d0a6e561ea2ebba"})
+                            
+                };
+                // Make a request to the API
+                const response = await fetch(`${api_baseURL}/orderlist`,API_data);
+  
+                if (response.ok) {
+                    const data = await response.json();
+  
+                    if (data.statusCode === 200) {
+                        const orders = data.data;
+                        displayOrderList(orders);
+                    } else {
+                        console.error('Failed to load Order List:', data.message);
+                    }
+                } else {
+                    console.error('Failed to fetch from API:', response.statusText);
+                }
+            } catch (error) {
+                console.error('Error fetching Order List:', error);
+            }
+        }
+  
+        // Function to display the new orders in HTML
+        function displayOrderList(orders) {
+            const orderListElement = document.getElementById('order-list');
+            orderListElement.innerHTML = ''; // Clear any previous content
+  
+            // Iterate through the products array and create HTML for each product
+            orders.forEach(order => {
+                const orderCard = document.createElement('div');
+  
+                // Create product card content
+                orderCard.innerHTML = `
+                <div class="order-item">
+                    <img src="https://cdn.tagbox.io/assets/678888f7a490830011136b10/c2ac6d18-db26-456b-961b-551bfe0b3b1a---img4.jpg" alt="Product Image">
+                    <div class="order-details">
+                        <h5>Order #${order.orderId}</h5>
+                        <p><strong>Product:</strong> School Bag</p>
+                        <p><strong>Price:</strong> ${order.totalPrice}</p>
+                        <p><strong>OrderDate:</strong> ${order.orderDate}</p>
+                        <p class="order-status text-center text-warning"><strong>Status:</strong> ${order.orderStatus}</p>
+                    </div>
+                    <div class="order-actions">
+                        <a href="orderDetails.html?orderId=${order.orderId}" class="btn btn-secondary btn-sm">View Details</a>
+                    </div>
+                </div>
+                `;
+                // Append the product card to the product container
+                orderListElement.appendChild(orderCard);
+            });
+        }
+        // Call the function to fetch new products and display them
+        getOrderList();
+    </script>
 
     <!-- Footer -->
     <footer class="bg-light py-4">
