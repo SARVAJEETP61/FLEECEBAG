@@ -1,3 +1,4 @@
+
 let express =  require('express');
 // let http = require ('http');
 let { Server } = require ('socket.io');
@@ -22,6 +23,7 @@ app.use(express.urlencoded({ extended: false }));
 // Serve the "img" folder for image assets
 app.use('/img', express.static(path.join(__dirname, 'img')));
 
+
 // Dynamic route to serve HTML files in the subpages folder
 app.get('/subpages/:folder/:file.html', (req, res) => {
     const { folder, file } = req.params;
@@ -45,10 +47,12 @@ let cartPageRouter = require('./routers/cartPageRouter');
 
 
 const http = require('http').Server(app);
+
 // var port = 8080;
 require('./dbConnection');
 
 app.use('/', router);
+
 app.use(menRouter);
 app.use(womenRouter);
 app.use('/', otherPageRouter);
@@ -62,4 +66,5 @@ app.use('/images', express.static(path.join(__dirname, 'images')));
 http.listen(port, () => {
     console.log('Express server started on port :' + port);
     //dbConnection();
+    //console.log('DB connection successful!');
 });
