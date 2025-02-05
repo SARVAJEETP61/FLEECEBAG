@@ -3,17 +3,18 @@ let client = require('../dbConnection');
 let collection = client.db('fleecebagDB').collection('order');
 
 async function addOrder(orderData) {
-    orderData.orderId = orderData.userId + new Date().valueOf();
+    orderData.orderId = ""+Math.floor(Math.random() * (90000-10000) * 10000) + new Date().valueOf();
     return await collection.insertOne(orderData);
 }
 
 async function getOrderList(userData) {
+    console.log(userData.userId);
     const query = { userId : userData.userId };
     return await collection.find(query).toArray();
 }
 
 async function getOrder(orderData) {
-    const query = { orderId : orderData.orderId };
+    const query = { orderId : orderData.orderId , userId : orderData.userId };
     return await collection.findOne(query);
 }
 
