@@ -1,6 +1,6 @@
 let otherModel = require('../models/otherModel');
 
-const getNewOtherItemListApi = async (req, res) => {
+const getNewOtherItemListApi = async (req,res) => {
     try {
         let data = {};//req.body;
         console.log("M")
@@ -12,7 +12,7 @@ const getNewOtherItemListApi = async (req, res) => {
     }
 }
 
-const getBestSellOtherItemListApi = async (req, res) => {
+const getBestSellOtherItemListApi = async (req,res) => {
     try {
         let data = {};//req.body;
         console.log("M")
@@ -24,7 +24,7 @@ const getBestSellOtherItemListApi = async (req, res) => {
     }
 }
 
-const getschoolBagListApi = async (req, res) => {
+const getschoolBagListApi = async (req,res) => {
     try {
         let data = {};//req.body;
         console.log("M")
@@ -36,7 +36,7 @@ const getschoolBagListApi = async (req, res) => {
     }
 }
 
-const getToteBagListApi = async (req, res) => {
+const getToteBagListApi = async (req,res) => {
     try {
         let data = {};//req.body;
         console.log("M")
@@ -48,7 +48,7 @@ const getToteBagListApi = async (req, res) => {
     }
 }
 
-const getTeavelBagListApi = async (req, res) => {
+const getTeavelBagListApi = async (req,res) => {
     try {
         let data = {};//req.body;
         let result = await otherModel.getTeavelBagList(data);
@@ -57,4 +57,5 @@ const getTeavelBagListApi = async (req, res) => {
         res.status(500).json({ statusCode: 500, message: err.message, error: err });
     }
 }
-module.exports = { getNewOtherItemListApi, getBestSellOtherItemListApi, getschoolBagListApi, getToteBagListApi, getTeavelBagListApi }
+module.exports =  { getNewOtherItemListApi, getBestSellOtherItemListApi, getschoolBagListApi, getToteBagListApi, getTeavelBagListApi}
+

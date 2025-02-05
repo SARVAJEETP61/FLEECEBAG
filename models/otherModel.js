@@ -1,6 +1,6 @@
 let client = require('../dbConnection');
 
-    let collection = client.db('fleecebagDB').collection('itemOther');
+let collection = client.db('fleecebagDB').collection('itemOther');
 
 async function getNewOtherItemList(userData) {
     const query = { isNew :true };
