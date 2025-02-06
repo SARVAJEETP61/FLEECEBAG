@@ -8,7 +8,11 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
     <link rel="stylesheet" href="/css/cart.css">
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="/controllers/index.js"></script>
     <script src="/controllers/script.js" defer></script>
+
 </head>
 
 <body>
@@ -19,9 +23,11 @@
             <div class="row d-flex justify-content-center my-4">
                 <div class="col-md-8">
                     <div class="card mb-4">
-                        <div class="card-header py-3">
+                        <div class="card-header py-3 d-flex justify-content-between align-items-center">
                             <h5 class="mb-0">Cart - <span id="cartItemCount">0</span> items</h5>
+                            <button class="btn btn-danger" onclick="clearCart(userId)">Clear Cart</button>
                         </div>
+
                         <div class="card-body" id="cartItemsContainer">
                         </div>
                     </div>
@@ -31,7 +37,8 @@
                     <div class="card mb-4">
                         <div class="card-header py-3">
                             <h5 class="mb-0">Summary</h5>
-                            <button class="btn btn-danger" onclick="clearCart(userId)">Clear Cart</button>
+
+                            <button class="add-to-cart-btn" onclick="addToCart()">Add to Cart</button>
                         </div>
                         <div class="card-body">
                             <ul class="list-group list-group-flush">
@@ -48,12 +55,17 @@
                                 <li
                                     class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">
                                     Discount
-                                    <span id="discount">-100</span>
+                                    <span id="discount">-0</span>
                                 </li>
                                 <li
                                     class="list-group-item d-flex justify-content-between align-items-center border-0 px-0">
                                     <strong>Total</strong>
                                     <strong>$<span id="finalTotal">0</span></strong>
+                                </li>
+                                <li
+                                    class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">
+                                    Proceed to Checkout
+                                    <button class="add-to-cart-btn" onclick="proceedToCheckout()">Proceed</button>
                                 </li>
                             </ul>
                         </div>
@@ -64,134 +76,143 @@
     </section>
 
     <script>
-        let userId = 'user123';
+        function proceedToCheckout() {
+            let totalAmount = document.getElementById("finalTotal").innerText;
+            localStorage.setItem("totalAmount", totalAmount);
+            window.location.href = "checkout.html";
+        }
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/jwt-decode/build/jwt-decode.min.js"></script>
+
+
+    <script>
+        let userId;
 
         document.addEventListener('DOMContentLoaded', () => {
-            getItems(userId);
+            const token = localStorage.getItem('jwtToken');
+
+            if (!token) {
+                console.error('User is not logged in: No JWT token found');
+                return;
+            }
+
+            try {
+                const decoded = jwt_decode(token);
+                userId = decoded.userId;
+
+                if (!userId) {
+                    console.error('User ID not found in token');
+                    return;
+                }
+
+                console.log('Decoded User ID:', userId);
+
+                getItems(userId);
+            } catch (error) {
+                console.error('Error decoding JWT token:', error);
+            }
         });
 
         function getItems(userId) {
             fetch(`/cart/${userId}`)
-                .then(response => response.json())
-                .then(data => {
+                .then((response) => {
+                    if (!response.ok) {
+                        throw new Error('Failed to fetch cart data');
+                    }
+                    return response.json();
+                })
+                .then((data) => {
                     if (data.statusCode === 200 && data.data[0]) {
-                        const cartItems = data.data[0].item;
+                        const cart = data.data[0];
+                        const cartItems = cart.item;
                         const cartItemsContainer = document.getElementById('cartItemsContainer');
                         const cartItemCount = document.getElementById('cartItemCount');
-                        const totalPrice = data.data[0].totalPrice;
-                        const shippingCharge = data.data[0].shippingCharge;
+                        const totalPrice = cart.totalPrice;
+                        const totalShippingCharge = cart.totalShippingCharge;
+                        const discount = 100; // Example discount, adjust as needed
 
-                        if (!cartItemsContainer) return;
+                        // Check if elements exist
+                        if (!cartItemsContainer || !cartItemCount) {
+                            console.error('Required DOM elements not found.');
+                            return;
+                        }
+
 
                         cartItemCount.textContent = cartItems.length;
 
                         let cartItemsHtml = '';
-                        cartItems.forEach(item => {
-                            cartItemsHtml += `
-                            <div class="row">
-                                <div class="col-lg-3 col-md-12 mb-4 mb-lg-0">
-                                    <div class="bg-image hover-overlay hover-zoom ripple rounded" data-mdb-ripple-color="light">
-                                        <img src="${item.image}" class="w-100" />
-                                    </div>
-                                </div>
-                                <div class="col-lg-5 col-md-6 mb-4 mb-lg-0">
-                                    <p><strong>${item.name}</strong></p>
-                                    <p>$<span>${item.price}</span></p>
-                                    <p>Color: ${item.color}</p>
-                                </div>
-                                <div class="col-lg-4 col-md-6 mb-4 mb-lg-0">
-                                    <div class="d-flex mb-4" style="max-width: 300px">
-                                        <button class="btn btn-login px-3 me-2">
-                                            <i class="fas fa-minus"></i>
-                                        </button>
-                                        <div class="form-outline text-center">
-                                            <label class="form-label" for="pass-quantity">Quantity</label>
-                                            <input id="quantity" min="1" value="${item.quantity}" type="number" class="form-control" readonly />
-                                        </div>
-                                        <button class="btn btn-login px-3 ms-2">
-                                            <i class="fas fa-plus"></i>
-                                        </button>
-                                    </div>
-                                    <p class="text-start text-md-center"><strong>$<span>${item.price * item.quantity}</span></strong></p>
-                                    <button class="btn btn-danger" onclick="removeItem('${item.name.replace(/'/g, "\\'")}', '${userId}')">Remove</button>
+                        if (cartItems.length === 0) {
+                            cartItemsHtml = `<p>Your cart is empty.</p>`;
+                        } else {
+                            cartItems.forEach((item) => {
+                                cartItemsHtml += `
+                        <div class="row">
+                            <div class="col-lg-3 col-md-12 mb-4 mb-lg-0">
+                                <div class="bg-image hover-overlay hover-zoom ripple rounded" data-mdb-ripple-color="light">
+                                    <img src="${item.image}" class="w-100" />
                                 </div>
                             </div>
-                            <hr class="my-4" />
-                        `;
-                        });
+                            <div class="col-lg-5 col-md-6 mb-4 mb-lg-0">
+                                <p><strong>${item.name}</strong></p>
+                                <p>$<span>${item.price}</span></p>
+                                <p>id: ${item.item_id}</p>
+                            </div>
+                            <div class="col-lg-4 col-md-6 mb-4 mb-lg-0">
+                                <div class="d-flex mb-4" style="max-width: 300px">
+                                    <button class="btn btn-login px-3 me-2">
+                                        <i class="fas fa-minus"></i>
+                                    </button>
+                                    <div class="form-outline text-center">
+                                        <label class="form-label" for="pass-quantity">Quantity</label>
+                                        
+                                    </div>
+                                    <button class="btn btn-login px-3 ms-2">
+                                        <i class="fas fa-plus"></i>
+                                    </button>
+                                </div>
+                                <p class="text-start text-md-center"><strong>$<span>${item.price * item.quantity}</span></strong></p>
+                                
+                                <button class="btn btn-danger" onclick="removeItem('${item.item_id}', '${userId}')">Remove</button>
+                                
+
+                            </div>
+                        </div>
+                        <hr class="my-4" />
+                    `;
+                            });
+                        }
 
                         cartItemsContainer.innerHTML = cartItemsHtml;
-                        document.getElementById('summaryTotalPrice').textContent = `$${totalPrice}`;
-                        document.getElementById('summaryShippingFee').textContent = `$${shippingCharge}`;
-                        document.getElementById('finalTotal').textContent = `$${totalPrice + shippingCharge}`;
+
+                        // Update summary
+                        updateCartSummary(totalPrice, totalShippingCharge, cartItems);
                     } else {
-                        console.error('Error fetching cart items:', data.message);
+                        // console.error('Error fetching cart items:', data.message);
                     }
                 })
-                .catch(error => {
-                    console.error('Error fetching cart items:', error);
+                .catch((error) => {
+                    // console.error('Error fetching cart items:', error);
                 });
         }
 
-        function updateQuantity(itemId, userId, change) {
-            const quantityInput = document.getElementById(`quantity-${itemId}`);
-            const itemTotal = document.getElementById(`item-total-${itemId}`);
+        async function clearCart() {
+            const token = localStorage.getItem('jwtToken');
 
-            let currentQuantity = parseInt(quantityInput.value);
-            if (currentQuantity + change < 1) return;
+            if (!token) {
+                console.error('No JWT token found. User must log in.');
+                return;
+            }
 
-            const updatedQuantity = currentQuantity + change;
-            quantityInput.value = updatedQuantity;
-            itemTotal.textContent = (updatedQuantity * parseFloat(itemTotal.textContent / currentQuantity)).toFixed(2);
+            let userId;
+            try {
+                const decoded = jwt_decode(token);
+                userId = decoded.userId;
+            } catch (error) {
+                console.error('Error decoding JWT token:', error);
+                return;
+            }
 
-            fetch(`/cart/update/${userId}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    itemId: itemId,
-                    quantity: updatedQuantity
-                }),
-            })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        console.log('Quantity updated successfully');
-                        getItems(userId); // Reload the cart
-                    } else {
-                        console.error('Error updating quantity:', data.message);
-                    }
-                })
-                .catch(error => {
-                    console.error('Error updating quantity:', error);
-                });
-        }
-
-        function removeItem(itemName, userId) {
-            getItems(userId);
-            fetch('/cart/remove', {
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ userId, itemName })
-            })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.message === 'Item removed successfully') {
-                        getItems(userId);
-                    } else {
-                        console.error('Error removing item:', data.message);
-                    }
-                })
-                .catch(error => {
-                    console.error('Error removing item:', error);
-                });
-            getItems(userId);
-        }
-
-        async function clearCart(userId) {
             try {
                 document.getElementById('cartItemsContainer').innerHTML = '';
                 document.getElementById('cartItemCount').textContent = '0';
@@ -208,28 +229,132 @@
 
                 const data = await response.json();
 
-                if (data.message === 'Cart deleted successfully') {
-                } else {
-                    console.error('Error deleting cart:', data.message);
-                    return;
-                }
+                // if (response.ok && data.message === 'Cart deleted successfully') {
+                //     console.log('Cart cleared successfully.');
+                // } else {
+                //     console.error('Error deleting cart:', data.message || 'Unknown error');
+                // }
 
                 await getItems(userId);
+
             } catch (error) {
-                console.error('Error while clearing cart:', error);
+                // console.error('Error while clearing cart:', error);
             }
         }
 
+        function removeItem(item_id, userId) {
+            fetch(`/cart/${userId}`)
+                .then(response => response.json())
+                .then(data => {
+                    // console.log('Received Cart Data:', data);
+
+                    if (data.statusCode === 200 && data.data[0]) {
+                        const cartItems = data.data[0].item;
+                        // console.log('Cart Items:', cartItems);
+
+                        const item = cartItems.find(i => Number(i.item_id) === Number(item_id));
+                        if (!item) {
+                            // console.error('Item not found in cart.');
+                            return;
+                        }
+
+                        let apiUrl, method, body;
+
+                        // Logging request body
+                        const requestBody = { userId, item_id, quantity: item.quantity - 1 };
+                        // console.log('Request Body:', requestBody);
+
+                        if (item.quantity === 1) {
+                            apiUrl = '/cart/remove';
+                            method = 'DELETE';
+                            body = JSON.stringify({ userId, item_id });
+                        } else {
+                            apiUrl = '/cart/update';
+                            method = 'PUT';
+                            body = JSON.stringify(requestBody);
+                        }
+
+                        return fetch(apiUrl, { method, headers: { 'Content-Type': 'application/json' }, body });
+                    }
+                })
+                .then(async (response) => {
+                    const text = await response.text();
+                    // console.log('Response Text:', text);
+
+                    if (!response || !response.ok) {
+                        console.error(`HTTP error! Status: ${response?.status}`);
+                        return;
+                    }
+
+                    try {
+                        const data = JSON.parse(text);
+                        if (data.success || data.message === 'Item removed successfully') {
+                            // console.log('Item quantity updated or removed successfully');
+                        } else {
+                            console.error('Error updating item quantity:', data.message);
+                        }
+                    } catch (error) {
+                        console.warn("Response is not valid JSON:", text);
+                    }
+
+                    // console.log('Fetching updated cart...');
+                    fetch(`/cart/${userId}`)
+                        .then(response => response.json())
+                        .then(updatedData => {
+                            if (updatedData.statusCode === 200 && updatedData.data[0]) {
+                                const updatedCartItems = updatedData.data[0].item;
+                                // console.log('Updated Cart Items:', updatedCartItems);
+
+                                if (updatedCartItems.length === 0) {
+                                    // console.log('Cart is empty, calling clearCart function.');
+                                    clearCart();
+                                } else {
+                                    // console.log('Cart is not empty.');
+                                }
+                            } else {
+                                // console.error('Error fetching updated cart:', updatedData.message);
+                            }
+                        })
+                        .catch((error) => {
+                            // console.error('Error fetching updated cart:', error);
+                        });
+
+                    getItems(userId);
+                })
+                .catch((error) => {
+                    // console.error('Error removing item or updating quantity:', error);
+                });
+        }
+
         async function addToCart() {
-            const userId = 'user123';
+            const token = localStorage.getItem('jwtToken');
+
+            if (!token) {
+                console.error('No JWT token found. User must log in.');
+                return;
+            }
+
+            let userId;
+            try {
+                const decoded = jwt_decode(token);
+                userId = decoded.userId;
+            } catch (error) {
+                console.error('Error decoding JWT token:', error);
+                return;
+            }
+
             const item = {
-                name: 'Backpack',
+                item_id: 1,
+                name: 'Bag',
                 price: 100,
                 quantity: 1,
                 color: 'Red',
                 image: 'https://cdn.tagbox.io/assets/678888f7a490830011136b10/c2ac6d18-db26-456b-961b-551bfe0b3b1a---img4.jpg',
-                discountedPrice: 100,
+                discountedPrice: 80,
+                shippingCharge: 20,
             };
+
+            console.log('Item to be added:', item); // Log to check the item data
 
             try {
                 const response = await fetch(`/cart/create/${userId}`, {
@@ -241,9 +366,16 @@
                 });
 
                 const data = await response.json();
+                console.log('Response data:', data); // Log the response to check for errors
 
                 if (response.ok) {
-                    console.log('Item added to cart:', data);
+                    const cartData = data.data[0];
+
+                    if (cartData && cartData.totalPrice !== undefined && cartData.totalShippingCharge !== undefined) {
+                        updateCartSummary(cartData.totalPrice, cartData.totalShippingCharge, cartData.item);
+                    } else {
+                        console.error('Total price or shipping charge is undefined in the updated cart data.');
+                    }
                 } else {
                     console.error('Error adding item to cart:', data.message);
                 }
@@ -253,7 +385,48 @@
             getItems(userId);
         }
 
+        function updateCartSummary(totalPrice, totalShippingCharge, cartItems) {
+            const totalPriceElement = document.getElementById('summaryTotalPrice');
+            const totalShippingChargeElement = document.getElementById('summaryShippingFee');
+            const discountElement = document.getElementById('discount');
+            const finalTotalElement = document.getElementById('finalTotal');
+
+            if (cartItems && cartItems.length > 0) {
+                let calculatedTotalPrice = 0;
+                let calculatedDiscount = 0;
+                let calculatedShippingCharge = 0;
+
+                cartItems.forEach(item => {
+                    // console.log("Item:", item);
+                    // console.log("Original Price:", item.price, "Discounted Price:", item.discountedPrice, "Quantity:", item.quantity);
+
+                    calculatedTotalPrice += item.price * item.quantity;  // Total price before discount
+                    calculatedDiscount += (item.price - item.discountedPrice) * item.quantity;  // Total discount
+                    calculatedShippingCharge += item.shippingCharge * item.quantity; // Total shipping charge
+                });
+
+                // console.log("Total Price Before Discount:", calculatedTotalPrice);
+                // console.log("Total Discount:", calculatedDiscount);
+                // console.log("Total Shipping Charge:", calculatedShippingCharge);
+
+                // Display values
+                totalPriceElement.textContent = `$${calculatedTotalPrice}`;
+                discountElement.textContent = `-$${calculatedDiscount}`;
+                totalShippingChargeElement.textContent = `$${calculatedShippingCharge}`;
+
+                // Correct final total calculation
+                const finalTotal = calculatedTotalPrice + calculatedShippingCharge - calculatedDiscount;
+                finalTotalElement.textContent = `$${finalTotal}`;
+            } else {
+                totalPriceElement.textContent = `$0`;
+                totalShippingChargeElement.textContent = `$0`;
+                discountElement.textContent = `$0`;
+                finalTotalElement.textContent = `$0`;
+            }
+        }
+
     </script>
+
 
 </body>
 

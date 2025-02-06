@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout</title>
+    <script src="https://js.stripe.com/v3/"></script>
+</head>
+
+<body>
+    <h2>Checkout Page</h2>
+    <p>Total Amount: <strong><span id="checkoutTotal">0</span></strong></p>
+    <button id="payButton">Pay with Stripe</button>
+
+    <script>
+        // Retrieve total amount from localStorage
+        let tempAmount = localStorage.getItem("totalAmount") || 0;
+        let totalAmount = tempAmount.slice(1)
+        document.getElementById("checkoutTotal").innerText = totalAmount;
+
+        // Stripe Integration
+        const stripe = Stripe("pk_test_51QpOE3Rwr5P9jcyR7tIPzCcotJdniY1RDG4q4pqmANglxEcw5cl2xsns9ujQiiDCl6PzTw2UmlfDzqL43BmqVXO700M8HJh85f");
+
+        document.getElementById("payButton").addEventListener("click", async function () {
+            const response = await fetch("/create-checkout-session", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ amount: totalAmount })
+            });
+            const session = await response.json();
+            stripe.redirectToCheckout({ sessionId: session.id });
+        });
+    </script>
+</body>
+
+</html>

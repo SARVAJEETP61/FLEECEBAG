@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
     <meta charset="UTF-8">
@@ -15,34 +15,9 @@
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-md navbar-light py-3">
-        <div class="container">
-            <a href="index.html"><img src="../images/purse.png" height="25px" style="padding-right: 10px;"></a><a
-                class="navbar-brand d-flex align-items-center" href="index.html"><span>Fleecebag</span></a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navcol-3"
-                aria-controls="navcol-3" aria-expanded="false" aria-label="Toggle navigation"><span
-                    class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navcol-3">
-                <ul class="navbar-nav mx-auto">
-                    <li class="nav-item"><a class="nav-link active" href="men.html">Men</a></li>
-                    <li class="nav-item"><a class="nav-link" href="women.html">Women</a></li>
-                    <li class="nav-item"><a class="nav-link" href="other.html">Other</a></li>
-                    <li class="nav-item"><a class="nav-link" href="public/offers.html">Offers</a></li>
-                    <li class="nav-item"><a class="nav-link" href="index.html#about">About Us</a></li>
-                </ul>
-                <span>
-                    <ul class="navbar-nav mx-auto">
-                        <li class="nav-item nav-link"><a href="cart.html"><i class="fa-solid fa-bag-shopping"></i></a>
-                        </li>
-                        <li class="nav-item"><a class="nav-link" href="login.html">Login</a></li>
-                        <li class="nav-item nav-link" id="tick">|</li>
-                        <li class="nav-item"><a class="nav-link" href="signup.html">Sign Up</a></li>
-                    </ul>
-                </span>
-            </div>
-        </div>
-    </nav>
+
+    <div id="header-container"></div>
+    <script src="/controllers/script.js"></script>
 
     <div class="scrolling-container">
         <span class="scrolling-text">
@@ -180,6 +155,29 @@
     <script>
         const api_baseURL = 'http://localhost:8080';
 
+        document.addEventListener('DOMContentLoaded', () => {
+            const token = localStorage.getItem('jwtToken');
+
+            if (!token) {
+                console.error('User is not logged in: No JWT token found');
+                return;
+            }
+
+            try {
+                const decoded = jwt_decode(token);
+                userId = decoded.userId;
+
+                if (!userId) {
+                    console.error('User ID not found in token');
+                    return;
+                }
+
+                console.log('Decoded User ID:', userId);
+            } catch (error) {
+                console.error('Error decoding JWT token:', error);
+            }
+        });
+
         async function getNewProducts() {
             try {
                 // Make a request to the API
@@ -224,6 +222,56 @@
             }
         }
 
+        async function addToCart(product) {
+            console.log(product, "product")
+            const token = localStorage.getItem('jwtToken');
+
+            if (!token) {
+                alert("You need to be logged in to add items to the cart.");
+                window.location.href = "https://localhost:8080/login.html";
+                return;
+            }
+
+            try {
+                const decodedToken = jwt_decode(token);
+                const userId = decodedToken.userId;
+
+                // Log the request to check what data is being sent
+                console.log("Adding to cart with payload:", {
+                    userId,
+                    productId: product._id,
+                    name: product.name,
+                    price: product.price,
+                    quantity: 1,
+                    image: product.image[0],
+                });
+
+                const response = await fetch(`${api_baseURL}/cart/create/${userId}`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`,
+                    },
+                    body: JSON.stringify({
+                        productId: product._id,
+                        name: product.name,
+                        price: product.price,
+                        quantity: 1,
+                        image: product.image[0],
+                    }),
+                });
+
+                if (response.ok) {
+                    alert("Product added to cart successfully!");
+                } else {
+                    const errorData = await response.json();
+                    console.error("Error adding product to cart:", errorData.message);
+                }
+            } catch (error) {
+                console.error("Error:", error);
+            }
+        }
+
         // Function to display the new products in HTML
         function displayNewProducts(products) {
             const productsListElement = document.getElementById('new-products-list');
@@ -261,7 +309,7 @@
 
                         <!-- Product Actions -->
                         <div class="card-footer p-3 bg-light border-top d-flex">
-                            <a class="btn btn-outline-dark btn-sm" href="#">Add to Cart</a>
+                            <button class="btn btn-outline-dark btn-sm" onclick= ${addToCart(product)} >Add to Cart</button>
                             <a class="btn btn-dark btn-sm" href="#">Buy Now</a>
                         </div>
                         
@@ -312,7 +360,7 @@
 
                             <!-- Product Actions -->
                             <div class="card-footer p-3 bg-light border-top d-flex">
-                                <a class="btn btn-outline-dark btn-sm" href="#">Add to Cart</a>
+                                <button class="btn btn-outline-dark btn-sm" onclick= ${addToCart(product)} >Add to Cart</button>
                                 <a class="btn btn-dark btn-sm" href="#">Buy Now</a>
                             </div>
                         </div>
@@ -327,6 +375,58 @@
         // Call the function to fetch new products and display them
         getNewProducts();
         getBestProducts();
+    </script>
+
+    <script>
+        async function addToCart(product) {
+            console.log(product, "product")
+            const token = localStorage.getItem('jwtToken');
+
+            if (!token) {
+                alert("You need to be logged in to add items to the cart.");
+                window.location.href = "https://localhost:8080/login.html";
+                return;
+            }
+
+            try {
+                const decodedToken = jwt_decode(token);
+                const userId = decodedToken.userId;
+
+                // Log the request to check what data is being sent
+                console.log("Adding to cart with payload:", {
+                    userId,
+                    productId: product._id,
+                    name: product.name,
+                    price: product.price,
+                    quantity: 1,
+                    image: product.image[0],
+                });
+
+                const response = await fetch(`${api_baseURL}/cart/create/${userId}`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`,
+                    },
+                    body: JSON.stringify({
+                        productId: product._id,
+                        name: product.name,
+                        price: product.price,
+                        quantity: 1,
+                        image: product.image[0],
+                    }),
+                });
+
+                if (response.ok) {
+                    alert("Product added to cart successfully!");
+                } else {
+                    const errorData = await response.json();
+                    console.error("Error adding product to cart:", errorData.message);
+                }
+            } catch (error) {
+                console.error("Error:", error);
+            }
+        }
     </script>
 
     <footer>

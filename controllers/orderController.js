@@ -13,9 +13,10 @@ const addOrderApi = async (req, res) => {
 
 const getOrderListApi = async (req, res) => {
     try {
-        let data = {};//req.body;
+        let data = req.body;
+        console.log(data)
         let result = await orderModel.getOrderList(data);
-        console.log(result)
+        console.log(result);
         res.status(200).json({ statusCode: 200, data: result, message: "Data Load successfully" });
     } catch (err) {
         res.status(500).json({ statusCode: 500, message: err.message, error: err });
@@ -24,9 +25,8 @@ const getOrderListApi = async (req, res) => {
 
 const getOrderApi = async (req, res) => {
     try {
-        let data = {};//req.body;
+        let data = req.body;
         let result = await orderModel.getOrder(data);
-        console.log(result)
         res.status(200).json({ statusCode: 200, data: result, message: "Data Load successfully" });
     } catch (err) {
         res.status(500).json({ statusCode: 500, message: err.message, error: err });
