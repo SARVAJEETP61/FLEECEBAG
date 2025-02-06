@@ -8,132 +8,29 @@
     <link rel="icon" href="./images/men/img1.webp">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
-    <script src="/controllers/script.js" defer></script>
-    <link rel="stylesheet" href="./css/otherPage.css">
+    <link rel="stylesheet" href="./css/men.css">
     <link rel="stylesheet" type="text/css" href="./css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="./css/font-awesome.css">
     <link rel="stylesheet" href="./css/banner-card.css">
 </head>
 
 <body>
-    <div id="header-container"></div> <!-- Header will be injected here -->
+    <div id="header-container"></div>
+    <script src="/controllers/script.js"></script>
 
-    <div class="scrolling-container">
-        <span class="scrolling-text">
-            Welcome to our website! 🎉 Discover our latest collection of high-quality products at unbeatable prices. 🛍️
-            Don't miss our exclusive offers: Buy one, get one 50% off on selected items! 🚚 Enjoy fast, free shipping on
-            orders over $50! 🌟
-            Subscribe to our newsletter for updates on new arrivals, sales, and more exciting deals. 📩 Shop with
-            confidence, knowing your satisfaction is our priority! 💯
-        </span>
+    <div class="tm-hero d-flex justify-content-center align-items-center" id="tm-video-container">
+        <video autoplay muted loop id="tm-video">
+            <source src="./images/women/video/hero.mp4" type="video/mp4">
+        </video>
+        <i id="tm-video-control-button" class="fas fa-pause"></i>
+        <form class="d-flex position-absolute tm-search-form">
+            <input class="form-control tm-search-input" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-success tm-search-btn" type="submit">
+                <i class="fas fa-search"></i>
+            </button>
+        </form>
     </div>
 
-    <div class="main-banner" id="top">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-lg-6">
-                    <div class="left-content">
-                        <div class="thumb">
-                            <div class="inner-content">
-                                <h4>We Are FleeceBag</h4>
-                                <span>Welcome to seamless shopping experience!</span>
-                                <div class="main-white-button" type="button" onclick="window.location='#products'">
-                                    Purchase Now!</div>
-                            </div>
-                            <img src="./images/men/baner-right-image-02.jpg" alt="">
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-6">
-                    <div class="right-content">
-                        <div class="row">
-                            <div class="col-lg-6">
-                                <div class="right-first-image">
-                                    <div class="thumb">
-                                        <div class="inner-content">
-                                            <h4>Messenger</h4>
-                                            <span>Classy Collection For Men</span>
-                                        </div>
-                                        <div class="hover-content">
-                                            <div class="inner">
-                                                <h4>Laptop Bags</h4>
-                                                <p>Explore our Perfect blend of style and functionality.</p>
-                                                <div class="main-border-button">
-                                                    <a href="./subpages/women/messenger.html">Discover More</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <img src="./images/men/laptop/img5.jpg">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-6">
-                                <div class="right-first-image">
-                                    <div class="thumb">
-                                        <div class="inner-content">
-                                            <h4>Wallets</h4>
-                                            <span>Sophisticated Companions for Modern Men</span>
-                                        </div>
-                                        <div class="hover-content">
-                                            <div class="inner">
-                                                <h4>Wallets</h4>
-                                                <p>Compact designs crafted for everyday elegance.</p>
-                                                <div class="main-border-button">
-                                                    <a href="./subpages/men/wallet.html">Discover More</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <img src="./images/men/wallets/img1.jpg">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-6">
-                                <div class="right-first-image">
-                                    <div class="thumb">
-                                        <div class="inner-content">
-                                            <h4>Sling Bags</h4>
-                                            <span>Trendy and Versatile Designs</span>
-                                        </div>
-                                        <div class="hover-content">
-                                            <div class="inner">
-                                                <h4>Sling Bags</h4>
-                                                <p>Modern, lightweight, and highly practical.</p>
-                                                <div class="main-border-button">
-                                                    <a href="./subpages/men/slingBag.html">Discover More</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <img src="./images/men/sling/img1.jpg">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-6">
-                                <div class="right-first-image">
-                                    <div class="thumb">
-                                        <div class="inner-content">
-                                            <h4>Accessories</h4>
-                                            <span>Best Trend Accessories</span>
-                                        </div>
-                                        <div class="hover-content">
-                                            <div class="inner">
-                                                <h4>Accessories</h4>
-                                                <p>Never settle for JUST ONE!!</p>
-                                                <p>Explore Essential additions to elevate your style!</p>
-                                                <div class="main-border-button">
-                                                    <a href="#">Discover More</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <img src="./images/men/accessories/image.png">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <section class="pt-3 pb-5" id="products">
         <div class="container wider-container px-4 px-lg-4 mt-4">
@@ -152,6 +49,69 @@
     </section>
 
     <script>
+
+        $(window).on("load", function () {
+            $('body').addClass('loaded');
+        });
+
+        $(function () {
+            function setVideoSize() {
+                const vidWidth = 1280;
+                const vidHeight = 720;
+                const maxVidHeight = 400;
+                let windowWidth = window.innerWidth;
+                let newVidWidth = windowWidth;
+                let newVidHeight = windowWidth * vidHeight / vidWidth;
+                let marginLeft = 0;
+                let marginTop = 0;
+
+                if (newVidHeight < maxVidHeight) {
+                    newVidHeight = maxVidHeight;
+                    newVidWidth = newVidHeight * vidWidth / vidHeight;
+                }
+
+                if (newVidWidth > windowWidth) {
+                    marginLeft = -((newVidWidth - windowWidth) / 2);
+                }
+
+                if (newVidHeight > maxVidHeight) {
+                    marginTop = -((newVidHeight - $('#tm-video-container').height()) / 2);
+                }
+
+                const tmVideo = $('#tm-video');
+
+                tmVideo.css('width', newVidWidth);
+                tmVideo.css('height', newVidHeight);
+                tmVideo.css('margin-left', marginLeft);
+                tmVideo.css('margin-top', marginTop);
+            }
+
+            setVideoSize();
+
+            // Set video background size based on window size
+            let timeout;
+            window.onresize = function () {
+                clearTimeout(timeout);
+                timeout = setTimeout(setVideoSize, 100);
+            };
+
+            // Play/Pause button for video background      
+            const btn = $("#tm-video-control-button");
+
+            btn.on("click", function (e) {
+                const video = document.getElementById("tm-video");
+                $(this).removeClass();
+
+                if (video.paused) {
+                    video.play();
+                    $(this).addClass("fas fa-pause");
+                } else {
+                    video.pause();
+                    $(this).addClass("fas fa-play");
+                }
+            });
+        });
+
         const api_baseURL = 'http://localhost:8080';
 
         async function getNewProducts() {
@@ -175,6 +135,32 @@
                 console.error('Error fetching new products:', error);
             }
         }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const token = localStorage.getItem('jwtToken');
+
+            if (!token) {
+                console.error('User is not logged in: No JWT token found');
+                return;
+            }
+
+            try {
+                const decoded = jwt_decode(token);
+                userId = decoded.userId;
+
+                if (!userId) {
+                    console.error('User ID not found in token');
+                    return;
+                }
+
+                console.log('Decoded User ID:', userId);
+
+                getNewProducts();
+                getBestProducts();
+            } catch (error) {
+                console.error('Error decoding JWT token:', error);
+            }
+        });
 
         async function getBestProducts() {
             try {
@@ -235,7 +221,7 @@
 
                         <!-- Product Actions -->
                         <div class="card-footer p-3 bg-light border-top d-flex">
-                            <a class="btn btn-outline-dark btn-sm" href="#">Add to Cart</a>
+                           <button class="btn btn-outline-dark btn-sm" onclick= ${addToCart(product.id, product.name, product.discountedPrice, product.image[0])} >Add to Cart</button>
                             <a class="btn btn-dark btn-sm" href="#">Buy Now</a>
                         </div>
                         
@@ -286,7 +272,7 @@
 
                             <!-- Product Actions -->
                             <div class="card-footer p-3 bg-light border-top d-flex">
-                                <a class="btn btn-outline-dark btn-sm" href="#">Add to Cart</a>
+                                <button class="btn btn-outline-dark btn-sm" onclick= ${addToCart(product.id, product.name, product.discountedPrice, product.image[0])} >Add to Cart</button>
                                 <a class="btn btn-dark btn-sm" href="#">Buy Now</a>
                             </div>
                         </div>
@@ -296,6 +282,52 @@
                 // Append the product card to the product container
                 bestproductsListElement.appendChild(productCard);
             });
+        }
+
+        async function addToCart(id, name, price, url) {
+            const token = localStorage.getItem('jwtToken');
+
+            if (!token) {
+                console.error('No JWT token found. User must log in.');
+                return;
+            }
+
+            let userId;
+            try {
+                const decoded = jwt_decode(token);
+                userId = decoded.userId;
+            } catch (error) {
+                console.error('Error decoding JWT token:', error);
+                return;
+            }
+
+            const item = {
+                item_id: id,
+                name: name,
+                price: price,
+                quantity: 1,
+                color: 'Red',
+                image: url,
+                discountedPrice: price,
+                shippingCharge: 20,
+            };
+
+            console.log('Item to be added:', item); // Log to check the item data
+
+            try {
+                const response = await fetch(`/cart/create/${userId}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ item: [item] }),
+                });
+
+                const data = await response.json();
+                console.log('Response data:', data); // Log the response to check for errors
+            } catch (error) {
+                console.error('Error while adding item to cart:', error);
+            }
         }
 
         // Call the function to fetch new products and display them
