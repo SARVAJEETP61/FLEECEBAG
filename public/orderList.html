@@ -63,7 +63,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/jwt-decode/build/jwt-decode.min.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
+    document.addEventListener('DOMContentLoaded', () => {
     const token = localStorage.getItem('jwtToken');
 
     if (!token) {
@@ -81,9 +81,8 @@
       }
 
       console.log('Decoded User ID:', userId);
-
-      getNewProducts();
-      getBestProducts();
+      
+      getOrderList();
     } catch (error) {
       console.error('Error decoding JWT token:', error);
       new Throw("please Signup/Login");
@@ -151,16 +150,9 @@
                 orderListElement.appendChild(orderCard);
             });
         }
-        // Call the function to fetch new products and display them
-        getOrderList();
     </script>
 
-    <!-- Footer -->
-    <footer class="bg-light py-4">
-        <div class="container text-center">
-            <p class="text-muted mb-0">© 2025 FleeceBag. All rights reserved.</p>
-        </div>
-    </footer>
+    <div id="footer-container"></div> <!-- FOOTER will be injected here -->
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
