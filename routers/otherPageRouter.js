@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 // import * as controller from '../controllers/otherController.js';
 let otherController = require('../controllers/otherController');
+let cartController = require('../controllers/cartController');
+
 
 
 

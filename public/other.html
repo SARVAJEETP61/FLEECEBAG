@@ -9,38 +9,13 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
   <link rel="stylesheet" href="css/otherPage.css">
-
+  <script src="/controllers/script.js" defer></script>
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-md navbar-light py-3">
-      <div class="container">
-        <a href="index.html"><img src="../images/purse.png" height="25px" style="padding-right: 10px;"></a><a
-          class="navbar-brand d-flex align-items-center" href="index.html"><span>Fleecebag</span></a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navcol-3"
-          aria-controls="navcol-3" aria-expanded="false" aria-label="Toggle navigation"><span
-            class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navcol-3">
-          <ul class="navbar-nav mx-auto">
-            <li class="nav-item"><a class="nav-link" href="men.html">Men</a></li>
-            <li class="nav-item"><a class="nav-link" href="women.html">Women</a></li>
-            <li class="nav-item"><a class="nav-link active" href="other.html">Other</a></li>
-            <li class="nav-item"><a class="nav-link" href="offers.html">Offers</a></li>
-            <li class="nav-item"><a class="nav-link" href="index.html#about">About Us</a></li>
-          </ul>
-          <span>
-            <ul class="navbar-nav mx-auto">
-              <li class="nav-item nav-link"><a href="cart.html"><i class="fa-solid fa-bag-shopping"></i></a></li>
-              <li ><a href="orderlist.html" class="btn waves-effect waves-light">Order List</a></li>
-              <li class="nav-item"><a class="nav-link" href="login.html">Login</a></li>
-              <li class="nav-item nav-link" id="tick">|</li>
-              <li class="nav-item"><a class="nav-link" href="signup.html">Sign Up</a></li>
-            </ul>
-          </span>
-        </div>
-      </div>
-    </nav>
+
+  <div id="header-container"></div> <!-- Header will be injected here -->
+  <script src="/controllers/script.js"></script>
 
   <div class="container-fluid pb-1">
     <div class="row text-center py-2 categories">
@@ -80,12 +55,40 @@
     </div>
   </section>
 
+  <script src="https://cdn.jsdelivr.net/npm/jwt-decode/build/jwt-decode.min.js"></script>
   <script>
+    let userId;
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const token = localStorage.getItem('jwtToken');
+
+      if (!token) {
+        console.error('User is not logged in: No JWT token found');
+        return;
+      }
+
+      try {
+        const decoded = jwt_decode(token);
+        userId = decoded.userId;
+
+        if (!userId) {
+          console.error('User ID not found in token');
+          return;
+        }
+
+        console.log('Decoded User ID:', userId);
+
+        getNewProducts();
+        getBestProducts();
+      } catch (error) {
+        console.error('Error decoding JWT token:', error);
+      }
+    });
+
     const api_baseURL = 'http://localhost:8080';
 
     async function getNewProducts() {
       try {
-        
         const response = await fetch(`${api_baseURL}/otheritem/new`);
 
         if (response.ok) {
@@ -107,160 +110,155 @@
 
     async function getBestProducts() {
       try {
-        
         const response = await fetch(`${api_baseURL}/otheritem/bestdeal`);
 
         if (response.ok) {
           const data = await response.json();
 
           if (data.statusCode === 200) {
-            const newProducts = data.data;
-            displayBestProducts(newProducts);
+            const bestProducts = data.data;
+            displayBestProducts(bestProducts);
           } else {
-            console.error('Failed to load new products:', data.message);
+            console.error('Failed to load best selling products:', data.message);
           }
         } else {
           console.error('Failed to fetch from API:', response.statusText);
         }
       } catch (error) {
-        console.error('Error fetching new products:', error);
+        console.error('Error fetching best selling products:', error);
       }
     }
 
-    
     function displayNewProducts(products) {
       const productsListElement = document.getElementById('new-products-list');
-      productsListElement.innerHTML = ''; 
+      productsListElement.innerHTML = '';
 
-      
       products.forEach(product => {
         const productCard = document.createElement('div');
         productCard.classList.add('col', 'mb-5');
+        productCard.addEventListener('click', () => handleProductDetails(product));
 
-        
         productCard.innerHTML = `
-                <div class="col mb-5">
-                    <div class="card h-100">
-                    <!-- New badge-->
-                    <div class="badge bg-info text-white position-absolute" style="top: 0.5rem; right: 0.5rem">New</div>
-                    <!-- Product image-->
-                    <img class="card-img-top" src="${product.image}" alt="${product.name}">
-                    <!-- Product details-->
-                    <div class="card-body p-4">
-                        <div class="text-center">
-                            <!-- Product name-->
-                            <h5 class="fw-bolder">${product.name}</h5>
-                            <!-- Product price-->
-                            <p class="price">₹${product.discountedPrice}</p>
-                        </div>
-                    </div>
-                    <!-- Product actions-->
-                    <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                        <div class="text-center">
-                            <a class="btn btn-outline-dark mt-auto" href="#">Add to cart</a>
-                        </div>
-                    </div>
-                </div>
-                </div>
-                `;
-
-        
+          <div class="card h-100">
+            <div class="badge bg-info text-white position-absolute" style="top: 0.5rem; right: 0.5rem">New</div>
+            <img class="card-img-top" src="${product.image}" alt="${product.name}">
+            <div class="card-body p-4">
+              <div class="text-center">
+                <h5 class="fw-bolder">${product.name}</h5>
+                <p class="price">₹${product.discountedPrice}</p>
+              </div>
+            </div>
+            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+              <div class="text-center">
+                <a class="btn btn-outline-dark mt-auto" onclick="event.stopPropagation(); addProductToCart(product)">Add to cart</a>
+              </div>
+            </div>
+          </div>
+        `;
         productsListElement.appendChild(productCard);
       });
     }
 
-    
     function displayBestProducts(products) {
-      const bestproductsListElement = document.getElementById('best-products-list');
-      bestproductsListElement.innerHTML = ''; 
+      const productsListElement = document.getElementById('best-products-list');
+      productsListElement.innerHTML = '';
 
-      
       products.forEach(product => {
         const productCard = document.createElement('div');
         productCard.classList.add('col', 'mb-5');
+        productCard.addEventListener('click', () => handleProductDetails(product));
 
-       
         productCard.innerHTML = `
-                <div class="col mb-5">
-                    <div class="card h-100">
-                    <!-- New badge-->
-                    <div class="badge bg-warning text-dark position-absolute" style="top: 0.5rem; right: 0.5rem">Sale</div>
-                    <!-- Product image-->
-                    <img class="card-img-top" src="${product.image}" alt="${product.name}">
-                    <!-- Product details-->
-                    <div class="card-body p-4">
-                        <div class="text-center">
-                            <!-- Product name-->
-                            <h5 class="fw-bolder">${product.name}</h5>
-                            <!-- Product price-->
-                            <span class="text-muted text-decoration-line-through">₹${product.discountedPrice}</span>
-                            <!-- Product price-->
-                            <p class="price">₹${product.price}</p>
-                        </div>
-                    </div>
-                    <!-- Product actions-->
-                    <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                        <div class="text-center">
-                            <a class="btn btn-outline-dark mt-auto" href="#">Add to cart</a>
-                        </div>
-                    </div>
-                </div>
-                </div>
-                `;
-
-        
-        bestproductsListElement.appendChild(productCard);
+          <div class="card h-100">
+            <div class="badge bg-warning text-dark position-absolute" style="top: 0.5rem; right: 0.5rem">Sale</div>
+            <img class="card-img-top" src="${product.image}" alt="${product.name}">
+            <div class="card-body p-4">
+              <div class="text-center">
+                <h5 class="fw-bolder">${product.name}</h5>
+                <span class="text-muted text-decoration-line-through">₹${product.discountedPrice}</span>
+                <p class="price">₹${product.price}</p>
+              </div>
+            </div>
+            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+              <div class="text-center">
+                <a class="btn btn-outline-dark mt-auto" onclick="event.stopPropagation(); addProductToCart(product)">Add to cart</a>
+              </div>
+            </div>
+          </div>
+        `;
+        productsListElement.appendChild(productCard);
       });
     }
 
-    
-    getNewProducts();
-    getBestProducts();
+    async function addProductToCart(product) {
+      const token = localStorage.getItem('jwtToken');
+
+      if (!token) {
+        alert("You need to be logged in to add items to the cart.");
+        window.location.href = "/login.html";
+        return;
+      }
+
+      try {
+        const decodedToken = jwt_decode(token);
+        const userId = decodedToken.userId;
+
+        // Log the request to check what data is being sent
+        console.log("Adding to cart with payload:", {
+          userId,
+          productId: product._id,
+          name: product.name,
+          price: product.price,
+          quantity: 1,
+          image: product.image,
+        });
+
+        const response = await fetch(`${api_baseURL}/cart/create/${userId}`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            productId: product._id,
+            name: product.name,
+            price: product.price,
+            quantity: 1,
+            image: product.image,
+          }),
+        });
+
+        if (response.ok) {
+          alert("Product added to cart successfully!");
+        } else {
+          const errorData = await response.json();
+          console.error("Error adding product to cart:", errorData.message);
+        }
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    }
+
+    function handleProductDetails(product) {
+      console.log("Handling Product Details:", product);
+
+      const queryParams = new URLSearchParams({
+        id: product._id,
+        name: product.name,
+        type: product.type,
+        discount: product.discount,
+        price: product.price,
+        discountedPrice: product.discountedPrice,
+        isNew: product.isNew,
+        isInOffer: product.isInOffer,
+        isItBestDeal: product.isItBestDeal,
+        image: product.image
+      });
+
+      window.location.href = `productDetail.html?${queryParams.toString()}`;
+    }
   </script>
 
-  <footer>
-    <div class="container py-4 pt-5">
-      <div class="row justify-content-center">
-        <div class="col-sm-4 col-md-3 text-center text-lg-start d-flex flex-column item">
-          <h3 class="fs-6">About</h3>
-          <ul class="list-unstyled">
-            <li><a href="#">Terms & Conditions</a></li>
-            <li><a href="#">FAQs</a></li>
-          </ul>
-          <h3 class="fs-6">Contact Us</h3>
-          <ul class="list-unstyled">
-            <li><a style="color: #E5989B;" href="#">support@fleecebag.in</a></li>
-          </ul>
-        </div>
-        <div class="col-sm-4 col-md-3 text-center text-lg-start d-flex flex-column item">
-          <h3 class="fs-6">Customer Service</h3>
-          <ul class="list-unstyled">
-            <li><a href="#" style="color:#2c5364; font-weight: 600;">Track Order</a></li>
-            <li><a href="#">Return Policy</a></li>
-            <li><a href="#">Privacy Policy</a></li>
-            <li><a href="#">Shipping Information</a></li>
-          </ul>
-        </div>
-        <div
-          class="col-lg-3 text-center text-lg-start d-flex flex-column align-items-center order-first align-items-lg-start order-lg-last item social">
-          <div class="fw-bold d-flex align-items-center mb-2"><img src="../images/purse.png" height="25px"
-              style="padding-right: 10px;"></span><span>Fleecebag</span></div>
-          <p class="text-muted copyright">Think Once, Think Twice, Think Bags</p>
-          <h3 class="fs-6 mt-3">Follow Us</h3>
-          <ul class="social mb-0 list-inline">
-            <li class="list-inline-item"><a class="social-link"><i class="fa-brands fa-facebook-f"></i></a></li>
-            <li class="list-inline-item"><a class="social-link"><i class="fa-brands fa-instagram"></i></a></li>
-            <li class="list-inline-item"><a class="social-link"><i class="fa-brands fa-twitter"></i></a>
-            </li>
-          </ul>
-        </div>
-      </div>
-      <hr>
-      <div class="d-flex justify-content-around align-items-center pt-3">
-        <p class="text-muted text-uppercase mb-0">Copyright © 2022 All Rights Reserved</p>
-      </div>
-    </div>
-  </footer>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"></script>

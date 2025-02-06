@@ -5,19 +5,19 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <title>Fleecebag</title>
-    <link rel="icon" href="/images/purse.png">
+    <link rel="icon" href="assets/img/purse.png">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/login.css">
     <script src="https://www.gstatic.com/firebasejs/9.17.2/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.17.2/firebase-auth.js"></script>
-    <link rel="stylesheet" href="/css/style.css">
-    <link rel="stylesheet" href="/css/login.css">
 
 </head>
 
 <body style="background: linear-gradient(to left, #0f2027, #203a43, #2c5364);">
     <nav class="navbar navbar-expand-md py-3">
-        <div class="container"><a href="index.html"><img src="/images/purse.png" height="25px"
+        <div class="container"><a href="index.html"><img src="assets/img/purse.png" height="25px"
                     style="padding-right: 10px;"></a><a class="navbar-brand d-flex align-items-center text-light"
                 href="index.html"><span>Fleecebag</span></a><button class="navbar-toggler" type="button"
                 data-bs-toggle="collapse" data-bs-target="#navcol-3" aria-controls="navcol-3" aria-expanded="false"
@@ -49,34 +49,43 @@
         <div class="body d-md-flex align-items-center justify-content-between"
             style="background-color: #f2f2f2;border: 1px solid #dddd;">
             <div class="box-1 mt-md-0 mt-5">
-                <img src="/images/signup.png" class="img-fluid">
+                <img src="assets/img/signup.png" class="img-fluid">
             </div>
             <div class=" box-2 d-flex flex-column h-100 text-center">
                 <div class="mt-5">
                     <p class="mb-1 h-1">Sign Up</p>
                     <p class="text-muted mb-4">Sign Up to start shopping.</p>
                     <!-- Email Signup Form -->
-                    <form id="signupForm" action="/admin/signup" method="POST">
+                    <form id="signupForm" action="/admin/signup" method="POST" style="max-width: 400px; margin: auto;">
+                        <h2 style="text-align: center; margin-bottom: 20px;">Create Your Account</h2>
                         <div class="form-group" style="margin-bottom: 15px;">
-                            <div class="email"><input type="email" id="signupEmail" class="email" name="email"
-                                    placeholder="Enter your email" required /></div>
-                            <small class="text-danger" id="emailSignupError" style="display: none;">Please enter a valid
-                                email address.</small>
+                            <label for="signupEmail" style="font-weight: bold;">Email Address</label>
+                            <input type="email" id="signupEmail" class="form-control" name="email"
+                                placeholder="Enter your email" required style="margin-top: 5px;" />
+                            <small class="text-danger" id="emailSignupError" style="display: none;">
+                                Please enter a valid email address.
+                            </small>
                         </div>
-                        <div class="form-group">
-                            <div class="password"><input type="password" id="signupPassword" name="password"
-                                    placeholder="Enter a strong password" required /></div>
-                            <small class="text-danger" id="passwordSignupError" style="display: none;">Password must be
-                                strong.</small>
-                            <div id="passwordGuidelines" class="text-muted" style="display: block;font-size: xx-small">
+                        <div class="form-group" style="margin-bottom: 15px;">
+                            <label for="signupPassword" style="font-weight: bold;">Password</label>
+                            <input type="password" id="signupPassword" class="form-control" name="password"
+                                placeholder="Enter a strong password" required style="margin-top: 5px;" />
+                            <small class="text-danger" id="passwordSignupError" style="display: none;">
+                                Password must be strong.
+                            </small>
+                            <div id="passwordGuidelines" class="text-muted"
+                                style="font-size: xx-small; margin-top: 5px;">
                                 Password must be at least 8 characters long and include uppercase letters, lowercase
                                 letters, numbers, and special characters.
                             </div>
                         </div>
                         <div id="signupServerError" style="display: none; color: red; margin-bottom: 10px;"></div>
-                        <button type="submit" id="signupButton" class="btn btn-primary" style="margin-top:20px">Sign
-                            Up</button>
+                        <button type="submit" id="signupButton" class="btn btn-primary btn-block"
+                            style="margin-top: 20px; width: 100%;">
+                            Sign Up
+                        </button>
                     </form>
+
                     <!-- Social Login Options -->
                     <div class="d-flex flex-column mt-5">
                         <p class="text-muted mb-1">Or continue with...</p>
@@ -142,7 +151,7 @@
                 </div>
                 <div
                     class="col-lg-3 text-center text-lg-start d-flex flex-column align-items-center order-first align-items-lg-start order-lg-last item social">
-                    <div class="fw-bold d-flex align-items-center mb-2"><img src="/images/purse.png" height="25px"
+                    <div class="fw-bold d-flex align-items-center mb-2"><img src="assets/img/purse.png" height="25px"
                             style="padding-right: 10px;"></span><span>Fleecebag</span></div>
                     <p class="text-muted copyright">Think Once, Think Twice, Think Bags</p>
                     <h3 class="fs-6 mt-3">Follow Us</h3>
@@ -192,11 +201,11 @@
             }
 
             // Validate strong password
-            const strongPasswordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+            const strongPasswordRegex = /^(?=.[a-z])(?=.[A-Z])(?=.\d)(?=.[@$!%?&])[A-Za-z\d@$!%?&]{8,}$/;
             if (!strongPasswordRegex.test(passwordInput.value)) {
                 passwordError.style.display = 'block';
                 passwordError.textContent = 'Password must meet the required strength criteria.';
-                isValid = false;
+                //isValid = false;
             }
 
             if (!isValid) {
@@ -229,7 +238,9 @@
                 }
 
                 // Redirect to homepage on success
-                window.location.href = '/index.html';
+                window.location.href = '/login.html';
+                submitButton.disabled = false;
+                submitButton.textContent = 'Submit';
             } catch (error) {
                 console.error('Error during signup:', error);
                 serverError.textContent = 'An unexpected error occurred. Please try again later.';
