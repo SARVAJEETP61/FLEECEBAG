@@ -7,7 +7,7 @@ let router = require ('./routers/router.js');
 let otherPageRouter = require ('./routers/otherPageRouter.js'); // Ensure your router file uses ES modules
 let client = require('./dbConnection.js');
 let Offer = require ('./controllers/offersController.js');
-let authRoutes = require('./routes/authRoutes');
+// let authRoutes = require('./routes/authRoutes');
 
 
 const app = express();
@@ -28,7 +28,7 @@ app.use('/img', express.static(path.join(__dirname, 'img')));
 // Use the router for '/admin' routes
 app.use('/', router);
 app.use('/', otherPageRouter);
-app.use('/auth', authRoutes);
+// app.use('/auth', authRoutes);
 
 // Dynamic route to serve HTML files in the subpages folder
 app.get('/subpages/:folder/:file.html', (req, res) => {
