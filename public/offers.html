@@ -158,65 +158,96 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/egjs-agent/2.4.3/agent.min.js"></script>
         <script src="script.js"></script>
         
+                    
+            <script>
+                const api_baseURL = 'http://localhost:8080';
                 
-        <script>
-            const api_baseURL = 'http://localhost:8080';
-            
-            async function fetchProductData() {
+                async function fetchProductData() {
+                    
+                try {
+                        const response = await fetch(`${api_baseURL}/offers`);
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
                 
-             try {
-                    const response = await fetch(`${api_baseURL}/offers`);
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-            
-                 }
-                const data = await response.json();
-
-                 if (data.statusCode === 200 && data.data) {
-                    renderProducts(data.data);
-                } else {
-                    console.error("Failed to load data:", data.message || "Unknown error");
-                }
-             } catch (error) {
-                    console.error("Error fetching data:", error);
-                }
-            }
-
-
-            function renderProducts(products) {
-                const schoolBagsTable = document.getElementById('school-bags');
-                const toteBagsTable = document.getElementById('tote-bags');
-                const travelBagsTable = document.getElementById('travel-bags');
-
-                schoolBagsTable.innerHTML = '';
-                toteBagsTable.innerHTML = '';
-                travelBagsTable.innerHTML = '';
-
-                products.forEach(product => {
-                    const productHTML = `
-                        <td class="product-column">
-                            <div class="product">
-                                <img src="${product.image}" alt="${product.name}" style="width: 300px; height: 300px; object-fit: cover; border-radius: 5px;">
-                                 <h3>${product.name}</h3>
-                                <span class="text-muted text-decoration-line-through">$${product.Price || product.price}</span>
-                                <p>$${product.discountedPrice || product.price}</p>
-                                <a href="offers.html"><button>Add to Cart</button></a>
-                            </div>
-                        </td>
-                    `;
-
-                    if (product.type === 'schoolBag') {
-                        schoolBagsTable.innerHTML += productHTML;
-                    } else if (product.type === 'toteBag') {
-                        toteBagsTable.innerHTML += productHTML;
-                    }else if (product.type === 'travelBag') {
-                        travelBagsTable.innerHTML += productHTML;
                     }
-                });
-            }
+                    const data = await response.json();
 
-            window.onload = fetchProductData;
-        </script>    
+                    if (data.statusCode === 200 && data.data) {
+                        renderProducts(data.data);
+                    } else {
+                        console.error("Failed to load data:", data.message || "Unknown error");
+                    }
+                } catch (error) {
+                        console.error("Error fetching data:", error);
+                    }
+                }
+
+
+                function renderProducts(products) {
+                    const schoolBagsTable = document.getElementById('school-bags');
+                    const toteBagsTable = document.getElementById('tote-bags');
+                    const travelBagsTable = document.getElementById('travel-bags');
+
+                    schoolBagsTable.innerHTML = '';
+                    toteBagsTable.innerHTML = '';
+                    travelBagsTable.innerHTML = '';
+
+                    products.forEach(product => {
+                        const productHTML = `
+                            <td class="product-column">
+                                <div class="product">
+                                    <img src="${product.image}" alt="${product.name}" style="width: 300px; height: 300px; object-fit: cover; border-radius: 5px;">
+                                    <h3>${product.name}</h3>
+                                    <span class="text-muted text-decoration-line-through">$${product.Price || product.price}</span>
+                                    <p>$${product.discountedPrice || product.price}</p>
+                                    
+                                    
+                                </div>
+
+                                <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                                    <div class="text-center">
+                                        <a class="btn btn-outline-dark mt-auto" href="offers.html">Add to cart</a>
+                                    </div>
+                                </div>
+                            </td>
+                        `;
+
+                        if (product.type === 'schoolBag') {
+                            schoolBagsTable.innerHTML += productHTML;
+                        } else if (product.type === 'toteBag') {
+                            toteBagsTable.innerHTML += productHTML;
+                        }else if (product.type === 'travelBag') {
+                            travelBagsTable.innerHTML += productHTML;
+                        }
+                    });
+                }
+
+                window.onload = fetchProductData;
+            </script>   
+
+            <style>
+                @media screen and (max-width: 768px) {
+                    .product-column {
+                         width: 50%;
+                    }
+
+                 table {
+                     font-size: 14px;
+                        /* Adjust font size on smaller screens */
+                    }
+                }
+
+                @media screen and (max-width: 480px) {
+                    .product-column {
+                        width: 100%;
+                        /* Full width for product columns on very small screens */
+                        display: block;
+                    }
+                }
+
+            </style>
+        
+    
 </body>
 
 </html>
