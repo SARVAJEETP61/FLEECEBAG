@@ -1,10 +1,9 @@
-let express = require('express');
 
-
-
-let { Server } = require('socket.io');
-let path = require('path');
-let { fileURLToPath } = require('url');
+let express =  require('express');
+// let http = require ('http');
+let { Server } = require ('socket.io');
+let path = require ('path');
+let { fileURLToPath } = require ('url');
 let client = require('./dbConnection.js');
 let userrouter = require('./routers/userrouter');
 let Offer = require('./controllers/offersController.js');
@@ -29,6 +28,8 @@ app.use(express.urlencoded({ extended: false }));
 app.use('/img', express.static(path.join(__dirname, 'img')));
 
 
+// Dynamic route to serve HTML files in the subpages folder
+
 app.get('/subpages/:folder/:file.html', (req, res) => {
     const { folder, file } = req.params;
     const filePath = path.join(__dirname, 'subpages', folder, `${file}.html`);
@@ -51,17 +52,16 @@ let cartPageRouter = require('./routers/cartPageRouter');
 
 const http = require('http').Server(app);
 
+// var port = 8080;
 require('./dbConnection');
 
 app.use('/', router);
-
-
 
 app.use(menRouter);
 app.use(userrouter);
 app.use(womenRouter);
 app.use('/', otherPageRouter);
-app.use(orderPageRouter);
+app.use('/',orderPageRouter);
 app.use('/controllers', express.static(path.join(__dirname, 'controllers')));
 app.use('/partials', express.static(path.join(__dirname, 'partials')));
 app.use('/subpages', express.static(path.join(__dirname, 'subpages')));
@@ -135,4 +135,6 @@ app.post('/api/cart', async (req, res) => {
 
 http.listen(port, () => {
     console.log('Express server started on port :' + port);
+    //dbConnection();
+    //console.log('DB connection successful!');
 });

@@ -5,21 +5,21 @@ let orderController = require('../controllers/orderController');
 router.post('/order/add', (req, res) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, application/json;charset=UTF-8');
+    orderController.addOrderApi(req, res);
+});
+
+router.post('/orderlist', (req, res) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, application/json;charset=UTF-8');
     orderController.getOrderListApi(req, res);
 });
 
-router.get('/order/list', (req, res) => {
+router.post('/order', (req, res) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-    orderController.getOrderListApi(req, res);
-});
-
-router.get('/order', (req, res) => {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, application/json;charset=UTF-8');
     orderController.getOrderApi(req, res);
 });
 
