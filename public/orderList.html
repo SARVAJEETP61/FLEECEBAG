@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
     <link rel="stylesheet" href="css/otherPage.css">
+    <script src="/controllers/script.js" defer></script>
     <style>
         /* Styling for horizontal list view */
         .order-item {
@@ -50,33 +51,7 @@
 </head>
 
 <body>
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-md navbar-light py-3">
-        <div class="container">
-            <a href="index.html"><img src="../images/purse.png" height="25px" style="padding-right: 10px;"></a><a
-                class="navbar-brand d-flex align-items-center" href="index.html"><span>Fleecebag</span></a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navcol-3"
-                aria-controls="navcol-3" aria-expanded="false" aria-label="Toggle navigation"><span
-                    class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navcol-3">
-                <ul class="navbar-nav mx-auto">
-                    <li class="nav-item"><a class="nav-link" href="men.html">Men</a></li>
-                    <li class="nav-item"><a class="nav-link" href="women.html">Women</a></li>
-                    <li class="nav-item"><a class="nav-link" href="other.html">Other</a></li>
-                    <li class="nav-item"><a class="nav-link" href="offers.html">Offers</a></li>
-                    <li class="nav-item"><a class="nav-link" href="index.html#about">About Us</a></li>
-                </ul>
-                <ul class="navbar-nav">
-                    <li class="nav-item"><a href="cart.html"><i class="fa-solid fa-bag-shopping me-3"></i></a></li>
-                    <li class="nav-item"><a href="orderlist.html" class="btn btn-primary me-3">Order List</a></li>
-                    <li class="nav-item"><a class="nav-link" href="login.html">Login</a></li>
-                    <li class="nav-item nav-link">|</li>
-                    <li class="nav-item"><a class="nav-link" href="signup.html">Sign Up</a></li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+    <div id="header-container"></div> <!-- Header will be injected here -->
 
     <!-- Page Content -->
     <div class="container my-5">
@@ -86,8 +61,34 @@
         </div>
     </div>
 
-
+    <script src="https://cdn.jsdelivr.net/npm/jwt-decode/build/jwt-decode.min.js"></script>
     <script>
+        document.addEventListener('DOMContentLoaded', () => {
+    const token = localStorage.getItem('jwtToken');
+
+    if (!token) {
+      console.error('User is not logged in: No JWT token found');
+      return;
+    }
+
+    try {
+      const decoded = jwt_decode(token);
+      userId = decoded.userId;
+
+      if (!userId) {
+        console.error('User ID not found in token');
+        return;
+      }
+
+      console.log('Decoded User ID:', userId);
+
+      getNewProducts();
+      getBestProducts();
+    } catch (error) {
+      console.error('Error decoding JWT token:', error);
+      new Throw("please Signup/Login");
+    }
+  });
         const api_baseURL = 'http://localhost:8080';
   
         async function getOrderList() {
@@ -98,7 +99,7 @@
                             Accept: 'application/json',
                                     'Content-Type': 'application/json',
                             },
-                        body:JSON.stringify({"userId" :"679721a86d0a6e561ea2ebba"})
+                        body:JSON.stringify({"userId" :userId})
                             
                 };
                 // Make a request to the API
