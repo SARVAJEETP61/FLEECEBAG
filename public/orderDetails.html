@@ -181,6 +181,9 @@
   const api_baseURL = 'http://localhost:8080';
   
         async function getOrderData() {
+            // Get query parameters from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const orderId = urlParams.get('orderId');
             try {
                 const API_data = {
                         method: 'POST',
@@ -188,7 +191,7 @@
                             Accept: 'application/json',
                                     'Content-Type': 'application/json',
                             },
-                        body:JSON.stringify({"userId" :userId,"orderId":"6245776881738727646523"})
+                        body:JSON.stringify({"userId" :userId,"orderId":orderId})
                             
                 };
                 // Make a request to the API
