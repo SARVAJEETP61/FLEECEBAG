@@ -206,7 +206,7 @@
                             submitButton.textContent = 'Login';
                             return;
                         }
-
+                        
                         if (data.token) {
                             localStorage.setItem('jwtToken', data.token);
                             window.location.href = '/index.html';
