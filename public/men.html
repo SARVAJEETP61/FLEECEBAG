@@ -155,29 +155,6 @@
     <script>
         const api_baseURL = 'http://localhost:8080';
 
-        document.addEventListener('DOMContentLoaded', () => {
-            const token = localStorage.getItem('jwtToken');
-
-            if (!token) {
-                console.error('User is not logged in: No JWT token found');
-                return;
-            }
-
-            try {
-                const decoded = jwt_decode(token);
-                userId = decoded.userId;
-
-                if (!userId) {
-                    console.error('User ID not found in token');
-                    return;
-                }
-
-                console.log('Decoded User ID:', userId);
-            } catch (error) {
-                console.error('Error decoding JWT token:', error);
-            }
-        });
-
         async function getNewProducts() {
             try {
                 // Make a request to the API
@@ -222,56 +199,6 @@
             }
         }
 
-        async function addToCart(product) {
-            console.log(product, "product")
-            const token = localStorage.getItem('jwtToken');
-
-            if (!token) {
-                alert("You need to be logged in to add items to the cart.");
-                window.location.href = "https://localhost:8080/login.html";
-                return;
-            }
-
-            try {
-                const decodedToken = jwt_decode(token);
-                const userId = decodedToken.userId;
-
-                // Log the request to check what data is being sent
-                console.log("Adding to cart with payload:", {
-                    userId,
-                    productId: product._id,
-                    name: product.name,
-                    price: product.price,
-                    quantity: 1,
-                    image: product.image[0],
-                });
-
-                const response = await fetch(`${api_baseURL}/cart/create/${userId}`, {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        Authorization: `Bearer ${token}`,
-                    },
-                    body: JSON.stringify({
-                        productId: product._id,
-                        name: product.name,
-                        price: product.price,
-                        quantity: 1,
-                        image: product.image[0],
-                    }),
-                });
-
-                if (response.ok) {
-                    alert("Product added to cart successfully!");
-                } else {
-                    const errorData = await response.json();
-                    console.error("Error adding product to cart:", errorData.message);
-                }
-            } catch (error) {
-                console.error("Error:", error);
-            }
-        }
-
         // Function to display the new products in HTML
         function displayNewProducts(products) {
             const productsListElement = document.getElementById('new-products-list');
@@ -309,7 +236,10 @@
 
                         <!-- Product Actions -->
                         <div class="card-footer p-3 bg-light border-top d-flex">
-                            <button class="btn btn-outline-dark btn-sm" onclick= ${addToCart(product)} >Add to Cart</button>
+                           <button class="btn btn-outline-dark btn-sm" 
+    onclick="addToCart('${product._id}', '${product.name}', '${product.type}','${product.price}','${product.discountedPrice}', '${product.image[0]}')">
+    Add to Cart
+</button>
                             <a class="btn btn-dark btn-sm" href="#">Buy Now</a>
                         </div>
                         
@@ -360,7 +290,10 @@
 
                             <!-- Product Actions -->
                             <div class="card-footer p-3 bg-light border-top d-flex">
-                                <button class="btn btn-outline-dark btn-sm" onclick= ${addToCart(product)} >Add to Cart</button>
+                               <button class="btn btn-outline-dark btn-sm" 
+    onclick="addToCart('${product._id}', '${product.name}', '${product.type}','${product.price}','${product.discountedPrice}', '${product.image[0]}')">
+    Add to Cart
+</button>
                                 <a class="btn btn-dark btn-sm" href="#">Buy Now</a>
                             </div>
                         </div>
@@ -378,55 +311,66 @@
     </script>
 
     <script>
-        async function addToCart(product) {
-            console.log(product, "product")
+        const baseURL = 'http://localhost:8080';
+
+        async function addToCart(id, name, type, price, disPrice, image) {
             const token = localStorage.getItem('jwtToken');
 
             if (!token) {
-                alert("You need to be logged in to add items to the cart.");
-                window.location.href = "https://localhost:8080/login.html";
+                console.error('No JWT token found. User must log in.');
                 return;
             }
 
-            try {
-                const decodedToken = jwt_decode(token);
-                const userId = decodedToken.userId;
+            else {
+                const userId = "679721a86d0a6e561ea2ebba";
 
-                // Log the request to check what data is being sent
-                console.log("Adding to cart with payload:", {
-                    userId,
-                    productId: product._id,
-                    name: product.name,
-                    price: product.price,
-                    quantity: 1,
-                    image: product.image[0],
-                });
+                
+                const payload = {
+                    userId: userId,
+                    item: [
+                        {
+                            item_id: id,
+                            name: name,
+                            type: type, 
+                            discount: 10,
+                            price: price,
+                            quantity: 1,
+                            discountedPrice: disPrice,
+                            totalPrice: disPrice,
+                            isNew: true,
+                            isInOffer: true,
+                            isItBestDeal: true,
+                            image: "https://cdn.tagbox.io/assets/678888f7a490830011136b10/58d0d055-7a00-4845-85f2-53514b5016c0---img6.jpg"
+                        }
+                    ],
+                    totalPrice: disPrice,
+                    totalShippingCharge: 20,
+                    orderStatus: "awaiting_for_confirmation"
+                };
 
-                const response = await fetch(`${api_baseURL}/cart/create/${userId}`, {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        Authorization: `Bearer ${token}`,
-                    },
-                    body: JSON.stringify({
-                        productId: product._id,
-                        name: product.name,
-                        price: product.price,
-                        quantity: 1,
-                        image: product.image[0],
-                    }),
-                });
+                try {
+                    const response = await fetch(`${baseURL}/cart/create/${userId}`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${token}`
+                        },
+                        body: JSON.stringify(payload)
+                    });
 
-                if (response.ok) {
-                    alert("Product added to cart successfully!");
-                } else {
-                    const errorData = await response.json();
-                    console.error("Error adding product to cart:", errorData.message);
+                    const data = await response.json();
+
+                    if (response.ok) {
+                        alert('Item added to cart successfully!');
+                    } else {
+                        console.error('Failed to add to cart:', data.message);
+                    }
+                } catch (error) {
+                    console.error('Error while adding item to cart:', error);
                 }
-            } catch (error) {
-                console.error("Error:", error);
             }
         }
+
     </script>
 
     <footer>
