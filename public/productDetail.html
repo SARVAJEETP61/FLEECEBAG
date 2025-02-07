@@ -25,9 +25,11 @@
             <img id="productImage" class="product-image" src="" alt="Product Image">
             <h2 id="productName" class="text-center"></h2>
             <div class="product-info">
-                <p id="productPrice" class="fw-bold">$1000</p>
-                <p id="productDescription" class="text-muted">Product description goes here</p>
+                <p id="productDiscountedPrice" class="fw-bold">$1000</p>
+
             </div>
+            <p id="staticDescription"></p>
+
             <br>
             <div class="button-container">
                 <a class="btn btn-outline-dark mt-auto" onclick=" handleAddToCart()">Add to
@@ -71,6 +73,7 @@
             const item_id = urlParams.get('id');
             const productName = urlParams.get('name');
             const productType = urlParams.get('type');
+            const productColor = urlParams.get('color'); // Ensure this line i
             const productDiscount = urlParams.get('discount');
             const productPrice = urlParams.get('price');
             const productDiscountedPrice = urlParams.get('discountedPrice');
@@ -84,150 +87,194 @@
             // Update the DOM with the product details
             document.getElementById('productName').textContent = productName || "Product name not found.";
             document.getElementById('productImage').src = productImage || "default_image.jpg"; // Fallback image
-            document.getElementById('productDescription').textContent = `Discount: ${productDiscount || "N/A"}%`;
-            document.getElementById('productPrice').textContent = `Price: $${productDiscountedPrice || productPrice || "N/A"}`;
-        });
-        function handleAddToCart() {
-            const token = localStorage.getItem('jwtToken'); // Check if user is logged in
+            // document.getElementById('productDescription').textContent = `Discount: -${productDiscount || "N/A"}`;
+            // document.getElementById('productDiscountedPrice').textContent = `Price: $${productDiscountedPrice || productPrice || "N/A"}`;
+            document.getElementById('productDiscountedPrice').innerHTML = `
+    <span class="text-muted text-decoration-line-through">Was: ₹${productPrice || "N/A"}</span>
+    <p class="price">Now: ₹${productDiscountedPrice || productPrice || "N/A"}</p>
 
+
+            `;
+            const colorText = productColor ? `This product is available in a stunning ${productColor} color.` : 'Color information not available.';
+            const typeText = productType ? `Crafted for those who value both style and utility, this ${productType} is designed to complement your daily lifestyle.` : 'Type information not available.';
+
+            const detailedDescription = `
+    Discover the premium ${productName || 'product'} crafted for excellence. 
+    Available in a sleek variety of colors, this versatile ${productType || 'item'} blends style and functionality seamlessly.
+`;
+            document.getElementById('staticDescription').textContent = detailedDescription;
+        });
+
+        async function handleAddToCart() {
+            const token = localStorage.getItem('jwtToken');
             if (!token) {
                 alert("You need to be logged in to add items to the cart.");
-                window.location.href = "/login.html"; // Redirect to login page
+                window.location.href = "/login.html";
                 return;
             }
 
-            // Extract product details from URL parameters
+            // Get product details from URL
             const urlParams = new URLSearchParams(window.location.search);
             const item_id = urlParams.get('id');
             const productName = urlParams.get('name');
-            const productType = urlParams.get('type');
-            const productDiscount = urlParams.get('discount');
-            const productPrice = urlParams.get('price');
-            const productDiscountedPrice = urlParams.get('discountedPrice');
-            const productIsNew = urlParams.get('isNew');
-            const productIsInOffer = urlParams.get('isInOffer');
-            const productIsBestDeal = urlParams.get('isItBestDeal');
+            const productPrice = parseFloat(urlParams.get('price')); // Ensure price is a number
             const productImage = urlParams.get('image');
+            const discountedPrice = parseFloat(urlParams.get('discountedPrice')) || productPrice;
+            const shippingCharge = parseFloat(urlParams.get('shippingCharge')) || 10; // Default charge
 
-            // Get userId from JWT token (decode token)
             let userId;
             try {
-                const decoded = jwt_decode(token); // Decoding the JWT token
+                const decoded = jwt_decode(token);
                 userId = decoded.userId;
             } catch (error) {
                 console.error("Error decoding JWT token:", error);
                 return;
             }
 
-            // Create the cart item object
-            const cartItem = {
-                userId, // Add userId here
-                item_id,
-                name: productName,
-                type: productType,
-                discount: productDiscount,
-                price: productPrice,
-                discountedPrice: productDiscountedPrice,
-                isNew: productIsNew === 'true', // Convert to boolean
-                isInOffer: productIsInOffer === 'true', // Convert to boolean
-                isItBestDeal: productIsBestDeal === 'true', // Convert to boolean
-                image: productImage
-            };
-
-            console.log('Adding to cart:', cartItem);
-
-            // Send the POST request to add the item to the cart
-            fetch('http://localhost:8080/api/cart', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}` // If you are using JWT for authentication
-                },
-                body: JSON.stringify(cartItem)
-            })
-                .then(response => {
-                    if (!response.ok) {
-                        return response.json().then(err => {
-                            console.error('Server response:', err); // Log the server response
-                            throw new Error(err.error || 'Failed to add to cart');
-                        });
+            try {
+                // Step 1: Fetch existing cart data
+                const response = await fetch(`http://localhost:8080/api/cart/${userId}`, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
                     }
-                    return response.json();
-                })
-                .then(data => {
-                    console.log('Product added to cart:', data);
-                    alert('Product added to cart successfully!');
-                })
-                .catch(error => {
-                    console.error('Error adding product to cart:', error);
-                    alert(`Failed to add product to cart: ${error.message}`);
                 });
+
+                if (!response.ok) {
+                    throw new Error("Failed to fetch cart data");
+                }
+
+                const cartData = await response.json();
+
+                // Ensure `items` array exists
+                const cartItems = cartData.items || []; // Default to empty array if undefined
+                let existingItem = cartItems.find(item => item.item_id === item_id);
+
+                if (existingItem) {
+                    // Step 2: Item exists, increase quantity
+                    existingItem.quantity += 1;
+
+                    const updateResponse = await fetch(`http://localhost:8080/api/cart/update/${userId}`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${token}`
+                        },
+                        body: JSON.stringify({
+                            userId,
+                            items: cartItems // Send the updated cart data
+                        })
+                    });
+
+                    if (!updateResponse.ok) {
+                        throw new Error("Failed to update cart quantity");
+                    }
+
+                    alert('Cart quantity updated!');
+                } else {
+                    // Step 3: Item doesn't exist, add new item
+                    const cartItem = {
+                        userId,
+                        items: [
+                            {
+                                item_id,
+                                name: productName,
+                                price: productPrice,
+                                discountedPrice,
+                                image: productImage,
+                                quantity: 1,
+                                shippingCharge
+                            }
+                        ]
+                    };
+
+                    const addResponse = await fetch(`http://localhost:8080/api/cart/create/${userId}`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${token}`
+                        },
+                        body: JSON.stringify(cartItem)
+                    });
+
+                    if (!addResponse.ok) {
+                        throw new Error("Failed to add product to cart");
+                    }
+
+                    alert('Product added to cart successfully!');
+                }
+
+                localStorage.setItem("cartUpdated", "true");
+
+            } catch (error) {
+                alert(`Error: ${error.message}`);
+            }
         }
 
         // function handleAddToCart() {
-        //     const token = localStorage.getItem('jwtToken'); // Check if user is logged in
-
+        //     const token = localStorage.getItem('jwtToken');
         //     if (!token) {
         //         alert("You need to be logged in to add items to the cart.");
-        //         window.location.href = "/login.html"; // Redirect to login page
+        //         window.location.href = "/login.html";
         //         return;
         //     }
 
-        //     // Extract product details from URL parameters
+        //     // Get product details from URL
         //     const urlParams = new URLSearchParams(window.location.search);
-        //     const productId = urlParams.get('id');
+        //     const item_id = urlParams.get('id');
         //     const productName = urlParams.get('name');
-        //     const productType = urlParams.get('type');
-        //     const productDiscount = urlParams.get('discount');
-        //     const productPrice = urlParams.get('price');
-        //     const productDiscountedPrice = urlParams.get('discountedPrice');
-        //     const productIsNew = urlParams.get('isNew');
-        //     const productIsInOffer = urlParams.get('isInOffer');
-        //     const productIsBestDeal = urlParams.get('isItBestDeal');
+        //     const productPrice = parseFloat(urlParams.get('price')); // Ensure price is a number
         //     const productImage = urlParams.get('image');
+        //     const discountedPrice = parseFloat(urlParams.get('discountedPrice')) || productPrice;
+        //     const shippingCharge = parseFloat(urlParams.get('shippingCharge')) || 10; // Default charge
 
-        //     // Create the cart item object
+        //     let userId;
+        //     try {
+        //         const decoded = jwt_decode(token);
+        //         userId = decoded.userId;
+        //     } catch (error) {
+        //         console.error("Error decoding JWT token:", error);
+        //         return;
+        //     }
+
         //     const cartItem = {
-        //         productId,
-        //         name: productName,
-        //         type: productType,
-        //         discount: productDiscount,
-        //         price: productPrice,
-        //         discountedPrice: productDiscountedPrice,
-        //         isNew: productIsNew === 'true', // Convert to boolean
-        //         isInOffer: productIsInOffer === 'true', // Convert to boolean
-        //         isItBestDeal: productIsBestDeal === 'true', // Convert to boolean
-        //         image: productImage
+        //         userId,
+        //         items: [
+        //             {
+        //                 item_id,
+        //                 name: productName,
+        //                 price: productPrice,
+        //                 discountedPrice,
+        //                 image: productImage,
+        //                 quantity: 1,
+        //                 shippingCharge
+        //             }
+        //         ]
         //     };
-        //     console.log('Adding to cart:', cartItem);
 
-        //     // Send the POST request to add the item to the cart
-        //     fetch('http://localhost:8080/api/cart', {
+        //     fetch(`http://localhost:8080/api/cart/create/${userId}`, { // ✅ Fixed URL
         //         method: 'POST',
         //         headers: {
         //             'Content-Type': 'application/json',
-        //             'Authorization': `Bearer ${token}` // If you are using JWT for authentication
+        //             'Authorization': `Bearer ${token}`
         //         },
         //         body: JSON.stringify(cartItem)
         //     })
-        //         .then(response => {
-        //             if (!response.ok) {
-        //                 return response.json().then(err => {
-        //                     console.error('Server response:', err); // Log the server response
-        //                     throw new Error(err.error || 'Failed to add to cart');
-        //                 });
-        //             }
-        //             return response.json();
-        //         })
+        //         .then(response => response.json())
         //         .then(data => {
-        //             console.log('Product added to cart:', data);
-        //             alert('Product added to cart successfully!');
+        //             if (data.success) {
+        //                 alert('Product added to cart successfully!');
+        //                 localStorage.setItem("cartUpdated", "true");
+        //             } else {
+        //                 throw new Error(data.message || "Failed to add product to cart");
+        //             }
         //         })
         //         .catch(error => {
-        //             console.error('Error adding product to cart:', error);
         //             alert(`Failed to add product to cart: ${error.message}`);
         //         });
         // }
+
+
 
     </script>
 </body>

@@ -1,13 +1,13 @@
 
-let express =  require('express');
+let express = require('express');
 // let http = require ('http');
-let { Server } = require ('socket.io');
-let path = require ('path');
-let { fileURLToPath } = require ('url');
+let { Server } = require('socket.io');
+let path = require('path');
+let { fileURLToPath } = require('url');
 let client = require('./dbConnection.js');
 let userrouter = require('./routers/userrouter');
 let Offer = require('./controllers/offersController.js');
-const Cart = require('./models/cart'); // Adjust the path if necessary
+
 
 const { collection } = require('./models/cartModel');
 const app = express();
@@ -56,12 +56,13 @@ const http = require('http').Server(app);
 require('./dbConnection');
 
 app.use('/', router);
+app.use('/api', cartPageRouter);
 
 app.use(menRouter);
 app.use(userrouter);
 app.use(womenRouter);
 app.use('/', otherPageRouter);
-app.use('/',orderPageRouter);
+app.use('/', orderPageRouter);
 app.use('/controllers', express.static(path.join(__dirname, 'controllers')));
 app.use('/partials', express.static(path.join(__dirname, 'partials')));
 app.use('/subpages', express.static(path.join(__dirname, 'subpages')));
@@ -94,47 +95,48 @@ app.use('/images', express.static(path.join(__dirname, 'images')));
 //     }
 // });
 // API endpoint to add to cart
-app.post('/api/cart', async (req, res) => {
-    const { userId, item_id, name, type, discount, price, discountedPrice, isNew, isInOffer, isItBestDeal, image } = req.body;
+// app.post('/api/cart', async (req, res) => {
+//     const { userId, item_id, name, type, discount, price, discountedPrice, isNew, isInOffer, isItBestDeal, image, quantity } = req.body;
 
-    try {
-        await client.connect();  // Connect to MongoDB
-        const collection = client.db('fleecebagDB').collection('Cart'); // Access collection
+//     try {
+//         await client.connect();  // Connect to MongoDB
+//         const collection = client.db('fleecebagDB').collection('Cart'); // Access collection
 
-        // Product data to be added to cart
-        const product = {
-            item_id,
-            name,
-            type,
-            discount,
-            price,
-            discountedPrice,
-            isNew,
-            isInOffer,
-            isItBestDeal,
-            image
-        };
+//         // Product data to be added to cart
+//         const product = {
+//             item_id,
+//             name,
+//             type,
+//             discount,
+//             price,
+//             discountedPrice,
+//             isNew,
+//             isInOffer,
+//             isItBestDeal,
+//             image,
+//             quantity
+//         };
 
-        // Add product to cart with $addToSet
-        const result = await collection.updateOne(
-            { userId: userId }, // Find the user's cart
-            { $addToSet: { item: product } }, // Add product to items array
-            { upsert: true } // Create cart if not found
-        );
+//         // Add product to cart with $addToSet
+//         const result = await collection.updateOne(
+//             { userId: userId }, // Find the user's cart
+//             { $addToSet: { item: product } }, // Add product to items array
+//             { upsert: true } // Create cart if not found
+//         );
 
-        console.log('Product added to cart:', result);
-        res.status(200).json({ message: 'Product added to cart successfully!', result });
+//         console.log('Product added to cart:', result);
+//         res.status(200).json({ message: 'Product added to cart successfully!', result });
 
-    } catch (error) {
-        console.error('Error adding product to cart:', error.message);
-        res.status(400).json({ error: 'Failed to add to cart', details: error.message });
-    } finally {
-        await client.close();  // Close connection after operation
-    }
-});
+//     } catch (error) {
+//         console.error('Error adding product to cart:', error.message);
+//         res.status(400).json({ error: 'Failed to add to cart', details: error.message });
+//     } finally {
+//         await client.close();  // Close connection after operation
+//     }
+// });
 
 http.listen(port, () => {
     console.log('Express server started on port :' + port);
-    //dbConnection();
-    //console.log('DB connection successful!');
+    // dbConnection();
+    console.log('DB connection successful!');
 });

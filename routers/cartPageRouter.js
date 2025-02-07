@@ -21,11 +21,11 @@ router.delete('/cart/removeAll/:userId', setCORSHeaders, (req, res) => {
 
 router.post('/cart/create/:userId', setCORSHeaders, (req, res) => {
     console.log('Received request body:', req.body); // Log the request body to debug
-    cartController.createCart(req, res);
+    cartController.handleAddToCart(req, res);
 });
 router.put('/cart/update', setCORSHeaders, (req, res) => {
     const { userId, item_id, quantity } = req.body;
-    cartController.updateCartItemApi(req, res, userId, item_id, quantity);
+    cartController.updateCartItemQuantity(req, res, userId, item_id, quantity);
 });
 
 module.exports = router;

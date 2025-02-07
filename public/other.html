@@ -55,170 +55,289 @@
 
   <script src="https://cdn.jsdelivr.net/npm/jwt-decode/build/jwt-decode.min.js"></script>
   <script>
-    document.addEventListener('DOMContentLoaded', () => {
-    const token = localStorage.getItem('jwtToken');
+    document.addEventListener('DOMContentLoaded', async () => {
+      const token = localStorage.getItem('jwtToken');
+      if (!token) return console.error('No JWT token found.');
 
-    if (!token) {
-      console.error('User is not logged in: No JWT token found');
-      return;
+      try {
+        const decoded = jwt_decode(token);
+        userId = decoded.userId;
+        if (!userId) return console.error('User ID not found in token.');
+
+        await getItems(); // Fetch cart items when the page loads
+
+        // 🚀 NEW: Refresh cart when user navigates back
+        window.addEventListener('focus', async () => {
+          console.log("Page focused - refreshing cart.");
+          await getItems(); // Re-fetch cart items when returning to cart.html
+        });
+
+      } catch (error) {
+        console.error('Error decoding JWT token:', error);
+      }
+    });
+
+    const api_baseURL = 'http://localhost:8080';
+
+    async function getNewProducts() {
+      try {
+
+        const response = await fetch(`${api_baseURL}/otheritem/new`);
+
+        if (response.ok) {
+          const data = await response.json();
+
+          if (data.statusCode === 200) {
+            const newProducts = data.data;
+            displayNewProducts(newProducts);
+          } else {
+            console.error('Failed to load new products:', data.message);
+          }
+        } else {
+          console.error('Failed to fetch from API:', response.statusText);
+        }
+      } catch (error) {
+        console.error('Error fetching new products:', error);
+      }
     }
 
-    try {
-      const decoded = jwt_decode(token);
-      userId = decoded.userId;
+    async function getBestProducts() {
+      try {
 
-      if (!userId) {
-        console.error('User ID not found in token');
+        const response = await fetch(`${api_baseURL}/otheritem/bestdeal`);
+
+        if (response.ok) {
+          const data = await response.json();
+
+          if (data.statusCode === 200) {
+            const newProducts = data.data;
+            displayBestProducts(newProducts);
+          } else {
+            console.error('Failed to load new products:', data.message);
+          }
+        } else {
+          console.error('Failed to fetch from API:', response.statusText);
+        }
+      } catch (error) {
+        console.error('Error fetching new products:', error);
+      }
+    }
+
+
+
+    function displayNewProducts(products) {
+      const productsListElement = document.getElementById('new-products-list');
+      productsListElement.innerHTML = '';
+
+      products.forEach(product => {
+        const productCard = document.createElement('div');
+        productCard.classList.add('col', 'mb-5');
+
+        productCard.addEventListener('click', () => handleProductDetails(product));
+
+        productCard.innerHTML = `
+      <div class="col mb-5">
+        <div class="card h-100">
+          <!-- New badge-->
+          <div class="badge bg-info text-white position-absolute" style="top: 0.5rem; right: 0.5rem">New</div>
+          <!-- Product image-->
+          <img class="card-img-top" src="${product.image}" alt="${product.name}">
+          <!-- Product details-->
+          <div class="card-body p-4">
+            <div class="text-center">
+              <!-- Product name-->
+              <h5 class="fw-bolder">${product.name}</h5>
+              <!-- Product price-->
+              <span class="text-muted text-decoration-line-through">₹${product.price}</span>
+              <p class="price">₹${product.discountedPrice}</p>
+              
+              
+            </div>
+          </div>
+          <!-- Product actions-->
+          <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+            <div class="text-center">
+              <a class="btn btn-outline-dark mt-auto" href="#" data-product='${JSON.stringify(product)}'>Add to cart</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+
+        // Attach the event listener for the 'Add to cart' button
+        const addToCartBtn = productCard.querySelector('a');
+        addToCartBtn.addEventListener('click', (event) => {
+          stopevent(event);
+          const productData = JSON.parse(addToCartBtn.getAttribute('data-product'));
+          handleAddToCart(productData);
+        });
+
+        productsListElement.appendChild(productCard);
+      });
+    }
+
+    function stopevent(event) {
+      event.preventDefault(); // Prevents the default action
+      event.stopPropagation(); // Stops the event from propagating further
+    }
+    async function handleAddToCart(product) {
+      const token = localStorage.getItem('jwtToken');
+      if (!token) {
+        alert("You need to be logged in to add items to the cart.");
+        window.location.href = "/login.html";
         return;
       }
 
-      console.log('Decoded User ID:', userId);
+      const { _id, name, price, discountedPrice, image, shippingCharge } = product;
 
-      getNewProducts();
-      getBestProducts();
-    } catch (error) {
-      console.error('Error decoding JWT token:', error);
-    }
-  });
+      // Ensure shippingCharge is always a valid number
+      const validShippingCharge = Number(shippingCharge) || 10;  // If shippingCharge is NaN, it will default to 0
 
-  const api_baseURL = 'http://localhost:8080';
-
-  async function getNewProducts() {
-    try {
-      
-      const response = await fetch(`${api_baseURL}/otheritem/new`);
-
-      if (response.ok) {
-        const data = await response.json();
-
-        if (data.statusCode === 200) {
-          const newProducts = data.data;
-          displayNewProducts(newProducts);
-        } else {
-          console.error('Failed to load new products:', data.message);
-        }
-      } else {
-        console.error('Failed to fetch from API:', response.statusText);
+      let userId;
+      try {
+        const decoded = jwt_decode(token);
+        userId = decoded.userId;
+      } catch (error) {
+        console.error("Error decoding JWT token:", error);
+        return;
       }
-    } catch (error) {
-      console.error('Error fetching new products:', error);
-    }
-  }
 
-  async function getBestProducts() {
-    try {
-      
-      const response = await fetch(`${api_baseURL}/otheritem/bestdeal`);
+      try {
+        // Fetch the cart data
+        const response = await fetch(`http://localhost:8080/api/cart/${userId}`, {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
 
-      if (response.ok) {
-        const data = await response.json();
-
-        if (data.statusCode === 200) {
-          const newProducts = data.data;
-          displayBestProducts(newProducts);
-        } else {
-          console.error('Failed to load new products:', data.message);
+        if (!response.ok) {
+          throw new Error("Failed to fetch cart data");
         }
-      } else {
-        console.error('Failed to fetch from API:', response.statusText);
+
+        const cartData = await response.json();
+        const cartItems = cartData.items || [];
+        let existingItem = cartItems.find(item => item.item_id === _id);
+
+        if (existingItem) {
+          // Update quantity if the item exists in the cart
+          existingItem.quantity += 1;
+          existingItem.shippingCharge = validShippingCharge; // Ensure valid shippingCharge
+
+          const updateResponse = await fetch(`http://localhost:8080/api/cart/update/${userId}`, {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({ userId, items: cartItems })
+          });
+
+          if (!updateResponse.ok) {
+            throw new Error("Failed to update cart quantity");
+          }
+
+          alert('Cart quantity updated!');
+        } else {
+          // Add new item to the cart if it doesn't exist
+          const cartItem = {
+            userId,
+            items: [
+              {
+                item_id: _id,
+                name,
+                price,
+                discountedPrice,
+                image,
+                quantity: 1,
+                shippingCharge: validShippingCharge  // Ensure valid shippingCharge when adding new item
+              }
+            ]
+          };
+
+          const addResponse = await fetch(`http://localhost:8080/api/cart/create/${userId}`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify(cartItem)
+          });
+
+          if (!addResponse.ok) {
+            throw new Error("Failed to add product to cart");
+          }
+
+          alert('Product added to cart successfully!');
+        }
+
+        localStorage.setItem("cartUpdated", "true");
+
+      } catch (error) {
+        alert(`Error: ${error.message}`);
       }
-    } catch (error) {
-      console.error('Error fetching new products:', error);
     }
-  }
 
-  
-  function displayNewProducts(products) {
-    const productsListElement = document.getElementById('new-products-list');
-    productsListElement.innerHTML = ''; 
 
-    
-    products.forEach(product => {
-      const productCard = document.createElement('div');
-      productCard.classList.add('col', 'mb-5');
 
-      productCard.addEventListener('click', () => handleProductDetails(product));
-      productCard.innerHTML = `
-              <div class="col mb-5">
-                  <div class="card h-100">
-                  <!-- New badge-->
-                  <div class="badge bg-info text-white position-absolute" style="top: 0.5rem; right: 0.5rem">New</div>
-                  <!-- Product image-->
-                  <img class="card-img-top" src="${product.image}" alt="${product.name}">
-                  <!-- Product details-->
-                  <div class="card-body p-4">
-                      <div class="text-center">
-                          <!-- Product name-->
-                          <h5 class="fw-bolder">${product.name}</h5>
-                          <!-- Product price-->
-                          <p class="price">₹${product.discountedPrice}</p>
-                      </div>
-                  </div>
-                  <!-- Product actions-->
-                  <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                      <div class="text-center">
-                          <a class="btn btn-outline-dark mt-auto" href="#">Add to cart</a>
-                      </div>
-                  </div>
-              </div>
-              </div>
-              `;
+    function displayBestProducts(products) {
+      const bestproductsListElement = document.getElementById('best-products-list');
+      bestproductsListElement.innerHTML = '';
 
-      
-      productsListElement.appendChild(productCard);
-    });
-  }
 
-  
-  function displayBestProducts(products) {
-    const bestproductsListElement = document.getElementById('best-products-list');
-    bestproductsListElement.innerHTML = ''; 
+      products.forEach(product => {
+        const productCard = document.createElement('div');
+        productCard.classList.add('col', 'mb-5');
 
-    
-    products.forEach(product => {
-      const productCard = document.createElement('div');
-      productCard.classList.add('col', 'mb-5');
+        productCard.addEventListener('click', () => handleProductDetails(product));
+        productCard.innerHTML = `
+                <div class="col mb-5">
+                    <div class="card h-100">
+                    <!-- New badge-->
+                    <div class="badge bg-warning text-dark position-absolute" style="top: 0.5rem; right: 0.5rem">Sale</div>
+                    <!-- Product image-->
+                    <img class="card-img-top" src="${product.image}" alt="${product.name}">
+                    <!-- Product details-->
+                    <div class="card-body p-4">
+                        <div class="text-center">
+                            <!-- Product name-->
+                            <h5 class="fw-bolder">${product.name}</h5>
+                            <!-- Product price-->
+                            
+                            <!-- Product price-->
+                            <span class="text-muted text-decoration-line-through">₹${product.price}</span>
+                            <p class="price">₹${product.discountedPrice}</p>
+                        </div>
+                    </div>
+                    <!-- Product actions-->
+                    <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                        <div class="text-center">
+                            <a class="btn btn-outline-dark mt-auto" href="#" data-product='${JSON.stringify(product)}'>Add to cart</a>
+                        </div>
+                    </div>
+                </div>
+                </div>
+                `;
+        const addToCartBtn = productCard.querySelector('a');
+        addToCartBtn.addEventListener('click', (event) => {
+          stopevent(event);
+          const productData = JSON.parse(addToCartBtn.getAttribute('data-product'));
+          handleAddToCart(productData);
+        });
 
-      productCard.addEventListener('click', () => handleProductDetails(product));
-      productCard.innerHTML = `
-              <div class="col mb-5">
-                  <div class="card h-100">
-                  <!-- New badge-->
-                  <div class="badge bg-warning text-dark position-absolute" style="top: 0.5rem; right: 0.5rem">Sale</div>
-                  <!-- Product image-->
-                  <img class="card-img-top" src="${product.image}" alt="${product.name}">
-                  <!-- Product details-->
-                  <div class="card-body p-4">
-                      <div class="text-center">
-                          <!-- Product name-->
-                          <h5 class="fw-bolder">${product.name}</h5>
-                          <!-- Product price-->
-                          <span class="text-muted text-decoration-line-through">₹${product.discountedPrice}</span>
-                          <!-- Product price-->
-                          <p class="price">₹${product.price}</p>
-                      </div>
-                  </div>
-                  <!-- Product actions-->
-                  <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                      <div class="text-center">
-                          <a class="btn btn-outline-dark mt-auto" href="#">Add to cart</a>
-                      </div>
-                  </div>
-              </div>
-              </div>
-              `;
 
-      
-      bestproductsListElement.appendChild(productCard);
-    });
-  }
 
-  
-  getNewProducts();
-  getBestProducts();
-</script>
 
-  
+        bestproductsListElement.appendChild(productCard);
+      });
+    }
+
+
+    getNewProducts();
+    getBestProducts();
+  </script>
+
+
   <script>
     async function addProductToCart(product) {
       const token = localStorage.getItem('jwtToken');
@@ -269,11 +388,12 @@
       }
     }
 
-      function handleProductDetails(product) {
+    function handleProductDetails(product) {
       console.log("Handling Product Details:", product);
 
       const queryParams = new URLSearchParams({
         id: product._id,
+        color: product.color,
         name: product.name,
         type: product.type,
         discount: product.discount,
@@ -287,56 +407,15 @@
 
       window.location.href = `productDetail.html?${queryParams.toString()}`;
     }
+
   </script>
 
-  <footer>
-    <div class="container py-4 pt-5">
-      <div class="row justify-content-center">
-        <div class="col-sm-4 col-md-3 text-center text-lg-start d-flex flex-column item">
-          <h3 class="fs-6">About</h3>
-          <ul class="list-unstyled">
-            <li><a href="#">Terms & Conditions</a></li>
-            <li><a href="#">FAQs</a></li>
-          </ul>
-          <h3 class="fs-6">Contact Us</h3>
-          <ul class="list-unstyled">
-            <li><a style="color: #E5989B;" href="#">support@fleecebag.in</a></li>
-          </ul>
-        </div>
-        <div class="col-sm-4 col-md-3 text-center text-lg-start d-flex flex-column item">
-          <h3 class="fs-6">Customer Service</h3>
-          <ul class="list-unstyled">
-            <li><a href="#" style="color:#2c5364; font-weight: 600;">Track Order</a></li>
-            <li><a href="#">Return Policy</a></li>
-            <li><a href="#">Privacy Policy</a></li>
-            <li><a href="#">Shipping Information</a></li>
-          </ul>
-        </div>
-        <div
-          class="col-lg-3 text-center text-lg-start d-flex flex-column align-items-center order-first align-items-lg-start order-lg-last item social">
-          <div class="fw-bold d-flex align-items-center mb-2"><img src="../images/purse.png" height="25px"
-              style="padding-right: 10px;"></span><span>Fleecebag</span></div>
-          <p class="text-muted copyright">Think Once, Think Twice, Think Bags</p>
-          <h3 class="fs-6 mt-3">Follow Us</h3>
-          <ul class="social mb-0 list-inline">
-            <li class="list-inline-item"><a class="social-link"><i class="fa-brands fa-facebook-f"></i></a></li>
-            <li class="list-inline-item"><a class="social-link"><i class="fa-brands fa-instagram"></i></a></li>
-            <li class="list-inline-item"><a class="social-link"><i class="fa-brands fa-twitter"></i></a>
-            </li>
-          </ul>
-        </div>
-      </div>
-      <hr>
-      <div class="d-flex justify-content-around align-items-center pt-3">
-        <p class="text-muted text-uppercase mb-0">Copyright © 2022 All Rights Reserved</p>
-      </div>
-    </div>
-  </footer>
+  <div id="footer-container"></div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/egjs-agent/2.4.3/agent.min.js"></script>
-  <script src="assets/script.js"></script>
+
 </body>
 
 </html>

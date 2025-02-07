@@ -15,30 +15,14 @@ const getCartItemsApi = async (req, res) => {
 const deleteCartItemApi = async (req, res) => {
     const { userId, item_id } = req.body;
 
-    const itemIdNumber = Number(item_id);
-
-    if (isNaN(itemIdNumber)) {
-        return res.status(400).json({ success: false, message: 'Invalid item_id' });
-    }
-
     try {
-        const cart = await collection.findOne({ userId });
+        const result = await cartModel.removeCartItem(userId, item_id);
 
-        if (!cart) {
-            return res.status(404).json({ success: false, message: 'Cart not found' });
+        if (result.success) {
+            res.status(200).json({ success: true, message: result.message });
+        } else {
+            res.status(404).json({ success: false, message: result.message });
         }
-
-        const itemIndex = cart.item.findIndex(item => item.item_id === itemIdNumber);
-
-        if (itemIndex === -1) {
-            return res.status(404).json({ success: false, message: 'Item not found' });
-        }
-
-        cart.item.splice(itemIndex, 1);
-
-        await collection.updateOne({ userId }, { $set: { item: cart.item } });
-
-        res.status(200).json({ success: true, message: 'Item removed successfully' });
     } catch (error) {
         res.status(500).json({ success: false, message: 'Error removing item from cart' });
     }
@@ -60,58 +44,52 @@ const removeAllCartItems = async (req, res) => {
     }
 };
 
-async function createCart(req, res) {
-    const userId = req.params.userId;
-    const items = req.body.item;
 
-    // Log the received items to debug
-    console.log('Received items:', items);
-
-    // Check if the items array is not empty and if the item_id exists in each item
-    if (!items || items.length === 0 || !items[0].item_id) {
-        console.error('Item or item_id is missing in the request.');
-        return res.status(400).json({
-            message: 'item_id is required',
-        });
-    }
-
+async function handleAddToCart(req, res) {
+    const { userId } = req.params;
+    const { items } = req.body;
     try {
-        // Call addCart function with userId and items
-        const result = await addCart(userId, items);
-
-        if (result.success) {
-            res.status(200).json({
-                message: result.message,
-                cart: result.cart,
-            });
-        } else {
-            res.status(500).json({
-                message: result.message,
-            });
-        }
+        const response = await addCart(userId, items);
+        res.status(200).json(response);
     } catch (error) {
-        console.error('Error while creating cart:', error);
-        res.status(500).json({
-            message: 'Internal server error',
-        });
+        res.status(400).json({ error: error.message || 'Error adding to cart' });
     }
 }
 
 
-const updateCartItemApi = async (req, res, userId, item_id, quantity) => {
-    const itemIdNumber = Number(item_id);
 
-    if (isNaN(itemIdNumber)) {
-        return res.status(400).json({ success: false, message: 'Invalid item_id' });
-    }
+
+
+const updateCartItemQuantity = async (req, res) => {
+    const { userId, item_id, quantity } = req.body;
 
     try {
-        await cartModel.updateCartItemQuantity(userId, itemIdNumber, quantity);
+        // Use the native collection to find the cart
+        const cart = await collection.findOne({ userId, 'item.item_id': item_id });
 
-        res.status(200).json({ success: true, message: 'Item quantity updated successfully' });
+        if (!cart) {
+            return res.status(404).json({ success: false, message: 'Cart not found' });
+        }
+
+        // Update the item quantity directly
+        const result = await collection.updateOne(
+            { userId, 'item.item_id': item_id },
+            { $set: { 'item.$.quantity': quantity } }
+        );
+
+        if (result.modifiedCount === 0) {
+            return res.status(404).json({ success: false, message: 'Failed to update item quantity' });
+        }
+
+        return res.status(200).json({ success: true, message: 'Item quantity updated successfully' });
     } catch (error) {
+        console.error('Error updating cart item:', error);
         res.status(500).json({ success: false, message: 'Error updating item quantity' });
     }
 };
 
-module.exports = { getCartItemsApi, deleteCartItemApi, removeAllCartItems, createCart, updateCartItemApi };
+
+
+
+
+module.exports = { getCartItemsApi, deleteCartItemApi, removeAllCartItems, updateCartItemQuantity, handleAddToCart, collection };
