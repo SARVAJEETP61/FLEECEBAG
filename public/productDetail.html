@@ -211,68 +211,6 @@
             }
         }
 
-        // function handleAddToCart() {
-        //     const token = localStorage.getItem('jwtToken');
-        //     if (!token) {
-        //         alert("You need to be logged in to add items to the cart.");
-        //         window.location.href = "/login.html";
-        //         return;
-        //     }
-
-        //     // Get product details from URL
-        //     const urlParams = new URLSearchParams(window.location.search);
-        //     const item_id = urlParams.get('id');
-        //     const productName = urlParams.get('name');
-        //     const productPrice = parseFloat(urlParams.get('price')); // Ensure price is a number
-        //     const productImage = urlParams.get('image');
-        //     const discountedPrice = parseFloat(urlParams.get('discountedPrice')) || productPrice;
-        //     const shippingCharge = parseFloat(urlParams.get('shippingCharge')) || 10; // Default charge
-
-        //     let userId;
-        //     try {
-        //         const decoded = jwt_decode(token);
-        //         userId = decoded.userId;
-        //     } catch (error) {
-        //         console.error("Error decoding JWT token:", error);
-        //         return;
-        //     }
-
-        //     const cartItem = {
-        //         userId,
-        //         items: [
-        //             {
-        //                 item_id,
-        //                 name: productName,
-        //                 price: productPrice,
-        //                 discountedPrice,
-        //                 image: productImage,
-        //                 quantity: 1,
-        //                 shippingCharge
-        //             }
-        //         ]
-        //     };
-
-        //     fetch(`http://localhost:8080/api/cart/create/${userId}`, { // ✅ Fixed URL
-        //         method: 'POST',
-        //         headers: {
-        //             'Content-Type': 'application/json',
-        //             'Authorization': `Bearer ${token}`
-        //         },
-        //         body: JSON.stringify(cartItem)
-        //     })
-        //         .then(response => response.json())
-        //         .then(data => {
-        //             if (data.success) {
-        //                 alert('Product added to cart successfully!');
-        //                 localStorage.setItem("cartUpdated", "true");
-        //             } else {
-        //                 throw new Error(data.message || "Failed to add product to cart");
-        //             }
-        //         })
-        //         .catch(error => {
-        //             alert(`Failed to add product to cart: ${error.message}`);
-        //         });
-        // }
 
 
 
