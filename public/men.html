@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
     <meta charset="UTF-8">
@@ -214,7 +214,7 @@
                         <div class="card h-100">
                         
                         <!-- Product Image -->
-                        <img class="card-img-top" src="${product.image}" alt="${product.name}" style="height: 200px; object-fit: cover;">
+                        <img class="card-img-top" src="${product.image[0]}" alt="${product.name}" style="height: 200px; object-fit: cover;">
 
                         <!-- New Badge -->
                         <span class="badge bg-info text-white mb-1">New</span>
@@ -235,7 +235,10 @@
 
                         <!-- Product Actions -->
                         <div class="card-footer p-3 bg-light border-top d-flex">
-                            <a class="btn btn-outline-dark btn-sm" href="#">Add to Cart</a>
+                           <button class="btn btn-outline-dark btn-sm" 
+    onclick="addToCart('${product._id}', '${product.name}', '${product.type}','${product.price}','${product.discountedPrice}', '${product.image[0]}')">
+    Add to Cart
+</button>
                             <a class="btn btn-dark btn-sm" href="#">Buy Now</a>
                         </div>
                         
@@ -264,7 +267,7 @@
                         <div class="card h-100">
         
                             <!-- Product Image -->
-                            <img class="card-img-top" src="${product.image}" alt="${product.name}" style="height: 200px; object-fit: cover;">
+                            <img class="card-img-top" src="${product.image[0]}" alt="${product.name}" style="height: 200px; object-fit: cover;">
 
                             <!-- Sale Badge -->
                             <span class="badge bg-warning text-dark mb-0">Sale</span>
@@ -286,7 +289,10 @@
 
                             <!-- Product Actions -->
                             <div class="card-footer p-3 bg-light border-top d-flex">
-                                <a class="btn btn-outline-dark btn-sm" href="#">Add to Cart</a>
+                               <button class="btn btn-outline-dark btn-sm" 
+    onclick="addToCart('${product._id}', '${product.name}', '${product.type}','${product.price}','${product.discountedPrice}', '${product.image[0]}')">
+    Add to Cart
+</button>
                                 <a class="btn btn-dark btn-sm" href="#">Buy Now</a>
                             </div>
                         </div>
@@ -301,6 +307,69 @@
         // Call the function to fetch new products and display them
         getNewProducts();
         getBestProducts();
+    </script>
+
+    <script>
+        const baseURL = 'http://localhost:8080';
+
+        async function addToCart(id, name, type, price, disPrice, image) {
+            const token = localStorage.getItem('jwtToken');
+
+            if (!token) {
+                console.error('No JWT token found. User must log in.');
+                return;
+            }
+
+            else {
+                const userId = "679721a86d0a6e561ea2ebba";
+
+                
+                const payload = {
+                    userId: userId,
+                    item: [
+                        {
+                            item_id: id,
+                            name: name,
+                            type: type, 
+                            discount: 10,
+                            price: price,
+                            quantity: 1,
+                            discountedPrice: disPrice,
+                            totalPrice: disPrice,
+                            isNew: true,
+                            isInOffer: true,
+                            isItBestDeal: true,
+                            image: "https://cdn.tagbox.io/assets/678888f7a490830011136b10/58d0d055-7a00-4845-85f2-53514b5016c0---img6.jpg"
+                        }
+                    ],
+                    totalPrice: disPrice,
+                    totalShippingCharge: 20,
+                    orderStatus: "awaiting_for_confirmation"
+                };
+
+                try {
+                    const response = await fetch(`${baseURL}/cart/create/${userId}`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${token}`
+                        },
+                        body: JSON.stringify(payload)
+                    });
+
+                    const data = await response.json();
+
+                    if (response.ok) {
+                        alert('Item added to cart successfully!');
+                    } else {
+                        console.error('Failed to add to cart:', data.message);
+                    }
+                } catch (error) {
+                    console.error('Error while adding item to cart:', error);
+                }
+            }
+        }
+
     </script>
 
     <footer>

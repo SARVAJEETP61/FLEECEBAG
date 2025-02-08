@@ -63,6 +63,11 @@
                                     <strong>Total</strong>
                                     <strong>$<span id="finalTotal">0</span></strong>
                                 </li>
+                                <li
+                                    class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">
+                                    Proceed to Checkout
+                                    <button class="add-to-cart-btn" onclick="proceedToCheckout()">Proceed</button>
+                                </li>
                             </ul>
                         </div>
                     </div>
@@ -70,6 +75,15 @@
             </div>
         </div>
     </section>
+
+    <script>
+        function proceedToCheckout() {
+            let totalAmount = document.getElementById("finalTotal").innerText;
+            localStorage.setItem("totalAmount", totalAmount);
+            window.location.href = "checkout.html";
+        }
+    </script>
+
     <script src="https://cdn.jsdelivr.net/npm/jwt-decode/build/jwt-decode.min.js"></script>
 
 

@@ -147,83 +147,108 @@
             </div>
         </div>
 
-        <div class="d-flex product-layout">
+        <div id="order-data"></div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/jwt-decode/build/jwt-decode.min.js"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+    const token = localStorage.getItem('jwtToken');
+
+    if (!token) {
+      console.error('User is not logged in: No JWT token found');
+      return;
+    }
+
+    try {
+      const decoded = jwt_decode(token);
+      userId = decoded.userId;
+
+      if (!userId) {
+        console.error('User ID not found in token');
+        return;
+      }
+
+      console.log('Decoded User ID:', userId);
+
+      getOrderData();
+    } catch (error) {
+      console.error('Error decoding JWT token:', error);
+      new Throw("please Signup/Login");
+    }
+  });
+
+  const api_baseURL = 'http://localhost:8080';
+  
+        async function getOrderData() {
+            // Get query parameters from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const orderId = urlParams.get('orderId');
+            try {
+                const API_data = {
+                        method: 'POST',
+                        headers: {
+                            Accept: 'application/json',
+                                    'Content-Type': 'application/json',
+                            },
+                        body:JSON.stringify({"userId" :userId,"orderId":orderId})
+                            
+                };
+                // Make a request to the API
+                const response = await fetch(`${api_baseURL}/order`,API_data);
+  
+                if (response.ok) {
+                    const data = await response.json();
+  
+                    if (data.statusCode === 200) {
+                        const orders = data.data;
+                        displayOrderData(orders);
+                    } else {
+                        console.error('Failed to load Order List:', data.message);
+                    }
+                } else {
+                    console.error('Failed to fetch from API:', response.statusText);
+                }
+            } catch (error) {
+                console.error('Error fetching Order List:', error);
+            }
+        }
+  
+        // Function to display the new orders in HTML
+        function displayOrderData(orders) {
+            const orderListElement = document.getElementById('order-data');
+            orderListElement.innerHTML = ''; // Clear any previous content
+
+            // Iterate through the products array and create HTML for each product
+            orders.item.forEach(order => {
+                const orderCard = document.createElement('div');
+  
+                // Create product card content
+                orderCard.innerHTML = `
+                <div class="d-flex product-layout">
             <!-- Left: Product Details and Tracking -->
             <div class="col-md-6">
                 <div class="product-details mb-4">
-                    <h5>Order #<span id="orderId"></span></h5>
-                    <p><strong>Product:</strong> <span id="productName"></span></p>
-                    <p><strong>Price:</strong> ₹<span id="price"></span></p>
-                    <p><strong>Status:</strong> <span id="status"></span></p>
-                    <p><strong>Delivery Date:</strong> <span id="deliveryDate"></span></p>
-                    <a href="orderlist.html" class="btn btn-primary mt-3">Back to Orders</a>
+                    <h5>Order #${orders.orderId}</h5>
+                    <p><strong>Product:</strong> ${order.name}</p>
+                    <p><strong>Price:</strong> ₹ ${order.totalPrice}</p>
                 </div>
             </div>
 
             <!-- Right: Product Image -->
             <div class="col-md-6 text-center">
-                <img src="https://cdn.tagbox.io/assets/678888f7a490830011136b10/c2ac6d18-db26-456b-961b-551bfe0b3b1a---img4.jpg" 
-                     alt="Product Image" class="product-image">
+                <img src=${order.image} alt="Product Image" class="product-image">
             </div>
-        </div>
-    </div>
-
-    <script>
-        // Get query parameters from URL
-        const urlParams = new URLSearchParams(window.location.search);
-        const orderId = urlParams.get('orderId');
-
-        // Example: Simulated order data (replace with API call or database fetch)
-        const orders = {
-            12345: {
-                productName: 'Stylish Tote Bag',
-                price: 1200,
-                status: 'Shipped',
-                deliveryDate: '2025-01-20',
-                image: 'https://cdn.tagbox.io/assets/678888f7a490830011136b10/c2ac6d18-db26-456b-961b-551bfe0b3b1a---img4.jpg'
-            },
-            12346: {
-                productName: 'School Bag',
-                price: 850,
-                status: 'Out for Delivery',
-                deliveryDate: '2025-01-28',
-                image: 'https://cdn.tagbox.io/assets/678888f7a490830011136b10/c2ac6d18-db26-456b-961b-551bfe0b3b1a---img4.jpg'
-            }
-        };
-
-        // Display the specific order details
-        const orderDetails = orders[orderId];
-        if (orderDetails) {
-            document.getElementById('orderId').textContent = orderId;
-            document.getElementById('productName').textContent = orderDetails.productName;
-            document.getElementById('price').textContent = orderDetails.price;
-            document.getElementById('status').textContent = orderDetails.status;
-            document.getElementById('deliveryDate').textContent = orderDetails.deliveryDate;
-
-            // Update the product image
-            const productImage = document.querySelector('.product-image');
-            productImage.src = orderDetails.image;
-            productImage.alt = orderDetails.productName;
-
-            // Highlight the tracking step based on status
-            const statusSteps = {
-                Ordered: 0,
-                Shipped: 1,
-                'Out for Delivery': 2,
-                Delivered: 3
-            };
-
-            const activeStep = statusSteps[orderDetails.status];
-            const trackingIcons = document.querySelectorAll('.tracking-icon');
-            trackingIcons.forEach((icon, index) => {
-                if (index <= activeStep) {
-                    icon.classList.add('active');
-                }
+        </div>`;
+                // Append the product card to the product container
+                orderListElement.appendChild(orderCard);
             });
-        } else {
-            document.body.innerHTML = '<div class="container"><h3 class="text-center mt-5">Order not found</h3></div>';
+  
         }
+
     </script>
+    <div id="footer-container"></div> <!-- FOOTER will be injected here -->
+
 </body>
 
 </html>
