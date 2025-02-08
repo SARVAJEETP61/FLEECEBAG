@@ -53,7 +53,7 @@
 2. **Install Dependencies**:
 
    ```bash
-   npm install
+   npm install --force
    ```
 
 3. **Set Up Environment Variables**:
